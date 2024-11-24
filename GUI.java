@@ -15,7 +15,9 @@ public class GUI {
 		//PharmacyPersonnel MollyAuer = new PharmacyPersonnel("Molly Auer", 7, 11, 2004, User.Gender.Female, myPhoneNumber, "some address", User.Role.ITAdministrator, "mollyauer", "WildcatFurLife!44");
 		//myUserDatabase.AddUser(MollyAuer);
 		
-		// Log-In
+		
+		
+		// Log-In System
 		
 		System.out.println("Welcome to the Pharmacy Management System!");
 		System.out.println("Please enter your username:");

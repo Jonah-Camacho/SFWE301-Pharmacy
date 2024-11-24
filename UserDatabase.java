@@ -11,6 +11,7 @@ public class UserDatabase {
 	String filePath = "UserDatabase.csv";
 	String[] headers = {"ID Number", "Full Name", "Date of Birth", "Gender", "Phone Number", "Address", "Active?", "Role", "Doctor's Name", "Doctor's Phone Number", "Insurance Provider", "Insurance Policy Number", "Allergies", "Notes", "Username", "Password", "Locked?"};
 	
+	// Add Patient to UserDatabase
 	
 	public void AddUser (Patient myPatient) {
 		String newRecord = "" + myPatient.IDNumber + "," + myPatient.fullName + "," + myPatient.dateOfBirth + "," + myPatient.userGender + "," + myPatient.phoneNumber + "," + myPatient.address + "," + myPatient.isActive + "," + myPatient.userRole + "," + myPatient.doctorsName + "," + myPatient.doctorsPhoneNumber + "," + myPatient.insuranceProvider + "," + myPatient.insurancePolicyNumber + "," + myPatient.allergies + "," + myPatient.notes + ", , , ";
@@ -38,6 +39,7 @@ public class UserDatabase {
 		}
 	}
 	
+	// Add Pharmacy Personnel to UserDatabase
 	
 	public void AddUser (PharmacyPersonnel myPharmacyPersonnel) {
 		String newRecord = "" + myPharmacyPersonnel.IDNumber + "," + myPharmacyPersonnel.fullName + "," + myPharmacyPersonnel.dateOfBirth + "," + myPharmacyPersonnel.userGender + "," + myPharmacyPersonnel.phoneNumber + "," + myPharmacyPersonnel.address + ", ," + myPharmacyPersonnel.userRole + ", , , , , , ," + myPharmacyPersonnel.username + "," + myPharmacyPersonnel.password + "," + myPharmacyPersonnel.isLocked;
@@ -65,6 +67,7 @@ public class UserDatabase {
 		}
 	}
 	
+	// Search and Locate a username in the database
 	
 	public boolean searchUsername (String myUsername) {
 		
@@ -87,6 +90,8 @@ public class UserDatabase {
 		}
 	}
 	
+	// Search if an account is locked given the username
+	
 	public boolean searchAccountIsLocked (String myUsername) {
 		
 		boolean isLocked = true;
@@ -95,7 +100,7 @@ public class UserDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",");
-				if (values[14].equals(myUsername) && values[16].equals("FALSE")) {
+				if (values[14].equals(myUsername) && values[16].equals("false")) {
 					isLocked = false;
 				}
 			}
@@ -108,6 +113,7 @@ public class UserDatabase {
 		}
 	}
 	
+	// Search is the correct password was entered for an account given a username
 	
 	public boolean searchPassword (String myUsername, String myPassword) {
 		
@@ -130,6 +136,7 @@ public class UserDatabase {
 		}
 	}
 	
+	// Lock an account
 	
 	public void lockAccount (String myUsername) {
 		
@@ -141,7 +148,8 @@ public class UserDatabase {
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",");
 				if (values[14].equals(myUsername)) {
-					values[16] = "TRUE";
+					values[16] = "true";
+					updated = true;
 				}
 				lines.add(String.join(",", values));
 			}
@@ -165,6 +173,8 @@ public class UserDatabase {
 		}
 	}
 	
+	// Unlock an account
+	
 	public void unlockAccount (String myUsername) {
 		
 		List<String> lines = new ArrayList<>();
@@ -175,7 +185,8 @@ public class UserDatabase {
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",");
 				if (values[14].equals(myUsername)) {
-					values[16] = "FALSE";
+					values[16] = "false";
+					updated = true;
 				}
 				lines.add(String.join(",", values));
 			}
