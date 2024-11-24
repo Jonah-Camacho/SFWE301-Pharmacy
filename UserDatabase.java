@@ -64,6 +64,28 @@ public class UserDatabase {
 			System.out.println("Error: " + e.getMessage());
 		}
 	}
+	
+	
+	public boolean searchUsername (String myUsername) {
+		
+		boolean isFound = false;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",");
+				if (values[14].equals(myUsername)) {
+					isFound = true;
+				}
+			}
+			return isFound;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file for update: " + e.getMessage());
+			return false;
+		}
+	}
 
 	
 }

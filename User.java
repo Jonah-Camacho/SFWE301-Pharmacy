@@ -11,7 +11,7 @@ public abstract class User {
 	int dobDay;
 	int dobYear;
 	Gender userGender;
-	int phoneNumber;
+	long phoneNumber;
 	String address;
 	String streetLine1;
 	String streetLine2 = "";

@@ -6,7 +6,7 @@ public class PharmacyPersonnel extends User {
 	boolean isLocked = false;
 	
 	//Constructor
-	public PharmacyPersonnel (String fullName, int dobMonth, int dobDay, int dobYear, Gender userGender, int phoneNumber, String address, Role userRole, String username, String password) {
+	public PharmacyPersonnel (String fullName, int dobMonth, int dobDay, int dobYear, Gender userGender, long phoneNumber, String address, Role userRole, String username, String password) {
 		this.fullName = fullName;
 		this.dateOfBirth = Integer.toString(dobMonth) + "/" +  Integer.toString(dobDay) + "/" + Integer.toString(dobYear);
 		this.IDNumber = GenerateIDNumber();
@@ -17,7 +17,7 @@ public class PharmacyPersonnel extends User {
 		this.username = username;
 		this.password = password;
 	}
-		
+
 		
 	//Setters
 	
