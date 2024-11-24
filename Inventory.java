@@ -9,5 +9,14 @@ import java.util.List;
 public class Inventory {
 
 	String filePath = "Inventory.csv";
-	String[] headers = {};
+	String[] headers = {"BatchID", "Drug", "Expiration Date", "Tablet/Capsule", "Current In Stock"};
+	
+	public void AddDrug() {
+		
+	}
+	
+	public void RemoveDrug() {
+		
+	}
+	
 }
