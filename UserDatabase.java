@@ -9,7 +9,7 @@ import java.util.List;
 public class UserDatabase {
 	
 	String filePath = "UserDatabase.csv";
-	String[] headers = {"ID Number", "Full Name", "Date of Birth", "Gender", "Phone Number", "Address", "Active or Archived", "Role", "Doctor's Name", "Doctor's Phone Number", "Insurance Provider", "Insurance Policy Number", "Allergies", "Notes", "Username", "Password", "Locked or Unlocked"};
+	String[] headers = {"ID Number", "Full Name", "Date of Birth", "Gender", "Phone Number", "Address", "Active?", "Role", "Doctor's Name", "Doctor's Phone Number", "Insurance Provider", "Insurance Policy Number", "Allergies", "Notes", "Username", "Password", "Locked?"};
 	
 	
 	public void AddUser (Patient myPatient) {
@@ -82,8 +82,120 @@ public class UserDatabase {
 		}
 		
 		catch (IOException e) {
-			System.out.println("Error reading file for update: " + e.getMessage());
+			System.out.println("Error reading file: " + e.getMessage());
 			return false;
+		}
+	}
+	
+	public boolean searchAccountIsLocked (String myUsername) {
+		
+		boolean isLocked = true;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",");
+				if (values[14].equals(myUsername) && values[16].equals("FALSE")) {
+					isLocked = false;
+				}
+			}
+			return isLocked;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return true;
+		}
+	}
+	
+	
+	public boolean searchPassword (String myUsername, String myPassword) {
+		
+		boolean isFound = false;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",");
+				if (values[14].equals(myUsername) && values[15].equals(myPassword)) {
+					isFound = true;
+				}
+			}
+			return isFound;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return false;
+		}
+	}
+	
+	
+	public void lockAccount (String myUsername) {
+		
+		List<String> lines = new ArrayList<>();
+		boolean updated = false;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",");
+				if (values[14].equals(myUsername)) {
+					values[16] = "TRUE";
+				}
+				lines.add(String.join(",", values));
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file for update: " + e.getMessage());
+		}
+		
+		try (FileWriter writer = new FileWriter(filePath)) {
+			for (String line : lines) {
+				writer.write(line + "\n");
+			}
+			if (!updated) {
+				System.out.println("Username not found. No updates made.");
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error writing updated file: " + e.getMessage());
+		}
+	}
+	
+	public void unlockAccount (String myUsername) {
+		
+		List<String> lines = new ArrayList<>();
+		boolean updated = false;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",");
+				if (values[14].equals(myUsername)) {
+					values[16] = "FALSE";
+				}
+				lines.add(String.join(",", values));
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file for update: " + e.getMessage());
+		}
+		
+		try (FileWriter writer = new FileWriter(filePath)) {
+			for (String line : lines) {
+				writer.write(line + "\n");
+			}
+			if (!updated) {
+				System.out.println("Username not found. No updates made.");
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error writing updated file: " + e.getMessage());
 		}
 	}
 
