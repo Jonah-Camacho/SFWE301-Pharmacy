@@ -1,1 +1,89 @@
 # Inventory Database File
+# Version 1.0
+# Description: Very Basic Inventory database that is currently only set to read the data -> take the input ID number -> take the input Stock Quantity -> updates database for ID with new Stock Quantity
+
+import java.io.*;
+import java.util.*;
+
+public class ExcelReader {
+	 public static void main(String[] args) throws IOException {
+	        Scanner scanner = new Scanner(System.in);
+
+	        // Sets file path to Inventory.csv (located in the project folder)
+	        String filePath = "Inventory.csv";
+	   
+
+	        // Reads and prints data from the csv file
+	        System.out.println("\nCurrent Data in CSV:");
+	        readCSV(filePath);
+
+	        // Selecting ID to modify Stock///////////////////////////
+	        System.out.print("\nEnter the ID of the Drug to modify: ");
+	        String targetID = scanner.nextLine();
+
+	        System.out.print("Enter the new Stock Quantity: ");
+	        String newStock = scanner.nextLine();
+
+	        updateCSV(filePath, targetID, newStock);
+
+	        // Prints the new updated database
+	        System.out.println("\nUpdated Data in CSV:");
+	        readCSV(filePath);
+
+	        scanner.close();
+	    }
+
+
+
+	    public static void readCSV(String filePath) throws IOException {
+	        File file = new File(filePath);
+	        BufferedReader reader = new BufferedReader(new FileReader(file));
+
+	        String line;
+	        while ((line = reader.readLine()) != null) {
+	            System.out.println(line);
+	        }
+
+	        reader.close();
+	    }
+
+	    public static void updateCSV(String filePath, String targetID, String newStock) throws IOException {
+	        File file = new File(filePath);
+	        File tempFile = new File("temp.csv");
+
+	        BufferedReader reader = new BufferedReader(new FileReader(file));
+	        FileWriter writer = new FileWriter(tempFile);
+
+	        String line;
+	        boolean updated = false;
+
+	        try {
+	            while ((line = reader.readLine()) != null) {
+	                String[] fields = line.split(",");
+	                if (fields[0].equals(targetID)) {
+	                    if (fields.length > 4) { // Ensure there's a Stock column to modify
+	                        fields[4] = newStock;
+	                    }
+	                    updated = true;
+	                    System.out.println("Updated record: " + String.join(",", fields));
+	                }
+	                writer.write(String.join(",", fields) + "\n");
+	            }
+	        } finally {
+	            reader.close();
+	            writer.close();
+	        }
+
+	        if (updated) {
+	            // Attempt to replace the original file with the temp file
+	            if (!file.delete()) {
+	                System.err.println("Error deleting original file. Ensure no other process is using it.");
+	            } else if (!tempFile.renameTo(file)) {
+	                System.err.println("Error renaming temporary file to original file name. Check permissions.");
+	            }
+	        } else {
+	            tempFile.delete(); // Clean up the temp file if no updates were made
+	            System.out.println("No matching ID found. No updates made.");
+	        }
+	    }
+}
