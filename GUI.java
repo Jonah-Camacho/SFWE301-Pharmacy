@@ -2,36 +2,94 @@ import java.util.Scanner;
 
 public class GUI {
 	
+	// Print Menu Function
+	
 	public static void printMenu (User.Role userRole) {
 		System.out.print("Select an option (1-");
 		
 		if (userRole == User.Role.ITAdministrator) {
-			System.out.println("1");
-			System.out.println("1. Create Patient Account");
-			System.out.println("2. Create Pharmacy Personnel Account");
-			System.out.println("3. Create Pharmacy Manager Account");
+			System.out.println("23):");
+			System.out.println("1.  Create Patient Account");
+			System.out.println("2.  Update Patient Account");
+			System.out.println("3.  Archive Patient Account");
+			System.out.println("4.  Reactivate Patient Account");
+			System.out.println("5.  Create Pharmacy Personnel Account");
+			System.out.println("6.  Update Pharmacy Personnel Account");
+			System.out.println("7.  Create Pharmacy Manager Account");
+			System.out.println("8.  Update Pharmacy Manager Account");
+			System.out.println("9.  Unlock Pharmacy Personnel Account");
+			System.out.println("10. View Prescription History");
+			System.out.println("11. Request Prescription");
+			System.out.println("12. Fill Prescription");
+			System.out.println("13. Update Prescription Status");
+			System.out.println("14. Make Transaction");
+			System.out.println("15. Open Inventory");
+			System.out.println("16. Remove Expired Inventory");
+			System.out.println("17. Purchase Drug Shipment");
+			System.out.println("18. Open User Database");
+			System.out.println("19. Open Activity Log");
+			System.out.println("20. Request Financial Reports");
+			System.out.println("21. Request Inventory Reports");
+			System.out.println("22. Update Pharmacy Information");
+			System.out.println("23. Log Out");
+			System.out.println();
 		}
 		if (userRole == User.Role.PharmacyManager) {
-			System.out.println("1");
-			System.out.println("1. Create Patient Account");
-			System.out.println("2. Create Pharmacy Personnel Account");
-
+			System.out.println("19):");
+			System.out.println("1.  Create Patient Account");
+			System.out.println("2.  Update Patient Account");
+			System.out.println("3.  Archive Patient Account");
+			System.out.println("4.  Create Pharmacy Personnel Account");
+			System.out.println("5.  Update Pharmacy Personnel Account");
+			System.out.println("6.  Unlock Pharmacy Personnel Account");
+			System.out.println("7.  View Prescription History");
+			System.out.println("8.  Request Prescription");
+			System.out.println("9.  Update Prescription Status");
+			System.out.println("10. Make Transaction");
+			System.out.println("11. Open Inventory");
+			System.out.println("12. Remove Expired Inventory");
+			System.out.println("13. Purchase Drug Shipment");
+			System.out.println("14. Open User Database");
+			System.out.println("15. Open Activity Log");
+			System.out.println("16. Request Financial Reports");
+			System.out.println("17. Request Inventory Reports");
+			System.out.println("18. Update Pharmacy Information");
+			System.out.println("19. Log Out");
+			System.out.println();
 		}
 		if (userRole == User.Role.Pharmacist) {
-			System.out.println("1");
-			System.out.println("1. Create Patient Account");
-
+			System.out.println("8):");
+			System.out.println("1.  Create Patient Account");
+			System.out.println("2.  Update Patient Account");
+			System.out.println("3.  View Prescription History");
+			System.out.println("4.  Request Prescription");
+			System.out.println("5.  Fill Prescription");
+			System.out.println("6.  Update Prescription Status");
+			System.out.println("7.  Make Transaction");
+			System.out.println("8.  Log Out");
+			System.out.println();
 		}
 		if (userRole == User.Role.PharmacyTech) {
-			System.out.println("1");
-			System.out.println("1. Create Patient Account");
-
+			System.out.println("7):");
+			System.out.println("1.  Create Patient Account");
+			System.out.println("2.  Update Patient Account");
+			System.out.println("3.  View Prescription History");
+			System.out.println("4.  Request Prescription");
+			System.out.println("5.  Update Prescription Status");
+			System.out.println("6.  Make Transaction");
+			System.out.println("7.  Log Out");
+			System.out.println();
 		}
 		if (userRole == User.Role.Cashier) {
-			System.out.println("1");
-
+			System.out.println("3):");
+			System.out.println("1.  Request Prescription");
+			System.out.println("2.  Make Transaction");
+			System.out.println("3.  Log Out");
+			System.out.println();
 		}
 	}
+	
+	// Main
 
 	public static void main(String[] args) {
 		Scanner scnr = new Scanner(System.in);
@@ -84,6 +142,7 @@ public class GUI {
 		if (myUserDatabase.searchPassword(usernameIn, passwordIn)) {
 			correctPassword = true;
 			System.out.println("Success! You have been logged in.");
+			System.out.println();
 		}
 		
 		while (!correctPassword) {
@@ -93,6 +152,7 @@ public class GUI {
 			if (myUserDatabase.searchPassword(usernameIn, passwordIn)) {
 				correctPassword = true;
 				System.out.println("Success! You have been logged in.");
+				System.out.println();
 			}
 			--remainingAttempts;
 			
@@ -111,6 +171,7 @@ public class GUI {
 		currentRole = myUserDatabase.searchCurrentRole(usernameIn);
 		
 		printMenu(currentRole);
+
 		
 		scnr.close();
 	}
