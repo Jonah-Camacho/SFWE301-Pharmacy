@@ -90,6 +90,29 @@ public class UserDatabase {
 		}
 	}
 	
+	// Search if an account already exists based on the full name
+	
+	public boolean checkIfAccountExists (String fullName) {
+		
+		boolean isFound = false;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",");
+				if (values[1].equals(fullName)) {
+					isFound = true;
+				}
+			}
+			return isFound;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return false;
+		}
+	}
+	
 	// Search if an account is locked given the username
 	
 	public boolean searchAccountIsLocked (String myUsername) {

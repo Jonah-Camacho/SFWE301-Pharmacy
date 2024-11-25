@@ -89,17 +89,334 @@ public class GUI {
 		}
 	}
 	
+	// Menu Selection
+	
+	public static void menuFunction(User.Role userRole, int selection, Scanner scnr, String username, UserDatabase myUserDatabase) {
+		if (userRole == User.Role.ITAdministrator) {
+			switch(selection) {
+				case 1:
+					createPatientAccount(scnr, username, myUserDatabase);
+					break;
+				case 2:
+					updatePatientAccount();
+					break;
+				case 3:
+					archivePatientAccount();
+					break;
+				case 4:
+					reactivatePatientAccount();
+					break;
+				case 5:
+					createPharmacyPersonnelAccount();
+					break;
+				case 6:
+					updatePharmacyPersonnelAccount();
+					break;
+				case 7:
+					createPharmacyManagerAccount();
+					break;
+				case 8:
+					updatePharmacyManagerAccount();
+					break;
+				case 9:
+					unlockPharmacyPersonnelAccount();
+					break;
+				case 10:
+					viewPrescriptionHistory();
+					break;
+				case 11:
+					requestPrescription();
+					break;
+				case 12:
+					fillPrescription();
+					break;
+				case 13:
+					updatePrescriptionStatus();
+					break;
+				case 14:
+					makeTransaction();
+					break;
+				case 15:
+					viewInventory();
+					break;
+				case 16:
+					removeExpiredInventory();
+					break;
+				case 17:
+					purchaseDrugShipment();
+					break;
+				case 18:
+					viewUserDatabase();
+					break;
+				case 19:
+					viewActivityLog();
+					break;
+				case 20:
+					requestFinancialReport();
+					break;
+				case 21:
+					requestInventoryReport();
+					break;
+				case 22:
+					updatePharmacyInformation();
+					break;
+				case 23:
+					break;
+				default:
+					System.out.println("Invalid selection. Please try again.");
+					break;
+			}
+		}
+		if (userRole == User.Role.PharmacyManager) {
+			switch(selection) {
+				case 1:
+					createPatientAccount(scnr, username, myUserDatabase);
+					break;
+				case 2:
+					updatePatientAccount();
+					break;
+				case 3:
+					archivePatientAccount();
+					break;
+				case 4:
+					createPharmacyPersonnelAccount();
+					break;
+				case 5:
+					updatePharmacyPersonnelAccount();
+					break;
+				case 6:
+					unlockPharmacyPersonnelAccount();
+					break;
+				case 7:
+					viewPrescriptionHistory();
+					break;
+				case 8:
+					requestPrescription();
+					break;
+				case 9:
+					updatePrescriptionStatus();
+					break;
+				case 10:
+					makeTransaction();
+					break;
+				case 11:
+					viewInventory();
+					break;
+				case 12:
+					removeExpiredInventory();
+					break;
+				case 13:
+					purchaseDrugShipment();
+					break;
+				case 14:
+					viewUserDatabase();
+					break;
+				case 15:
+					viewActivityLog();
+					break;
+				case 16:
+					requestFinancialReport();
+					break;
+				case 17:
+					requestInventoryReport();
+					break;
+				case 18:
+					updatePharmacyInformation();
+					break;
+				case 19:
+					break;
+				default:
+					System.out.println("Invalid selection. Please try again.");
+					break;
+			}
+		}
+		if (userRole == User.Role.Pharmacist) {
+			switch(selection) {
+				case 1:
+					createPatientAccount(scnr, username, myUserDatabase);
+					break;
+				case 2:
+					updatePatientAccount();
+					break;
+				case 3:
+					viewPrescriptionHistory();
+					break;
+				case 4:
+					requestPrescription();
+					break;
+				case 5:
+					fillPrescription();
+					break;
+				case 6:
+					updatePrescriptionStatus();
+					break;
+				case 7:
+					makeTransaction();
+					break;
+				case 8:
+					break;
+				default:
+					System.out.println("Invalid selection. Please try again.");
+					break;
+			}
+		}
+		if (userRole == User.Role.PharmacyTech) {
+			switch(selection) {
+				case 1:
+					createPatientAccount(scnr, username, myUserDatabase);
+					break;
+				case 2:
+					updatePatientAccount();
+					break;
+				case 3:
+					viewPrescriptionHistory();
+					break;
+				case 4:
+					requestPrescription();
+					break;
+				case 5:
+					updatePrescriptionStatus();
+					break;
+				case 6:
+					makeTransaction();
+					break;
+				case 7:
+					break;
+				default:
+					System.out.println("Invalid selection. Please try again.");
+					break;
+			}
+		}
+		if (userRole == User.Role.Cashier) {
+			switch(selection) {
+				case 1:
+					requestPrescription();
+					break;
+				case 2:
+					makeTransaction();
+					break;
+				case 3:
+					break;
+				default:
+					System.out.println("Invalid selection. Please try again.");
+					break;
+			}
+		}
+	}
+	
+	// Menu Functions
+		
+	public static void createPatientAccount(Scanner scnr, String username, UserDatabase myUserDatabase) {
+		System.out.println("Please enter the full name of the patient:");
+		String fullName = scnr.next();
+		
+		if (myUserDatabase.checkIfAccountExists(fullName)) {
+			System.out.println("An account associated with this name already exists.");
+			System.out.println("Please try another name or update the existing account.");
+			return;
+		}
+		else {
+			
+		}
+	}
+	
+	public static void updatePatientAccount() {
+		
+	}
+	
+	public static void archivePatientAccount() {
+		
+	}
+	
+	public static void reactivatePatientAccount() {
+		
+	}
+	
+	public static void createPharmacyPersonnelAccount() {
+		
+	}
+	
+	public static void updatePharmacyPersonnelAccount() {
+		
+	}
+	
+	public static void createPharmacyManagerAccount() {
+		
+	}
+	
+	public static void updatePharmacyManagerAccount() {
+		
+	}
+	
+	public static void unlockPharmacyPersonnelAccount() {
+		
+	}
+	
+	public static void viewPrescriptionHistory() {
+		
+	}
+	
+	public static void requestPrescription() {
+		
+	}
+	
+	public static void fillPrescription() {
+		
+	}
+	
+	public static void updatePrescriptionStatus() {
+		
+	}
+	
+	public static void makeTransaction() {
+		
+	}
+	
+	public static void viewInventory() {
+		
+	}
+	
+	public static void removeExpiredInventory() {
+		
+	}
+	
+	public static void purchaseDrugShipment() {
+		
+	}
+	
+	public static void viewUserDatabase() {
+		
+	}
+	
+	public static void viewActivityLog() {
+		
+	}
+	
+	public static void requestFinancialReport() {
+		System.out.println("This function is not currently available.");
+	}
+	
+	public static void requestInventoryReport() {
+		System.out.println("This function is not currently available.");
+	}
+	
+	public static void updatePharmacyInformation() {
+		
+	}
+	
 	// Main
 
 	public static void main(String[] args) {
 		Scanner scnr = new Scanner(System.in);
 		UserDatabase myUserDatabase = new UserDatabase();
+		PharmacyInfo myPharmacy = new PharmacyInfo();
 		String usernameIn;
 		String passwordIn;
 		boolean usernameFound = false;
 		boolean correctPassword = false;
 		int remainingAttempts = 4;
 		User.Role currentRole;
+		int menuSelection = 0;
 		
 		//long myPhoneNumber = 5204246286L;
 		//PharmacyPersonnel MollyAuer = new PharmacyPersonnel("Molly Auer", 7, 11, 2004, User.Gender.Female, myPhoneNumber, "some address", User.Role.ITAdministrator, "mollyauer", "WildcatFurLife!44");
@@ -169,9 +486,14 @@ public class GUI {
 		// Logged-In
 		
 		currentRole = myUserDatabase.searchCurrentRole(usernameIn);
+	
+		while ((currentRole == User.Role.ITAdministrator && menuSelection != 23) || (currentRole == User.Role.PharmacyManager && menuSelection != 19) || (currentRole == User.Role.Pharmacist && menuSelection != 8) || (currentRole == User.Role.PharmacyTech && menuSelection != 7) || (currentRole == User.Role.Cashier && menuSelection != 3)) {
+			printMenu(currentRole);
+			menuSelection = scnr.nextInt();
+			menuFunction(currentRole, menuSelection, scnr, usernameIn, myUserDatabase);
+		}
 		
-		printMenu(currentRole);
-
+		System.out.println("You have been successfully logged out. Goodbye!");
 		
 		scnr.close();
 	}
