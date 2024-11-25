@@ -209,6 +209,44 @@ public class UserDatabase {
 			System.out.println("Error writing updated file: " + e.getMessage());
 		}
 	}
+	
+	// Search for the user's current role
+	
+	public User.Role searchCurrentRole (String myUsername) {
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",");
+				if (values[14].equals(myUsername)) {
+					if (values[7].equals("ITAdministrator")) {
+						return User.Role.ITAdministrator;
+					}
+					if (values[7].equals("PharmacyManager")) {
+						return User.Role.PharmacyManager;
+					}
+					if (values[7].equals("Pharmacist")) {
+						return User.Role.Pharmacist;
+					}
+					if (values[7].equals("PharmacyTech")) {
+						return User.Role.PharmacyTech;
+					}
+					if (values[7].equals("Cashier")) {
+						return User.Role.Cashier;
+					}
+					if (values[7].equals("Patient")) {
+						return User.Role.Patient;
+					}
+				}
+			}
+			return User.Role.Patient;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return User.Role.Patient;
+		}
+	}
 
 	
 }

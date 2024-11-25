@@ -1,6 +1,37 @@
 import java.util.Scanner;
 
 public class GUI {
+	
+	public static void printMenu (User.Role userRole) {
+		System.out.print("Select an option (1-");
+		
+		if (userRole == User.Role.ITAdministrator) {
+			System.out.println("1");
+			System.out.println("1. Create Patient Account");
+			System.out.println("2. Create Pharmacy Personnel Account");
+			System.out.println("3. Create Pharmacy Manager Account");
+		}
+		if (userRole == User.Role.PharmacyManager) {
+			System.out.println("1");
+			System.out.println("1. Create Patient Account");
+			System.out.println("2. Create Pharmacy Personnel Account");
+
+		}
+		if (userRole == User.Role.Pharmacist) {
+			System.out.println("1");
+			System.out.println("1. Create Patient Account");
+
+		}
+		if (userRole == User.Role.PharmacyTech) {
+			System.out.println("1");
+			System.out.println("1. Create Patient Account");
+
+		}
+		if (userRole == User.Role.Cashier) {
+			System.out.println("1");
+
+		}
+	}
 
 	public static void main(String[] args) {
 		Scanner scnr = new Scanner(System.in);
@@ -10,6 +41,7 @@ public class GUI {
 		boolean usernameFound = false;
 		boolean correctPassword = false;
 		int remainingAttempts = 4;
+		User.Role currentRole;
 		
 		//long myPhoneNumber = 5204246286L;
 		//PharmacyPersonnel MollyAuer = new PharmacyPersonnel("Molly Auer", 7, 11, 2004, User.Gender.Female, myPhoneNumber, "some address", User.Role.ITAdministrator, "mollyauer", "WildcatFurLife!44");
@@ -75,7 +107,10 @@ public class GUI {
 		
 		
 		// Logged-In
-	
+		
+		currentRole = myUserDatabase.searchCurrentRole(usernameIn);
+		
+		printMenu(currentRole);
 		
 		scnr.close();
 	}
