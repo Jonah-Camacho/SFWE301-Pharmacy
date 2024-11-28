@@ -6,7 +6,6 @@ public class GUI {
 		Scanner scnr = new Scanner(System.in);
 		UserDatabase myUserDatabase = new UserDatabase();
 		PharmacyInfo myPharmacy = new PharmacyInfo();
-		Menu myMenu = new Menu();
 		String usernameIn;
 		String passwordIn;
 		boolean usernameFound = false;
@@ -15,8 +14,7 @@ public class GUI {
 		User.Role currentRole;
 		int menuSelection = 0;
 		
-		//long myPhoneNumber = 5204246286L;
-		//PharmacyPersonnel MollyAuer = new PharmacyPersonnel("Molly Auer", 7, 11, 2004, User.Gender.Female, myPhoneNumber, "some address", User.Role.ITAdministrator, "mollyauer", "WildcatFurLife!44");
+		//PharmacyPersonnel MollyAuer = new PharmacyPersonnel("Molly Auer", "07/11/2004", User.Gender.Female, 5204246286L, "3102 W Speedway Blvd, Tucson, AZ 85748", User.Role.ITAdministrator, "mollyauer", "WildcatFurLife!44");
 		//myUserDatabase.AddUser(MollyAuer);
 		
 		
@@ -29,6 +27,7 @@ public class GUI {
 		// Search if username exists
 		
 		usernameIn = scnr.next();
+		String newline = scnr.nextLine();
 		if (myUserDatabase.searchUsername(usernameIn)) {
 			usernameFound = true;
 		}
@@ -36,6 +35,7 @@ public class GUI {
 		while (!usernameFound) {
 			System.out.println("Username not found. Please enter a new username:");
 			usernameIn = scnr.next();
+			newline = scnr.nextLine();
 			if (myUserDatabase.searchUsername(usernameIn)) {
 				usernameFound = true;
 			}
@@ -53,6 +53,7 @@ public class GUI {
 		
 		System.out.println("Please enter your password:");
 		passwordIn = scnr.next();
+		newline = scnr.nextLine();
 		if (myUserDatabase.searchPassword(usernameIn, passwordIn)) {
 			correctPassword = true;
 			System.out.println("Success! You have been logged in.");
@@ -63,6 +64,7 @@ public class GUI {
 			System.out.println("Incorrect Password. Please enter a new password:");
 			System.out.println("Remaining attempts: " + remainingAttempts);
 			passwordIn = scnr.next();
+			newline = scnr.nextLine();
 			if (myUserDatabase.searchPassword(usernameIn, passwordIn)) {
 				correctPassword = true;
 				System.out.println("Success! You have been logged in.");
@@ -87,7 +89,7 @@ public class GUI {
 		while ((currentRole == User.Role.ITAdministrator && menuSelection != 23) || (currentRole == User.Role.PharmacyManager && menuSelection != 19) || (currentRole == User.Role.Pharmacist && menuSelection != 8) || (currentRole == User.Role.PharmacyTech && menuSelection != 7) || (currentRole == User.Role.Cashier && menuSelection != 3)) {
 			Menu.printMenu(currentRole);
 			menuSelection = scnr.nextInt();
-			String newLine = scnr.nextLine();      // To absorb newline and avoid issues when working with menu functions
+			newline = scnr.nextLine();      // To absorb newline and avoid issues when working with menu functions
 			Menu.menuFunction(currentRole, menuSelection, scnr, usernameIn, myUserDatabase, myPharmacy);
 		}
 		

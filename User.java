@@ -13,11 +13,6 @@ public abstract class User {
 	Gender userGender;
 	long phoneNumber;
 	String address;
-	String streetLine1;
-	String streetLine2 = "";
-	String city;
-	String state;
-	int zipCode;
 	boolean isActive = true;
 	Role userRole;
 	int currIDNum = 0;

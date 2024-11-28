@@ -14,7 +14,10 @@ public class UserDatabase {
 	// Add Patient to UserDatabase
 	
 	public void AddUser (Patient myPatient) {
-		String newRecord = "" + myPatient.IDNumber + "," + myPatient.fullName + "," + myPatient.dateOfBirth + "," + myPatient.userGender + "," + myPatient.phoneNumber + "," + myPatient.address + "," + myPatient.isActive + "," + myPatient.userRole + "," + myPatient.doctorsName + "," + myPatient.doctorsPhoneNumber + "," + myPatient.insuranceProvider + "," + myPatient.insurancePolicyNumber + "," + myPatient.allergies + "," + myPatient.notes + ", , , ";
+		String newAddress = "\"" + myPatient.address + "\"";
+		String newAllergies = "\"" + myPatient.allergies + "\"";
+		String newNotes = "\"" + myPatient.notes + "\"";
+		String newRecord = "" + myPatient.IDNumber + "," + myPatient.fullName + "," + myPatient.dateOfBirth + "," + myPatient.userGender + "," + myPatient.phoneNumber + "," + newAddress + "," + myPatient.isActive + "," + myPatient.userRole + "," + myPatient.doctorsName + "," + myPatient.doctorsPhoneNumber + "," + myPatient.insuranceProvider + "," + myPatient.insurancePolicyNumber + "," + newAllergies + "," + newNotes + ", , , ";
 	
 		try {
 			File file = new File(filePath);
@@ -40,9 +43,9 @@ public class UserDatabase {
 	}
 	
 	// Add Pharmacy Personnel to UserDatabase
-	
 	public void AddUser (PharmacyPersonnel myPharmacyPersonnel) {
-		String newRecord = "" + myPharmacyPersonnel.IDNumber + "," + myPharmacyPersonnel.fullName + "," + myPharmacyPersonnel.dateOfBirth + "," + myPharmacyPersonnel.userGender + "," + myPharmacyPersonnel.phoneNumber + "," + myPharmacyPersonnel.address + ", ," + myPharmacyPersonnel.userRole + ", , , , , , ," + myPharmacyPersonnel.username + "," + myPharmacyPersonnel.password + "," + myPharmacyPersonnel.isLocked;
+		String newAddress = "\"" + myPharmacyPersonnel.address + "\"";
+		String newRecord = "" + myPharmacyPersonnel.IDNumber + "," + myPharmacyPersonnel.fullName + "," + myPharmacyPersonnel.dateOfBirth + "," + myPharmacyPersonnel.userGender + "," + myPharmacyPersonnel.phoneNumber + "," + newAddress + ", ," + myPharmacyPersonnel.userRole + ", , , , , , ," + myPharmacyPersonnel.username + "," + myPharmacyPersonnel.password + "," + myPharmacyPersonnel.isLocked;
 	
 		try {
 			File file = new File(filePath);
@@ -76,7 +79,7 @@ public class UserDatabase {
 		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
-				String[] values = line.split(",");
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[14].equals(myUsername)) {
 					isFound = true;
 				}
@@ -99,7 +102,7 @@ public class UserDatabase {
 		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
-				String[] values = line.split(",");
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[1].toLowerCase().equals(fullName.toLowerCase())) {
 					isFound = true;
 				}
@@ -122,7 +125,7 @@ public class UserDatabase {
 		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
-				String[] values = line.split(",");
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[14].equals(myUsername) && values[16].equals("false")) {
 					isLocked = false;
 				}
@@ -145,7 +148,7 @@ public class UserDatabase {
 		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
-				String[] values = line.split(",");
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[14].equals(myUsername) && values[15].equals(myPassword)) {
 					isFound = true;
 				}
@@ -169,7 +172,7 @@ public class UserDatabase {
 		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
-				String[] values = line.split(",");
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[14].equals(myUsername)) {
 					values[16] = "true";
 					updated = true;
@@ -206,7 +209,7 @@ public class UserDatabase {
 		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
-				String[] values = line.split(",");
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[14].equals(myUsername)) {
 					values[16] = "false";
 					updated = true;
@@ -240,7 +243,7 @@ public class UserDatabase {
 		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
-				String[] values = line.split(",");
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[14].equals(myUsername)) {
 					if (values[7].equals("ITAdministrator")) {
 						return User.Role.ITAdministrator;
@@ -270,6 +273,6 @@ public class UserDatabase {
 			return User.Role.Patient;
 		}
 	}
-
+	
 	
 }
