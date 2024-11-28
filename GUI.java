@@ -85,9 +85,10 @@ public class GUI {
 		currentRole = myUserDatabase.searchCurrentRole(usernameIn);
 	
 		while ((currentRole == User.Role.ITAdministrator && menuSelection != 23) || (currentRole == User.Role.PharmacyManager && menuSelection != 19) || (currentRole == User.Role.Pharmacist && menuSelection != 8) || (currentRole == User.Role.PharmacyTech && menuSelection != 7) || (currentRole == User.Role.Cashier && menuSelection != 3)) {
-			myMenu.printMenu(currentRole);
+			Menu.printMenu(currentRole);
 			menuSelection = scnr.nextInt();
-			myMenu.menuFunction(currentRole, menuSelection, scnr, usernameIn, myUserDatabase, myPharmacy);
+			String newLine = scnr.nextLine();      // To absorb newline and avoid issues when working with menu functions
+			Menu.menuFunction(currentRole, menuSelection, scnr, usernameIn, myUserDatabase, myPharmacy);
 		}
 		
 		System.out.println("You have been successfully logged out. Goodbye!");

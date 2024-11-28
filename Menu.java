@@ -5,6 +5,7 @@ public class Menu {
 	// Print Menu Function
 
 	public static void printMenu (User.Role userRole) {
+		System.out.println();
 		System.out.print("Select an option (1-");
 		
 		if (userRole == User.Role.ITAdministrator) {
@@ -308,18 +309,125 @@ public class Menu {
 		
 	public static void createPatientAccount(Scanner scnr, String username, UserDatabase myUserDatabase) {
 		System.out.println("Please enter the full name of the patient:");
-		String fullName = scnr.next();
-		
-		System.out.println(fullName + " has been added to the system");
-		
-		/*if (myUserDatabase.checkIfAccountExists(fullName)) {
+		String fullName = scnr.nextLine();
+				
+		if (myUserDatabase.checkIfAccountExists(fullName)) {
 			System.out.println("An account associated with this name already exists.");
 			System.out.println("Please try another name or update the existing account.");
 			return;
 		}
 		else {
+			Patient newPatient = new Patient("", "", User.Gender.Other, 0, "", "", 0);
+			System.out.println("Please enter the date of birth of the patient in the form MM/DD/YYYY:");
+			String dob = scnr.nextLine();
 			
-		}*/
+			System.out.println("Please enter the address of the patient:");
+			String address = scnr.nextLine();
+			
+			System.out.println("Please indicate the gender of the patient (Male/Female/Other):");
+			String gender = scnr.next();
+			String newline = scnr.nextLine();
+			while (!(gender.equals("Male") || gender.equals("Female") || gender.equals("Other"))) {
+				System.out.println("Invalid entry. Please enter Male, Female, or Other.");
+				gender = scnr.next();
+				newline = scnr.nextLine();
+			}
+			User.Gender patientGender = User.Gender.Other;
+			if (gender.equals("Male")) {
+				patientGender = User.Gender.Male;
+			}
+			if (gender.equals("Female")) {
+				patientGender = User.Gender.Female;
+			}
+			if (gender.equals("Other")) {
+				patientGender = User.Gender.Other;
+			}
+			
+			System.out.println("Please enter the 10 digit phone number of the patient in the form ##########:");
+			long phoneNumber = scnr.nextLong();
+			newline = scnr.nextLine();
+			while (phoneNumber < 1000000000 || phoneNumber > 9999999999L) {
+				System.out.println("Invalid entry. Please enter a 10 digit phone number:");
+				phoneNumber = scnr.nextLong();
+				newline = scnr.nextLine();
+			}
+			
+			System.out.println("Please enter the full name of the patient's doctor:");
+			String doctorsName = scnr.nextLine();
+			
+			System.out.println("Please enter the 10 digit phone number of the patients doctor in the form ##########:");
+			long docPhoneNumber = scnr.nextLong();
+			newline = scnr.nextLine();
+			while (docPhoneNumber < 1000000000 || docPhoneNumber > 9999999999L) {
+				System.out.println("Invalid entry. Please enter a 10 digit phone number:");
+				docPhoneNumber = scnr.nextLong();
+				newline = scnr.nextLine();
+			}
+			
+			System.out.println("Is the patient insured? (yes or no)");
+			String answer = scnr.next();
+			newline = scnr.nextLine();
+			while (!(answer.equals("yes") || answer.equals("no"))) {
+				System.out.println("Invalid entry. Please enter yes or no.");
+				answer = scnr.next();
+				newline = scnr.nextLine();
+			}
+			String insuranceProvider;
+			long insurancePolicyNumber;
+			if (answer.equals("yes")) {
+				System.out.println("Please enter the name of the patient's insurance provider:");
+				insuranceProvider = scnr.nextLine();
+				
+				System.out.println("Please enter the patient's insurance policy number in the form of a 8-13 digit number:");
+				insurancePolicyNumber = scnr.nextLong();
+				newline = scnr.nextLine();
+				while (insurancePolicyNumber < 10000000 || insurancePolicyNumber > 9999999999999L) {
+					System.out.println("Invalid entry. Please enter a 8-13 digit number:");
+					insurancePolicyNumber = scnr.nextLong();
+					newline = scnr.nextLine();
+				}
+				
+				Patient patient = new Patient(fullName, dob, patientGender, phoneNumber, address, doctorsName, docPhoneNumber, insuranceProvider, insurancePolicyNumber);
+				newPatient = patient;
+			}
+			if (answer.equals("no")) {
+				Patient patient = new Patient(fullName, dob, patientGender, phoneNumber, address, doctorsName, docPhoneNumber);
+				newPatient = patient;
+			}
+			
+			System.out.println("Does the patient have any allergies? (yes or no)");
+			answer = scnr.next();
+			newline = scnr.nextLine();
+			while (!(answer.equals("yes") || answer.equals("no"))) {
+				System.out.println("Invalid entry. Please enter yes or no.");
+				answer = scnr.next();
+				newline = scnr.nextLine();
+			}
+			String allergies;
+			if (answer.equals("yes")) {
+				System.out.println("Please list the patient's allergies in one line:");
+				allergies = scnr.nextLine();
+				newPatient.addAllergies(allergies);
+			}
+			
+			System.out.println("Do you have any notes to write for the patient? (yes or no)");
+			answer = scnr.next();
+			newline = scnr.nextLine();
+			while (!(answer.equals("yes") || answer.equals("no"))) {
+				System.out.println("Invalid entry. Please enter yes or no.");
+				answer = scnr.next();
+				newline = scnr.nextLine();
+			}
+			String notes;
+			if (answer.equals("yes")) {
+				System.out.println("Please list the patient's notes in one line:");
+				notes = scnr.nextLine();
+				newPatient.addNotes(notes);
+			}
+			
+			myUserDatabase.AddUser(newPatient);
+			System.out.println(fullName + " has successfully been added to the system!");
+		}
 	}
 	
 	public static void updatePatientAccount() {

@@ -100,7 +100,7 @@ public class UserDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",");
-				if (values[1].equals(fullName)) {
+				if (values[1].toLowerCase().equals(fullName.toLowerCase())) {
 					isFound = true;
 				}
 			}

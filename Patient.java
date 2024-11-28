@@ -2,10 +2,10 @@
 public class Patient extends User {
 	
 	String doctorsName;
-	int doctorsPhoneNumber;
+	long doctorsPhoneNumber;
 	boolean isInsured = false;
 	String insuranceProvider = "";
-	int insurancePolicyNumber = -1;
+	long insurancePolicyNumber = 0L;
 	boolean hasAllergies = false;
 	String allergies = "";
 	boolean hasNotes = false;
@@ -13,9 +13,9 @@ public class Patient extends User {
 	
 	
 	//Basic Patient Constructor
-	public Patient (String fullName, int dobMonth, int dobDay, int dobYear, Gender userGender, long phoneNumber, String address, String doctorsName, int doctorsPhoneNumber) {
+	public Patient (String fullName, String dateOfBirth, Gender userGender, long phoneNumber, String address, String doctorsName, long doctorsPhoneNumber) {
 		this.fullName = fullName;
-		this.dateOfBirth = Integer.toString(dobMonth) + "/" +  Integer.toString(dobDay) + "/" + Integer.toString(dobYear);
+		this.dateOfBirth = dateOfBirth;
 		this.IDNumber = GenerateIDNumber();
 		this.userGender = userGender;
 		this.phoneNumber = phoneNumber;
@@ -26,9 +26,9 @@ public class Patient extends User {
 	}
 	
 	//Insured Patient Constructor
-	public Patient (String fullName, int dobMonth, int dobDay, int dobYear, Gender userGender, long phoneNumber, String address, String doctorsName, int doctorsPhoneNumber, String insuranceProvider, int insurancePolicyNumber) {
+	public Patient (String fullName, String dateOfBirth, Gender userGender, long phoneNumber, String address, String doctorsName, long doctorsPhoneNumber, String insuranceProvider, long insurancePolicyNumber) {
 		this.fullName = fullName;
-		this.dateOfBirth = Integer.toString(dobMonth) + "/" +  Integer.toString(dobDay) + "/" + Integer.toString(dobYear);
+		this.dateOfBirth = dateOfBirth;
 		this.IDNumber = GenerateIDNumber();
 		this.userGender = userGender;
 		this.phoneNumber = phoneNumber;
@@ -45,12 +45,12 @@ public class Patient extends User {
 	
 	//Setters
 	
-	public void AddAllergies(String allergies) {
+	public void addAllergies(String allergies) {
 		this.allergies = allergies;
 		this.hasAllergies = true;
 	}
 	
-	public void AddNotes(String notes) {
+	public void addNotes(String notes) {
 		this.notes = notes;
 		this.hasNotes = true;
 	}
