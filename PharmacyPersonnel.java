@@ -6,10 +6,10 @@ public class PharmacyPersonnel extends User {
 	boolean isLocked = false;
 	
 	//Constructor
-	public PharmacyPersonnel (String fullName, String dateOfBirth, Gender userGender, long phoneNumber, String address, Role userRole, String username, String password) {
+	public PharmacyPersonnel (String fullName, String dateOfBirth, int ID, Gender userGender, long phoneNumber, String address, Role userRole, String username, String password) {
 		this.fullName = fullName;
 		this.dateOfBirth = dateOfBirth;
-		this.IDNumber = GenerateIDNumber();
+		this.IDNumber = ID;
 		this.userGender = userGender;
 		this.phoneNumber = phoneNumber;
 		this.address = address;

@@ -317,7 +317,7 @@ public class Menu {
 			return;
 		}
 		else {
-			Patient newPatient = new Patient("", "", User.Gender.Other, 0, "", "", 0);
+			Patient newPatient = new Patient("", "", 0, User.Gender.Other, 0, "", "", 0);
 			System.out.println("Please enter the date of birth of the patient in the form MM/DD/YYYY:");
 			String dob = scnr.nextLine();
 			
@@ -387,11 +387,11 @@ public class Menu {
 					newline = scnr.nextLine();
 				}
 				
-				Patient patient = new Patient(fullName, dob, patientGender, phoneNumber, address, doctorsName, docPhoneNumber, insuranceProvider, insurancePolicyNumber);
+				Patient patient = new Patient(fullName, dob, myUserDatabase.generateID(), patientGender, phoneNumber, address, doctorsName, docPhoneNumber, insuranceProvider, insurancePolicyNumber);
 				newPatient = patient;
 			}
 			if (answer.equals("no")) {
-				Patient patient = new Patient(fullName, dob, patientGender, phoneNumber, address, doctorsName, docPhoneNumber);
+				Patient patient = new Patient(fullName, dob, myUserDatabase.generateID(), patientGender, phoneNumber, address, doctorsName, docPhoneNumber);
 				newPatient = patient;
 			}
 			

@@ -13,10 +13,10 @@ public class Patient extends User {
 	
 	
 	//Basic Patient Constructor
-	public Patient (String fullName, String dateOfBirth, Gender userGender, long phoneNumber, String address, String doctorsName, long doctorsPhoneNumber) {
+	public Patient (String fullName, String dateOfBirth, int ID, Gender userGender, long phoneNumber, String address, String doctorsName, long doctorsPhoneNumber) {
 		this.fullName = fullName;
 		this.dateOfBirth = dateOfBirth;
-		this.IDNumber = GenerateIDNumber();
+		this.IDNumber = ID;
 		this.userGender = userGender;
 		this.phoneNumber = phoneNumber;
 		this.address = address;
@@ -26,10 +26,10 @@ public class Patient extends User {
 	}
 	
 	//Insured Patient Constructor
-	public Patient (String fullName, String dateOfBirth, Gender userGender, long phoneNumber, String address, String doctorsName, long doctorsPhoneNumber, String insuranceProvider, long insurancePolicyNumber) {
+	public Patient (String fullName, String dateOfBirth, int ID, Gender userGender, long phoneNumber, String address, String doctorsName, long doctorsPhoneNumber, String insuranceProvider, long insurancePolicyNumber) {
 		this.fullName = fullName;
 		this.dateOfBirth = dateOfBirth;
-		this.IDNumber = GenerateIDNumber();
+		this.IDNumber = ID;
 		this.userGender = userGender;
 		this.phoneNumber = phoneNumber;
 		this.address = address;

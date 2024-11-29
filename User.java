@@ -7,20 +7,10 @@ public abstract class User {
 	int IDNumber;
 	String fullName;
 	String dateOfBirth;
-	int dobMonth;
-	int dobDay;
-	int dobYear;
 	Gender userGender;
 	long phoneNumber;
 	String address;
 	boolean isActive = true;
 	Role userRole;
-	int currIDNum = 0;
-	
-	
-	public int GenerateIDNumber() {
-		++currIDNum;
-		return currIDNum;
-	}
-	
+
 }

@@ -45,7 +45,7 @@ public class UserDatabase {
 	// Add Pharmacy Personnel to UserDatabase
 	public void AddUser (PharmacyPersonnel myPharmacyPersonnel) {
 		String newAddress = "\"" + myPharmacyPersonnel.address + "\"";
-		String newRecord = "" + myPharmacyPersonnel.IDNumber + "," + myPharmacyPersonnel.fullName + "," + myPharmacyPersonnel.dateOfBirth + "," + myPharmacyPersonnel.userGender + "," + myPharmacyPersonnel.phoneNumber + "," + newAddress + ", ," + myPharmacyPersonnel.userRole + ", , , , , , ," + myPharmacyPersonnel.username + "," + myPharmacyPersonnel.password + "," + myPharmacyPersonnel.isLocked;
+		String newRecord = "" + myPharmacyPersonnel.IDNumber + "," + myPharmacyPersonnel.fullName + "," + myPharmacyPersonnel.dateOfBirth + "," + myPharmacyPersonnel.userGender + "," + myPharmacyPersonnel.phoneNumber + "," + newAddress + "," + myPharmacyPersonnel.isActive + "," + myPharmacyPersonnel.userRole + ", , , , , , ," + myPharmacyPersonnel.username + "," + myPharmacyPersonnel.password + "," + myPharmacyPersonnel.isLocked;
 	
 		try {
 			File file = new File(filePath);
@@ -126,7 +126,7 @@ public class UserDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (values[14].equals(myUsername) && values[16].equals("false")) {
+				if (values[14].equals(myUsername) && values[16].toLowerCase().equals("false")) {
 					isLocked = false;
 				}
 			}
@@ -274,5 +274,27 @@ public class UserDatabase {
 		}
 	}
 	
+	// Generate new ID number
+	
+	public int generateID () {
+		
+		int lastID = 0;
+		String lastIDString = "zero";
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				lastIDString = values[0];
+			}
+			lastID = Integer.parseInt(lastIDString);
+			return lastID + 1;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return lastID;
+		}
+	}
 	
 }
