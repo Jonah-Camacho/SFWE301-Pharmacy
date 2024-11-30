@@ -95,11 +95,11 @@ public class Menu {
 	
 	// Menu Selection
 	
-	public static void menuFunction(User.Role userRole, int selection, Scanner scnr, String username, UserDatabase myUserDatabase, PharmacyInfo myPharmacy) {
+	public static void menuFunction(User.Role userRole, int selection, Scanner scnr, UserDatabase myUserDatabase, PharmacyInfo myPharmacy, ActivityLog myActivityLog, PrescriptionDatabase myPrescriptionDatabase, Inventory myInventory, String currentName, User.Role currentRole) {
 		if (userRole == User.Role.ITAdministrator) {
 			switch(selection) {
 				case 1:
-					createPatientAccount(scnr, username, myUserDatabase);
+					createPatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 2:
 					updatePatientAccount();
@@ -177,7 +177,7 @@ public class Menu {
 		if (userRole == User.Role.PharmacyManager) {
 			switch(selection) {
 				case 1:
-					createPatientAccount(scnr, username, myUserDatabase);
+					createPatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 2:
 					updatePatientAccount();
@@ -246,7 +246,7 @@ public class Menu {
 		if (userRole == User.Role.Pharmacist) {
 			switch(selection) {
 				case 1:
-					createPatientAccount(scnr, username, myUserDatabase);
+					createPatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 2:
 					updatePatientAccount();
@@ -276,7 +276,7 @@ public class Menu {
 		if (userRole == User.Role.PharmacyTech) {
 			switch(selection) {
 				case 1:
-					createPatientAccount(scnr, username, myUserDatabase);
+					createPatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 2:
 					updatePatientAccount();
@@ -319,7 +319,7 @@ public class Menu {
 	
 	// Menu Functions
 		
-	public static void createPatientAccount(Scanner scnr, String username, UserDatabase myUserDatabase) {
+	public static void createPatientAccount(Scanner scnr, UserDatabase myUserDatabase, ActivityLog myActivityLog, String currentName, User.Role currentRole) {
 		System.out.println("Please enter the full name of the patient:");
 		String fullName = scnr.nextLine();
 				
@@ -438,6 +438,8 @@ public class Menu {
 			}
 			
 			myUserDatabase.AddUser(newPatient);
+			myActivityLog.AddActivity (ActivityLog.Activity.AccountCreation, currentName, currentRole, myUserDatabase.readLastID(), User.Role.Patient, ActivityLog.AccountUpdateField.None, "", "", myUserDatabase.readLastID(), 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+			
 			System.out.println(fullName + " has successfully been added to the system!");
 		}
 	}

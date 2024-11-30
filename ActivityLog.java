@@ -5,7 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class ActivityLog {
 
@@ -14,17 +15,13 @@ public class ActivityLog {
 	
 	enum Activity {AccountCreation, AccountUpdate, RequestPrescription, UpdatePrescriptionStatus, MakeTransaction, ViewInventory, RemoveExpiredInventory, PurchaseDrugShipment, ViewPrescriptionDatabase, ViewUserDatabase, ViewActivityLog, RequestFinancialReport, RequestInventoryReport, UpdatePharmacyInfo};
 	enum AccountUpdateField {Name, DateOfBirth, Gender, PhoneNumber, Address, DoctorsName, DoctorsPhoneNumber, InsuranceProivder, InsurancePolicyNumber, Allergies, Notes, Role, Username, Password, LockedStatus, ActiveStatus, None};
-	enum PharmacyInfoUpdateField {Address, Hours, PhoneNumber, None};
-	
-	
+	enum PharmacyInfoUpdateField {Address, Hours, PhoneNumber, None};	
 	
 	public void AddActivity (Activity myActivity, String pharmacyPersonnelName, User.Role pharmacyPersonnelRole, int createdOrUpdatedAccountID, User.Role createdOrUpdatedAccountRole, AccountUpdateField myAccountUpdateField, String beforeChange, String afterChange, int patientId, int prescriptionID, String drugName, int drugStrength, int drugQuantity, int batchID, Prescription.Status updatedPrescriptionStatus, double totalPrice, long cardNumber, String cardExpiration, int cardPin, PharmacyInfoUpdateField myPharmacyInfoUpdateField) {
-		
-		// Generate activity ID, date, and time
-		
-		int activityID = 0;
-		String date = "";
-		String time = "";
+				
+		int activityID = generateID();
+		LocalDate date = LocalDate.now();
+		LocalTime time = LocalTime.now();
 
 		String newBeforeChange = "\"" + beforeChange + "\"";
 		String newAfterChange = "\"" + afterChange + "\"";
@@ -52,6 +49,29 @@ public class ActivityLog {
 			System.out.println("Error: " + e.getMessage());
 		}
 		
+	}
+	
+	// Generate Activity Log ID
+	
+	public int generateID () {
+		
+		int lastID = 0;
+		String lastIDString = "zero";
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				lastIDString = values[0];
+			}
+			lastID = Integer.parseInt(lastIDString);
+			return lastID + 1;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return lastID;
+		}
 	}
 }
 	

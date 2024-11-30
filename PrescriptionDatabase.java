@@ -24,4 +24,27 @@ public class PrescriptionDatabase {
 		
 	}
 	
+	// Generate Prescription Database ID
+	
+	public int generateID () {
+		
+		int lastID = 0;
+		String lastIDString = "zero";
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				lastIDString = values[0];
+			}
+			lastID = Integer.parseInt(lastIDString);
+			return lastID + 1;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return lastID;
+		}
+	}
+	
 }

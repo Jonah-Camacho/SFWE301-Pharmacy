@@ -12,8 +12,8 @@ public class DrugBatch {
 	
 	// Constructor
 	
-	public DrugBatch (String drugName, int strength, int quantity, String maxDosagePerDay, String expirationDate, String allergiesAndNotes, int pricePerMg) {
-		this.batchID = 0;
+	public DrugBatch (int batchID, String drugName, int strength, int quantity, String maxDosagePerDay, String expirationDate, String allergiesAndNotes, int pricePerMg) {
+		this.batchID = batchID;
 		this.drugName = drugName;
 		this.strength = strength;
 		this.quantity = quantity;

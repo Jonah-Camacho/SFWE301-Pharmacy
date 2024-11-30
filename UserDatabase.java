@@ -274,6 +274,29 @@ public class UserDatabase {
 		}
 	}
 	
+	// Search for the user's name
+	
+	public String searchCurrentName (String myUsername) {
+		
+		String name = "";
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (values[14].equals(myUsername)) {
+					name = values[1];
+				}
+			}
+			return name;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return name;
+		}
+	}
+	
 	// Generate new ID number
 	
 	public int generateID () {
@@ -296,5 +319,28 @@ public class UserDatabase {
 			return lastID;
 		}
 	}
+	
+	// Read last ID number
+	
+		public int readLastID () {
+			
+			int lastID = 0;
+			String lastIDString = "zero";
+			
+			try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+				String line;
+				while ((line = reader.readLine()) != null) {
+					String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+					lastIDString = values[0];
+				}
+				lastID = Integer.parseInt(lastIDString);
+				return lastID;
+			}
+			
+			catch (IOException e) {
+				System.out.println("Error reading file: " + e.getMessage());
+				return lastID;
+			}
+		}
 	
 }

@@ -8,16 +8,17 @@ public class GUI {
 		PharmacyInfo myPharmacy = new PharmacyInfo();
 		Inventory myInventory = new Inventory();
 		PrescriptionDatabase myPrescriptionDatabase = new PrescriptionDatabase();
-		ActivityLog myActivityLoge = new ActivityLog();
+		ActivityLog myActivityLog = new ActivityLog();
 		String usernameIn;
 		String passwordIn;
 		boolean usernameFound = false;
 		boolean correctPassword = false;
 		int remainingAttempts = 4;
+		String currentName;
 		User.Role currentRole;
 		int menuSelection = 0;
 		
-		//PharmacyPersonnel MollyAuer = new PharmacyPersonnel("Molly Auer", "07/11/2004", User.Gender.Female, 5204246286L, "3102 W Speedway Blvd, Tucson, AZ 85748", User.Role.ITAdministrator, "mollyauer", "WildcatFurLife!44");
+		//PharmacyPersonnel MollyAuer = new PharmacyPersonnel("Molly Auer", "07/11/2004", 1, User.Gender.Female, 5204246286L, "3102 W Speedway Blvd, Tucson, AZ 85748", User.Role.ITAdministrator, "mollyauer", "WildcatFurLife!44");
 		//myUserDatabase.AddUser(MollyAuer);
 				
 		// Log-In System
@@ -85,13 +86,14 @@ public class GUI {
 		
 		// Logged-In
 		
+		currentName = myUserDatabase.searchCurrentName(usernameIn);
 		currentRole = myUserDatabase.searchCurrentRole(usernameIn);
 	
-		while ((currentRole == User.Role.ITAdministrator && menuSelection != 23) || (currentRole == User.Role.PharmacyManager && menuSelection != 19) || (currentRole == User.Role.Pharmacist && menuSelection != 8) || (currentRole == User.Role.PharmacyTech && menuSelection != 7) || (currentRole == User.Role.Cashier && menuSelection != 3)) {
+		while ((currentRole == User.Role.ITAdministrator && menuSelection != 24) || (currentRole == User.Role.PharmacyManager && menuSelection != 21) || (currentRole == User.Role.Pharmacist && menuSelection != 8) || (currentRole == User.Role.PharmacyTech && menuSelection != 7) || (currentRole == User.Role.Cashier && menuSelection != 3)) {
 			Menu.printMenu(currentRole);
 			menuSelection = scnr.nextInt();
 			newline = scnr.nextLine();      // To absorb newline and avoid issues when working with menu functions
-			Menu.menuFunction(currentRole, menuSelection, scnr, usernameIn, myUserDatabase, myPharmacy);
+			Menu.menuFunction(currentRole, menuSelection, scnr, myUserDatabase, myPharmacy, myActivityLog, myPrescriptionDatabase, myInventory, currentName, currentRole);
 		}
 		
 		System.out.println("You have been successfully logged out. Goodbye!");
