@@ -12,4 +12,16 @@ public class PrescriptionDatabase {
 	String filePath = "PrescriptionDatabase.csv";
 	String[] headers = {"Prescription ID", "Batch ID", "Drug Name", "Strength", "Prescribed Quantity", "Max Dosage per Day", "Expiration Date", "Allergies and Notes", "Price per Mg", "Dosage", "Directions", "Refill Period (days)", "Refill Count", "Approved by Doctor?", "Status"};
 	
+	public void addPrescription () {
+		
+	}
+	
+	public void updateStatus() {
+		
+	}
+	
+	public void cancelPrescription () {
+		
+	}
+	
 }

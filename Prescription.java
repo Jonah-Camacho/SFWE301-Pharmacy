@@ -1,7 +1,7 @@
 
 public class Prescription extends DrugBatch {
 	
-	enum Status {InProgress, Ready, Filled};    // Filled = handed out / sold
+	enum Status {InProgress, ReadyFilled, Sold, Cancelled};    // Filled = ready for pick up
 	
 	int prescriptionID;
 	String dosage;
