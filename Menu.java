@@ -111,7 +111,7 @@ public class Menu {
 					reactivatePatientAccount();
 					break;
 				case 5:
-					createPharmacyPersonnelAccount();
+					createPharmacyPersonnelAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 6:
 					updatePharmacyPersonnelAccount();
@@ -189,7 +189,7 @@ public class Menu {
 					reactivatePatientAccount();
 					break;
 				case 5:
-					createPharmacyPersonnelAccount();
+					createPharmacyPersonnelAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 6:
 					updatePharmacyPersonnelAccount();
@@ -456,8 +456,102 @@ public class Menu {
 		
 	}
 	
-	public static void createPharmacyPersonnelAccount() {
-		
+	public static void createPharmacyPersonnelAccount(Scanner scnr, UserDatabase myUserDatabase, ActivityLog myActivityLog, String currentName, User.Role currentRole) {
+		System.out.println("Please enter the full name of the pharmacy employee:");
+		String fullName = scnr.nextLine();
+				
+		if (myUserDatabase.checkIfAccountExists(fullName)) {
+			System.out.println("An account associated with this name already exists.");
+			System.out.println("Please try another name or update the existing account.");
+			return;
+		}
+		else {
+			System.out.println("Please enter the date of birth of the employee in the form MM/DD/YYYY:");
+			String dob = scnr.nextLine();
+			
+			System.out.println("Please enter the address of the employee:");
+			String address = scnr.nextLine();
+			
+			System.out.println("Please indicate the gender of the employee (Male/Female/Other):");
+			String gender = scnr.next();
+			String newline = scnr.nextLine();
+			while (!(gender.equals("Male") || gender.equals("Female") || gender.equals("Other"))) {
+				System.out.println("Invalid entry. Please enter Male, Female, or Other.");
+				gender = scnr.next();
+				newline = scnr.nextLine();
+			}
+			User.Gender employeeGender = User.Gender.Other;
+			if (gender.equals("Male")) {
+				employeeGender = User.Gender.Male;
+			}
+			if (gender.equals("Female")) {
+				employeeGender = User.Gender.Female;
+			}
+			if (gender.equals("Other")) {
+				employeeGender = User.Gender.Other;
+			}
+			
+			System.out.println("Please enter the 10 digit phone number of the employee in the form ##########:");
+			long phoneNumber = scnr.nextLong();
+			newline = scnr.nextLine();
+			while (phoneNumber < 1000000000 || phoneNumber > 9999999999L) {
+				System.out.println("Invalid entry. Please enter a 10 digit phone number:");
+				phoneNumber = scnr.nextLong();
+				newline = scnr.nextLine();
+			}
+			
+			System.out.println("Please enter the role of the employee (Pharmacist, PharmacyTech, or Cashier):");
+			String role = scnr.next();
+			newline = scnr.nextLine();
+			while (!(role.equals("Pharmacist") || role.equals("PharmacyTech") || role.equals("Cashier"))) {
+				System.out.println("Invalid entry. Please enter Pharmacist, PharmacyTech, or Cashier.");
+				role = scnr.next();
+				newline = scnr.nextLine();
+			}
+			User.Role employeeRole = User.Role.Cashier;
+			if (role.equals("Pharmacist")) {
+				employeeRole = User.Role.Pharmacist;
+			}
+			if (role.equals("PharmacyTech")) {
+				employeeRole = User.Role.PharmacyTech;
+			}
+			if (role.equals("Cashier")) {
+				employeeRole = User.Role.Cashier;
+			}
+			
+			System.out.println("Please enter the username for the employee's account:");
+			String username = scnr.next();
+			newline = scnr.nextLine();
+			
+			while (myUserDatabase.searchUsername(username)) {
+				System.out.println("An account associated with that username already exists.");
+				System.out.println("Please enter a new username:");
+				username = scnr.next();
+				newline = scnr.nextLine();
+			}
+			
+			String password = "a";
+			String validatedPassword = "b";
+			int run = 0;
+			while (!validatedPassword.equals(password)) {
+				if (run != 0) {
+					System.out.println("Error: Initial password does not match.");
+				}
+				System.out.println("Please enter the password for the employee's account:");
+				password = scnr.next();
+				newline = scnr.nextLine();
+				System.out.println("Please re-eneter the password:");
+				validatedPassword = scnr.next();
+				newline = scnr.nextLine();
+				++run;
+			}
+			
+			PharmacyPersonnel newPharmacyEmployee = new PharmacyPersonnel(fullName, dob, myUserDatabase.generateID(), employeeGender, phoneNumber, address, employeeRole, username, password);
+			myUserDatabase.AddUser(newPharmacyEmployee);
+			myActivityLog.AddActivity (ActivityLog.Activity.AccountCreation, currentName, currentRole, myUserDatabase.readLastID(), employeeRole, ActivityLog.AccountUpdateField.None, "", "", 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+			
+			System.out.println(fullName + " has successfully been added to the system under the username " + username + "!");
+		}
 	}
 	
 	public static void updatePharmacyPersonnelAccount() {

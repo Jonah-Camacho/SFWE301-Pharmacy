@@ -17,9 +17,6 @@ public class GUI {
 		String currentName;
 		User.Role currentRole;
 		int menuSelection = 0;
-		
-		//PharmacyPersonnel MollyAuer = new PharmacyPersonnel("Molly Auer", "07/11/2004", 1, User.Gender.Female, 5204246286L, "3102 W Speedway Blvd, Tucson, AZ 85748", User.Role.ITAdministrator, "mollyauer", "WildcatFurLife!44");
-		//myUserDatabase.AddUser(MollyAuer);
 				
 		// Log-In System
 		
