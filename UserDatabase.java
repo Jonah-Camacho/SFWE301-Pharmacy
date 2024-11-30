@@ -139,6 +139,52 @@ public class UserDatabase {
 		}
 	}
 	
+	// Search if an account is active given the username
+	
+	public boolean searchAccountIsActive (String myUsername) {
+		
+		boolean isActive = true;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (values[14].equals(myUsername) && values[6].toLowerCase().equals("false")) {
+					isActive = false;
+				}
+			}
+			return isActive;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return isActive;
+		}
+	}
+	
+	// Search if an account is active given the full name
+	
+	public boolean checkIfAccountIsActive (String fullName) {
+		
+		boolean isActive = true;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (values[1].equals(fullName) && values[6].toLowerCase().equals("false")) {
+					isActive = false;
+				}
+			}
+			return isActive;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return isActive;
+		}
+	}
+	
 	// Search is the correct password was entered for an account given a username
 	
 	public boolean searchPassword (String myUsername, String myPassword) {
@@ -274,6 +320,44 @@ public class UserDatabase {
 		}
 	}
 	
+	// Return the user's role based on fullName
+	
+	public User.Role returnRole (String fullName) {
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (values[1].toLowerCase().equals(fullName.toLowerCase())) {
+					if (values[7].equals("ITAdministrator")) {
+						return User.Role.ITAdministrator;
+					}
+					if (values[7].equals("PharmacyManager")) {
+						return User.Role.PharmacyManager;
+					}
+					if (values[7].equals("Pharmacist")) {
+						return User.Role.Pharmacist;
+					}
+					if (values[7].equals("PharmacyTech")) {
+						return User.Role.PharmacyTech;
+					}
+					if (values[7].equals("Cashier")) {
+						return User.Role.Cashier;
+					}
+					if (values[7].equals("Patient")) {
+						return User.Role.Patient;
+					}
+				}
+			}
+			return User.Role.Patient;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return User.Role.Patient;
+		}
+	}
+	
 	// Search for the user's name
 	
 	public String searchCurrentName (String myUsername) {
@@ -322,25 +406,122 @@ public class UserDatabase {
 	
 	// Read last ID number
 	
-		public int readLastID () {
-			
-			int lastID = 0;
-			String lastIDString = "zero";
-			
-			try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-				String line;
-				while ((line = reader.readLine()) != null) {
-					String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-					lastIDString = values[0];
-				}
-				lastID = Integer.parseInt(lastIDString);
-				return lastID;
+	public int readLastID () {
+		
+		int lastID = 0;
+		String lastIDString = "zero";
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				lastIDString = values[0];
 			}
-			
-			catch (IOException e) {
-				System.out.println("Error reading file: " + e.getMessage());
-				return lastID;
+			lastID = Integer.parseInt(lastIDString);
+			return lastID;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return lastID;
+		}
+	}
+	
+	// Archive an account
+	
+	public void archiveAccount (String fullName) {
+		
+		List<String> lines = new ArrayList<>();
+		boolean updated = false;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (values[1].toLowerCase().equals(fullName.toLowerCase())) {
+					values[6] = "false";
+					updated = true;
+				}
+				lines.add(String.join(",", values));
 			}
 		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file for update: " + e.getMessage());
+		}
+		
+		try (FileWriter writer = new FileWriter(filePath)) {
+			for (String line : lines) {
+				writer.write(line + "\n");
+			}
+			if (!updated) {
+				System.out.println("Name not found. No updates made.");
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error writing updated file: " + e.getMessage());
+		}
+	}
+	
+	// Reactivate an account
+	
+	public void reactivateAccount (String fullName) {
+		
+		List<String> lines = new ArrayList<>();
+		boolean updated = false;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (values[1].toLowerCase().equals(fullName.toLowerCase())) {
+					values[6] = "true";
+					updated = true;
+				}
+				lines.add(String.join(",", values));
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file for update: " + e.getMessage());
+		}
+		
+		try (FileWriter writer = new FileWriter(filePath)) {
+			for (String line : lines) {
+				writer.write(line + "\n");
+			}
+			if (!updated) {
+				System.out.println("Name not found. No updates made.");
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error writing updated file: " + e.getMessage());
+		}
+	}
+	
+	// Return ID based on full name
+	
+	public int returnID (String fullName) {
+		
+		int ID = 0;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (values[1].toLowerCase().equals(fullName.toLowerCase())) {
+					ID = Integer.parseInt(values[0]);
+				}
+			}
+			return ID;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return ID;
+		}
+	}
 	
 }

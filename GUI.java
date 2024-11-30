@@ -46,6 +46,13 @@ public class GUI {
 			System.out.println("Account is locked. Please contact a Pharmacy Manager or IT Administrator to unlock your account.");
 			System.exit(0);
 		}
+		
+		// Check if account is active
+		
+		if (!myUserDatabase.searchAccountIsActive(usernameIn)) {
+			System.out.println("Account is archived. Please contact a Pharmacy Manager or IT Administrator to unlock your account.");
+			System.exit(0);
+		}
 
 		
 		// Search if password is correct
@@ -90,7 +97,7 @@ public class GUI {
 			Menu.printMenu(currentRole);
 			menuSelection = scnr.nextInt();
 			newline = scnr.nextLine();      // To absorb newline and avoid issues when working with menu functions
-			Menu.menuFunction(currentRole, menuSelection, scnr, myUserDatabase, myPharmacy, myActivityLog, myPrescriptionDatabase, myInventory, currentName, currentRole);
+			Menu.menuFunction(currentRole, menuSelection, scnr, myUserDatabase, myPharmacy, myActivityLog, myPrescriptionDatabase, myInventory, currentName);
 		}
 		
 		System.out.println("You have been successfully logged out. Goodbye!");
