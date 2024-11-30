@@ -9,7 +9,7 @@ public class Menu {
 		System.out.print("Select an option (1-");
 		
 		if (userRole == User.Role.ITAdministrator) {
-			System.out.println("23):");
+			System.out.println("24):");
 			System.out.println("1.  Create Patient Account");
 			System.out.println("2.  Update Patient Account");
 			System.out.println("3.  Archive Patient Account");
@@ -27,35 +27,38 @@ public class Menu {
 			System.out.println("15. View Inventory");
 			System.out.println("16. Remove Expired Inventory");
 			System.out.println("17. Purchase Drug Shipment");
-			System.out.println("18. View User Database");
-			System.out.println("19. View Activity Log");
-			System.out.println("20. Request Financial Reports");
-			System.out.println("21. Request Inventory Reports");
-			System.out.println("22. Update Pharmacy Information");
-			System.out.println("23. Log Out");
+			System.out.println("18. View Prescription Database");
+			System.out.println("19. View User Database");
+			System.out.println("20. View Activity Log");
+			System.out.println("21. Request Financial Reports");
+			System.out.println("22. Request Inventory Reports");
+			System.out.println("23. Update Pharmacy Information");
+			System.out.println("24. Log Out");
 			System.out.println();
 		}
 		if (userRole == User.Role.PharmacyManager) {
-			System.out.println("19):");
+			System.out.println("21):");
 			System.out.println("1.  Create Patient Account");
 			System.out.println("2.  Update Patient Account");
 			System.out.println("3.  Archive Patient Account");
-			System.out.println("4.  Create Pharmacy Personnel Account");
-			System.out.println("5.  Update Pharmacy Personnel Account");
-			System.out.println("6.  Unlock Pharmacy Personnel Account");
-			System.out.println("7.  View Prescription History");
-			System.out.println("8.  Request Prescription");
-			System.out.println("9.  Update Prescription Status");
-			System.out.println("10. Make Transaction");
-			System.out.println("11. View Inventory");
-			System.out.println("12. Remove Expired Inventory");
-			System.out.println("13. Purchase Drug Shipment");
-			System.out.println("14. View User Database");
-			System.out.println("15. View Activity Log");
-			System.out.println("16. Request Financial Reports");
-			System.out.println("17. Request Inventory Reports");
-			System.out.println("18. Update Pharmacy Information");
-			System.out.println("19. Log Out");
+			System.out.println("4.  Reactivate Patient Account");
+			System.out.println("5.  Create Pharmacy Personnel Account");
+			System.out.println("6.  Update Pharmacy Personnel Account");
+			System.out.println("7.  Unlock Pharmacy Personnel Account");
+			System.out.println("8.  View Prescription History");
+			System.out.println("9.  Request Prescription");
+			System.out.println("10. Update Prescription Status");
+			System.out.println("11. Make Transaction");
+			System.out.println("12. View Inventory");
+			System.out.println("13. Remove Expired Inventory");
+			System.out.println("14. Purchase Drug Shipment");
+			System.out.println("15. View Prescription Database");
+			System.out.println("16. View User Database");
+			System.out.println("17. View Activity Log");
+			System.out.println("18. Request Financial Reports");
+			System.out.println("19. Request Inventory Reports");
+			System.out.println("20. Update Pharmacy Information");
+			System.out.println("21. Log Out");
 			System.out.println();
 		}
 		if (userRole == User.Role.Pharmacist) {
@@ -147,21 +150,24 @@ public class Menu {
 					purchaseDrugShipment();
 					break;
 				case 18:
-					viewUserDatabase();
+					viewPrescriptionDatabase();
 					break;
 				case 19:
-					viewActivityLog();
+					viewUserDatabase();
 					break;
 				case 20:
-					requestFinancialReport();
+					viewActivityLog();
 					break;
 				case 21:
-					requestInventoryReport();
+					requestFinancialReport();
 					break;
 				case 22:
-					updatePharmacyInformation();
+					requestInventoryReport();
 					break;
 				case 23:
+					updatePharmacyInformation();
+					break;
+				case 24:
 					break;
 				default:
 					System.out.println("Invalid selection. Please try again.");
@@ -180,51 +186,57 @@ public class Menu {
 					archivePatientAccount();
 					break;
 				case 4:
-					createPharmacyPersonnelAccount();
+					reactivatePatientAccount();
 					break;
 				case 5:
-					updatePharmacyPersonnelAccount();
+					createPharmacyPersonnelAccount();
 					break;
 				case 6:
-					unlockPharmacyPersonnelAccount();
+					updatePharmacyPersonnelAccount();
 					break;
 				case 7:
-					viewPrescriptionHistory();
+					unlockPharmacyPersonnelAccount();
 					break;
 				case 8:
-					requestPrescription();
+					viewPrescriptionHistory();
 					break;
 				case 9:
-					updatePrescriptionStatus();
+					requestPrescription();
 					break;
 				case 10:
-					makeTransaction();
+					updatePrescriptionStatus();
 					break;
 				case 11:
-					viewInventory();
+					makeTransaction();
 					break;
 				case 12:
-					removeExpiredInventory();
+					viewInventory();
 					break;
 				case 13:
-					purchaseDrugShipment();
+					removeExpiredInventory();
 					break;
 				case 14:
-					viewUserDatabase();
+					purchaseDrugShipment();
 					break;
 				case 15:
-					viewActivityLog();
+					viewPrescriptionDatabase();
 					break;
 				case 16:
-					requestFinancialReport();
+					viewUserDatabase();
 					break;
 				case 17:
-					requestInventoryReport();
+					viewActivityLog();
 					break;
 				case 18:
-					updatePharmacyInformation();
+					requestFinancialReport();
 					break;
 				case 19:
+					requestInventoryReport();
+					break;
+				case 20:
+					updatePharmacyInformation();
+					break;
+				case 21:
 					break;
 				default:
 					System.out.println("Invalid selection. Please try again.");
@@ -491,6 +503,10 @@ public class Menu {
 	}
 	
 	public static void purchaseDrugShipment() {
+		
+	}
+	
+	public static void viewPrescriptionDatabase() {
 		
 	}
 	

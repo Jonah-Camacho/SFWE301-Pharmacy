@@ -6,6 +6,9 @@ public class GUI {
 		Scanner scnr = new Scanner(System.in);
 		UserDatabase myUserDatabase = new UserDatabase();
 		PharmacyInfo myPharmacy = new PharmacyInfo();
+		Inventory myInventory = new Inventory();
+		PrescriptionDatabase myPrescriptionDatabase = new PrescriptionDatabase();
+		ActivityLog myActivityLoge = new ActivityLog();
 		String usernameIn;
 		String passwordIn;
 		boolean usernameFound = false;

@@ -9,7 +9,7 @@ import java.util.List;
 public class Inventory {
 
 	String filePath = "Inventory.csv";
-	String[] headers = {"BatchID", "Drug", "Expiration Date", "Tablet/Capsule", "Current In Stock"};
+	String[] headers = {"Batch ID", "Drug Name", "Strength (mg/capsule)", "Total Quantity", "Max Dosage per Day", "Expiration Date", "Allergies and Notes", "Price per Mg"};
 	
 	public void AddDrug() {
 		
