@@ -133,7 +133,7 @@ public class Menu {
 					requestPrescription(scnr, myUserDatabase, myInventory, myActivityLog, currentName, currentRole, myDrugInformation, myPrescriptionDatabase);
 					break;
 				case 12:
-					fillPrescription();
+					fillPrescription(scnr, myPrescriptionDatabase, myInventory, myActivityLog, currentName, currentRole);
 					break;
 				case 13:
 					updatePrescriptionStatus();
@@ -259,7 +259,7 @@ public class Menu {
 					requestPrescription(scnr, myUserDatabase, myInventory, myActivityLog, currentName, currentRole, myDrugInformation, myPrescriptionDatabase);
 					break;
 				case 5:
-					fillPrescription();
+					fillPrescription(scnr, myPrescriptionDatabase, myInventory, myActivityLog, currentName, currentRole);
 					break;
 				case 6:
 					updatePrescriptionStatus();
@@ -1366,34 +1366,133 @@ public class Menu {
 						newline = scnr.nextLine();
 					}
 					
-					// pull from oldest batch
+					System.out.println("Please indicate the desired dosage given by the doctor:");
+					String dosage = scnr.nextLine();
 					
-					double totalPrice = quantity * myInventory.returnPricePerCapsule(drugName, strengthChoice);
-					System.out.println("The total cost will be: $" + totalPrice);
-					System.out.println("Would you like to make this purchase? (yes or no):");
+					System.out.println("Please indicate any directions given by the doctor in one line:");
+					String directions = scnr.nextLine();
+					
+					System.out.println("Please indicate the refill period in days given by the doctor:");
+					int refillPeriod = scnr.nextInt();
+					newline = scnr.nextLine();
+					
+					System.out.println("Please indicate the total amount of refills recommended by the doctor:");
+					int refillCount = scnr.nextInt();
+					newline = scnr.nextLine();
+					
+					System.out.println("Has the doctor signed off on the prescription or approved it over phone call? (yes or no):");
 					String answer = scnr.next();
 					newline = scnr.nextLine();
 					while (!(answer.equals("yes") || answer.equals("no"))) {
-						System.out.println("Invalid entry. Please enter yes or no:");
+						System.out.println("Invalid entry. Please enter yes or no.");
 						answer = scnr.next();
 						newline = scnr.nextLine();
 					}
 					if (answer.equals("yes")) {
-						DrugBatch newDrugShipment = new DrugBatch(myInventory.generateID(), drugName, strengthChoice, quantity, myDrugInformation.returnMaxDosagePerDay(drugName, strengthChoice), myInventory.generateExpirationDate(), myDrugInformation.returnAllergiesAndNotes(drugName), myDrugInformation.returnPricePerCapsule(drugName, strengthChoice));
-						myInventory.addDrugBatch(newDrugShipment);
-						myActivityLog.AddActivity(ActivityLog.Activity.PurchaseDrugShipment, currentName, currentRole, 0, User.Role.None, ActivityLog.AccountUpdateField.None, "", "", 0, 0, drugName, strengthChoice, quantity, myInventory.returnLastID(), Prescription.Status.None, totalPrice, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
-						System.out.println("Your prescription request has been processed!");
+						boolean isSigned = true;
+						double totalPrice = quantity * myInventory.returnPricePerCapsule(drugName, strengthChoice);
+						System.out.println("The total cost will be: $" + totalPrice);
+						System.out.println("Would you like to request this prescription? (yes or no):");
+						answer = scnr.next();
+						newline = scnr.nextLine();
+						while (!(answer.equals("yes") || answer.equals("no"))) {
+							System.out.println("Invalid entry. Please enter yes or no:");
+							answer = scnr.next();
+							newline = scnr.nextLine();
+						}
+						if (answer.equals("yes")) {
+							int batchID = myInventory.returnOldestStockedBatchID(drugName, strengthChoice, quantity);
+							Prescription newPrescription = new Prescription(batchID, drugName, strengthChoice, quantity, myInventory.returnMaxDosagePerDay(drugName, strengthChoice), myInventory.returnExpirationDate(batchID), myInventory.returnAllergiesAndNotes(drugName), myInventory.returnPricePerCapsule(drugName, strengthChoice), myPrescriptionDatabase.generateID(), myUserDatabase.returnID(fullName), dosage, directions, refillPeriod, refillCount, true, Prescription.Status.InProgress);
+							myPrescriptionDatabase.addPrescription(newPrescription);
+							myActivityLog.AddActivity(ActivityLog.Activity.RequestPrescription, currentName, currentRole, myUserDatabase.returnID(fullName), User.Role.Patient, ActivityLog.AccountUpdateField.Prescription, "", "", myUserDatabase.returnID(fullName), myPrescriptionDatabase.returnLastID(), drugName, strengthChoice, quantity, batchID, Prescription.Status.InProgress, totalPrice, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+							System.out.println("Your prescription request has been processed!");
+							System.out.println("Your prescription ID is " + myPrescriptionDatabase.returnLastID());
+							return;
+						}
+						else {
+							System.out.println("Prescription request has been cancelled.");
+							return;
+						}
 					}
-					else {
-						System.out.println("Prescription request has been cancelled.");
+					if (answer.equals("no")) {
+						boolean isSigned = false;
+						System.out.println("Sorry, this prescription cannot be processed without doctor's approval.");
+						System.out.println("Please try again after getting it approved.");
+						return;
 					}
 				}
 			}
 		}
 	}
 	
-	public static void fillPrescription() {
-		
+	public static void fillPrescription(Scanner scnr, PrescriptionDatabase myPrescriptionDatabase, Inventory myInventory, ActivityLog myActivityLog, String currentName, User.Role currentRole) {
+		ArrayList<Integer> prescriptionsReadyToBeFilled = myPrescriptionDatabase.returnPrescriptionsReadyToBeFilled();
+		if (prescriptionsReadyToBeFilled.size() > 0) {
+			System.out.println("The following prescription IDs are ready to be filled:");
+			for (int prescriptionID:prescriptionsReadyToBeFilled) {
+				System.out.println(prescriptionID);
+			}
+			System.out.println("Would you like to fill all of the prescriptions? (yes or no)");
+			String answer = scnr.next();
+			String newline = scnr.nextLine();
+			while (!(answer.equals("yes") || answer.equals("no"))) {
+				System.out.println("Invalid entry. Please enter yes or no:");
+				answer = scnr.next();
+				newline = scnr.nextLine();
+			}
+			if (answer.equals("yes")) {
+				for (int prescriptionID:prescriptionsReadyToBeFilled) {
+					myPrescriptionDatabase.fillPrescription(prescriptionID);
+					myActivityLog.AddActivity(ActivityLog.Activity.UpdatePrescriptionStatus, currentName, currentRole, myPrescriptionDatabase.returnPatientID(prescriptionID), User.Role.Patient, ActivityLog.AccountUpdateField.Prescription, "Prescription In Progress", "Prescription Filled", myPrescriptionDatabase.returnPatientID(prescriptionID), prescriptionID, myPrescriptionDatabase.returnDrugName(prescriptionID), myPrescriptionDatabase.returnDrugStrength(prescriptionID), myPrescriptionDatabase.returnDrugQuantity(prescriptionID), myPrescriptionDatabase.returnDrugBatchID(prescriptionID), Prescription.Status.ReadyFilled, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+					System.out.println("Prescription " + prescriptionID + " has been successfully filled!");
+				}
+				System.out.println("All prescriptions have been successfully filled!");
+				return;
+			}
+			if (answer.equals("no")) {
+				answer = "yes";
+				while (prescriptionsReadyToBeFilled.size() > 0 && answer.equals("yes")) {
+					System.out.println("Please enter the ID of the prescription you would like to fill:");
+					int id = scnr.nextInt();
+					newline = scnr.nextLine();
+					boolean isValid = false;
+					for (int prescriptionID:prescriptionsReadyToBeFilled) {
+						if (id == prescriptionID) {
+							isValid = true;
+						}
+					}
+					while (!isValid) {
+						System.out.println("That option is unavailable.");
+						System.out.println("Please try again and enter the ID of the prescription you would like to fill:");
+						id = scnr.nextInt();
+						newline = scnr.nextLine();
+						isValid = false;
+						for (int prescriptionID:prescriptionsReadyToBeFilled) {
+							if (id == prescriptionID) {
+								isValid = true;
+							}
+						}
+					}
+					myPrescriptionDatabase.fillPrescription(id);
+					myActivityLog.AddActivity(ActivityLog.Activity.UpdatePrescriptionStatus, currentName, currentRole, myPrescriptionDatabase.returnPatientID(id), User.Role.Patient, ActivityLog.AccountUpdateField.Prescription, "Prescription In Progress", "Prescription Filled", myPrescriptionDatabase.returnPatientID(id), id, myPrescriptionDatabase.returnDrugName(id), myPrescriptionDatabase.returnDrugStrength(id), myPrescriptionDatabase.returnDrugQuantity(id), myPrescriptionDatabase.returnDrugBatchID(id), Prescription.Status.ReadyFilled, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+					System.out.println("Prescription " + id + " has been successfully filled!");
+					
+					
+					System.out.println("Would you like to fill another prescription? (yes or no):");
+					answer = scnr.next();
+					newline = scnr.nextLine();
+					while (!(answer.equals("yes") || answer.equals("no"))) {
+						System.out.println("Invalid entry. Please enter yes or no:");
+						answer = scnr.next();
+						newline = scnr.nextLine();
+					}
+				}
+			}
+		}
+		else {
+			System.out.println("There are no prescriptions ready to be filled.");
+			return;
+		}	
 	}
 	
 	public static void updatePrescriptionStatus() {

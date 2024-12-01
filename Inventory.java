@@ -43,10 +43,41 @@ public class Inventory {
 		}
 	}
 	
-	// Sell Drug through a prescriptions
+	// Remove inventory for filled prescription
 	
-	public void sellDrug() {
+	public void fillPrescription (int batchID, int quantity) {
+		List<String> lines = new ArrayList<>();
+		boolean updated = false;
 		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (batchID == Integer.parseInt(values[0])) {
+					int newQuantity = Integer.parseInt(values[3]) - quantity;
+					values[3] = Integer.toString(newQuantity);
+					updated = true;
+				}
+				lines.add(String.join(",", values));
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file for update: " + e.getMessage());
+		}
+		
+		try (FileWriter writer = new FileWriter(filePath)) {
+			for (String line : lines) {
+				writer.write(line + "\n");
+			}
+			if (!updated) {
+				System.out.println("Name not found. No updates made.");
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error writing updated file: " + e.getMessage());
+		}
 	}
 	
 	// Remove expired inventory
@@ -247,6 +278,29 @@ public class Inventory {
 		}
 	}
 	
+	// Return expiration date
+	
+	public LocalDate returnExpirationDate (int batchID) {
+		
+		LocalDate expirationDate = LocalDate.now();
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (batchID == Integer.parseInt(values[0])) {
+					expirationDate = LocalDate.parse(values[5]);
+				}
+			}
+			return expirationDate;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return expirationDate;
+		}
+	}
+	
 	// Check total quantity of certain drug and strength
 	
 	public int returnTotalQuantity (String drugName, int strength) {
@@ -269,5 +323,30 @@ public class Inventory {
 			return totalQuantity;
 		}
 	}
+	
+	// Return oldest, stocked batch ID
+
+	public int returnOldestStockedBatchID (String drugName, int strength, int quantity) {
+		
+		int batchID = 0;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if ((values[1].toLowerCase().equals(drugName.toLowerCase())) && (Integer.parseInt(values[2])) == strength && Integer.parseInt(values[3]) >= quantity) {
+					batchID = Integer.parseInt(values[0]);
+					return batchID;
+				}
+			}
+			return batchID;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return batchID;
+		}
+	}
+	
 	
 }
