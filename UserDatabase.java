@@ -282,7 +282,7 @@ public class UserDatabase {
 		}
 	}
 	
-	// Search for the user's current role
+	// Search for the user's current role based on the username
 	
 	public User.Role searchCurrentRole (String myUsername) {
 		
@@ -523,5 +523,28 @@ public class UserDatabase {
 			return ID;
 		}
 	}
+	
+	// Return ID based on username
+	
+		public int searchCurrentID (String username) {
+			
+			int ID = 0;
+			
+			try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+				String line;
+				while ((line = reader.readLine()) != null) {
+					String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+					if (values[14].equals(username)) {
+						ID = Integer.parseInt(values[0]);
+					}
+				}
+				return ID;
+			}
+			
+			catch (IOException e) {
+				System.out.println("Error reading file: " + e.getMessage());
+				return ID;
+			}
+		}
 	
 }

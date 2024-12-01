@@ -102,7 +102,7 @@ public class Menu {
 					createPatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 2:
-					updatePatientAccount();
+					updatePatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 3:
 					archiveAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
@@ -114,16 +114,16 @@ public class Menu {
 					createPharmacyPersonnelAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 6:
-					updatePharmacyPersonnelAccount();
+					updatePharmacyPersonnelAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 7:
 					createPharmacyManagerAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 8:
-					updatePharmacyManagerAccount();
+					updatePharmacyManagerAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 9:
-					unlockPharmacyPersonnelAccount();
+					unlockPharmacyPersonnelAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 10:
 					viewPrescriptionHistory();
@@ -180,7 +180,7 @@ public class Menu {
 					createPatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 2:
-					updatePatientAccount();
+					updatePatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 3:
 					archiveAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
@@ -192,10 +192,10 @@ public class Menu {
 					createPharmacyPersonnelAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 6:
-					updatePharmacyPersonnelAccount();
+					updatePharmacyPersonnelAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 7:
-					unlockPharmacyPersonnelAccount();
+					unlockPharmacyPersonnelAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 8:
 					viewPrescriptionHistory();
@@ -249,7 +249,7 @@ public class Menu {
 					createPatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 2:
-					updatePatientAccount();
+					updatePatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 3:
 					viewPrescriptionHistory();
@@ -279,7 +279,7 @@ public class Menu {
 					createPatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 2:
-					updatePatientAccount();
+					updatePatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 3:
 					viewPrescriptionHistory();
@@ -444,8 +444,37 @@ public class Menu {
 		}
 	}
 	
-	public static void updatePatientAccount() {
+	public static void updatePatientAccount(Scanner scnr, UserDatabase myUserDatabase, ActivityLog myActivityLog, String currentName, User.Role currentRole) {
+		System.out.println("Please enter the full name associated with the account you would like to update:");
+		String fullName = scnr.nextLine();
 		
+		if (!myUserDatabase.checkIfAccountExists(fullName)) {
+			System.out.println("An account associated with this name does not exist.");
+			return;
+		}
+		else {
+			if (myUserDatabase.returnRole(fullName) != User.Role.Patient) {
+				System.out.println("The account associated with this name is a " + myUserDatabase.returnRole(fullName) + " Account, not a Patient Account");
+				System.out.println("Please use an alternate function to update this account.");
+				return;
+			}
+			else {
+				System.out.println("Please indicate which field you would like to update (1-11):");
+				System.out.println("1.  Name");
+				System.out.println("2.  Date of Birth");
+				System.out.println("3.  Gender");
+				System.out.println("4.  Phone Number");
+				System.out.println("5.  Address");
+				System.out.println("6.  Doctor's Name");
+				System.out.println("7.  Doctor's Phone Number");
+				System.out.println("8.  Insurance Provider");
+				System.out.println("9.  Insurance Policy Number");
+				System.out.println("10. Allergies");
+				System.out.println("11. Notes");
+				
+				int answer = scnr.nextInt();
+			}
+		}
 	}
 	
 	public static void archiveAccount(Scanner scnr, UserDatabase myUserDatabase, ActivityLog myActivityLog, String currentName, User.Role currentRole) {
@@ -458,21 +487,27 @@ public class Menu {
 		}
 		else {
 			System.out.println(fullName + "'s account has been found.");
-			System.out.println("Are you sure you would like to archive this account? (yes or no)");
-			String answer = scnr.next();
-			String newline = scnr.nextLine();
-			while (!(answer.equals("yes") || answer.equals("no"))) {
-				System.out.println("Invalid entry. Please enter yes or no.");
-				answer = scnr.next();
-				newline = scnr.nextLine();
+			if (!myUserDatabase.checkIfAccountIsActive(fullName)) {
+				System.out.println("This account is already archived.");
+				return;
 			}
-			if (answer.equals("yes")) {
-				myUserDatabase.archiveAccount(fullName);
-				myActivityLog.AddActivity(ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.returnID(fullName), myUserDatabase.returnRole(fullName), ActivityLog.AccountUpdateField.ActiveStatus, "Active", "Archived", 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
-				System.out.println(fullName + "'s account has been archived.");
-			}
-			if (answer.equals("no")) {
-				System.out.println(fullName + "'s account has not been archived.");
+			else {
+				System.out.println("Are you sure you would like to archive this account? (yes or no)");
+				String answer = scnr.next();
+				String newline = scnr.nextLine();
+				while (!(answer.equals("yes") || answer.equals("no"))) {
+					System.out.println("Invalid entry. Please enter yes or no.");
+					answer = scnr.next();
+					newline = scnr.nextLine();
+				}
+				if (answer.equals("yes")) {
+					myUserDatabase.archiveAccount(fullName);
+					myActivityLog.AddActivity(ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.returnID(fullName), myUserDatabase.returnRole(fullName), ActivityLog.AccountUpdateField.ActiveStatus, "Active", "Archived", 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+					System.out.println(fullName + "'s account has been archived.");
+				}
+				if (answer.equals("no")) {
+					System.out.println(fullName + "'s account has not been archived.");
+				}
 			}
 		}
 	}
@@ -487,21 +522,27 @@ public class Menu {
 		}
 		else {
 			System.out.println(fullName + "'s account has been found.");
-			System.out.println("Are you sure you would like to reactivate this account? (yes or no)");
-			String answer = scnr.next();
-			String newline = scnr.nextLine();
-			while (!(answer.equals("yes") || answer.equals("no"))) {
-				System.out.println("Invalid entry. Please enter yes or no.");
-				answer = scnr.next();
-				newline = scnr.nextLine();
+			if (myUserDatabase.checkIfAccountIsActive(fullName)) {
+				System.out.println("This account is already active.");
+				return;
 			}
-			if (answer.equals("yes")) {
-				myUserDatabase.reactivateAccount(fullName);
-				myActivityLog.AddActivity(ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.returnID(fullName), myUserDatabase.returnRole(fullName), ActivityLog.AccountUpdateField.ActiveStatus, "Archived", "Active", 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
-				System.out.println(fullName + "'s account has been reactivated.");
-			}
-			if (answer.equals("no")) {
-				System.out.println(fullName + "'s account has not been reactivated.");
+			else {
+				System.out.println("Are you sure you would like to reactivate this account? (yes or no)");
+				String answer = scnr.next();
+				String newline = scnr.nextLine();
+				while (!(answer.equals("yes") || answer.equals("no"))) {
+					System.out.println("Invalid entry. Please enter yes or no.");
+					answer = scnr.next();
+					newline = scnr.nextLine();
+				}
+				if (answer.equals("yes")) {
+					myUserDatabase.reactivateAccount(fullName);
+					myActivityLog.AddActivity(ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.returnID(fullName), myUserDatabase.returnRole(fullName), ActivityLog.AccountUpdateField.ActiveStatus, "Archived", "Active", 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+					System.out.println(fullName + "'s account has been reactivated.");
+				}
+				if (answer.equals("no")) {
+					System.out.println(fullName + "'s account has not been reactivated.");
+				}
 			}
 		}
 	}
@@ -604,8 +645,34 @@ public class Menu {
 		}
 	}
 	
-	public static void updatePharmacyPersonnelAccount() {
+	public static void updatePharmacyPersonnelAccount(Scanner scnr, UserDatabase myUserDatabase, ActivityLog myActivityLog, String currentName, User.Role currentRole) {
+		System.out.println("Please enter the username associated with the account you would like to update:");
+		String username = scnr.nextLine();
 		
+		if (!myUserDatabase.searchUsername(username)) {
+			System.out.println("An account associated with this username does not exist.");
+			return;
+		}
+		else {
+			if (myUserDatabase.searchCurrentRole(username) != User.Role.Pharmacist || myUserDatabase.searchCurrentRole(username) != User.Role.PharmacyTech || myUserDatabase.searchCurrentRole(username) != User.Role.Cashier) {
+				System.out.println("The account associated with this name is a " + myUserDatabase.searchCurrentRole(username) + " Account, not a Pharmacist, PharmacyTech, or Cashier Account");
+				System.out.println("Please use an alternate function to update this account.");
+				return;
+			}
+			else {
+				System.out.println("Please indicate which field you would like to update (1-8):");
+				System.out.println("1. Name");
+				System.out.println("2. Date of Birth");
+				System.out.println("3. Gender");
+				System.out.println("4. Phone Number");
+				System.out.println("5. Address");
+				System.out.println("6. Role");
+				System.out.println("7. Username");
+				System.out.println("8. Password");
+				
+				int answer = scnr.nextInt();
+			}
+		}
 	}
 	
 	public static void createPharmacyManagerAccount(Scanner scnr, UserDatabase myUserDatabase, ActivityLog myActivityLog, String currentName, User.Role currentRole) {
@@ -687,12 +754,69 @@ public class Menu {
 		}
 	}
 	
-	public static void updatePharmacyManagerAccount() {
+	public static void updatePharmacyManagerAccount(Scanner scnr, UserDatabase myUserDatabase, ActivityLog myActivityLog, String currentName, User.Role currentRole) {
+		System.out.println("Please enter the username associated with the account you would like to update:");
+		String username = scnr.nextLine();
 		
+		if (!myUserDatabase.searchUsername(username)) {
+			System.out.println("An account associated with this username does not exist.");
+			return;
+		}
+		else {
+			if (myUserDatabase.searchCurrentRole(username) != User.Role.PharmacyManager) {
+				System.out.println("The account associated with this name is a " + myUserDatabase.searchCurrentRole(username) + " Account, not a Pharmacy Manager Account");
+				System.out.println("Please use an alternate function to update this account.");
+				return;
+			}
+			else {
+				System.out.println("Please indicate which field you would like to update (1-8):");
+				System.out.println("1. Name");
+				System.out.println("2. Date of Birth");
+				System.out.println("3. Gender");
+				System.out.println("4. Phone Number");
+				System.out.println("5. Address");
+				System.out.println("6. Role");
+				System.out.println("7. Username");
+				System.out.println("8. Password");
+				
+				int answer = scnr.nextInt();
+			}
+		}
 	}
 	
-	public static void unlockPharmacyPersonnelAccount() {
+	public static void unlockPharmacyPersonnelAccount(Scanner scnr, UserDatabase myUserDatabase, ActivityLog myActivityLog, String currentName, User.Role currentRole) {
+		System.out.println("Please enter the username associated with the account you would like to unlock:");
+		String username = scnr.nextLine();
 		
+		if (!myUserDatabase.searchUsername(username)) {
+			System.out.println("There is no account associated with this username.");
+			return;
+		}
+		else {
+			System.out.println(username + "'s account has been found.");
+			if (!myUserDatabase.searchAccountIsLocked(username)) {
+				System.out.println("This account is not locked.");
+				return;
+			}
+			else {
+				System.out.println("Are you sure you would like to unlock this account? (yes or no)");
+				String answer = scnr.next();
+				String newline = scnr.nextLine();
+				while (!(answer.equals("yes") || answer.equals("no"))) {
+					System.out.println("Invalid entry. Please enter yes or no.");
+					answer = scnr.next();
+					newline = scnr.nextLine();
+				}
+				if (answer.equals("yes")) {
+					myUserDatabase.unlockAccount(username);
+					myActivityLog.AddActivity(ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.LockedStatus, "Locked", "Unlocked", 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+					System.out.println(username + "'s account has been unlocked.");
+				}
+				if (answer.equals("no")) {
+					System.out.println(username + "'s account has not been unlocked.");
+				}
+			}
+		}
 	}
 	
 	public static void viewPrescriptionHistory() {
