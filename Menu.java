@@ -17,7 +17,7 @@ public class Menu {
 			System.out.println("5.  Create Pharmacy Personnel Account");
 			System.out.println("6.  Update Pharmacy Personnel Account");
 			System.out.println("7.  Create Pharmacy Manager Account");
-			System.out.println("8.  Update Pharmacy Manager Account");
+			System.out.println("8.  Create IT Administrator Account");
 			System.out.println("9.  Unlock Pharmacy Personnel Account");
 			System.out.println("10. View Prescription History");
 			System.out.println("11. Request Prescription");
@@ -120,7 +120,7 @@ public class Menu {
 					createPharmacyManagerAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 8:
-					updatePharmacyManagerAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
+					createITAdministratorAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 9:
 					unlockPharmacyPersonnelAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
@@ -473,6 +473,134 @@ public class Menu {
 				System.out.println("11. Notes");
 				
 				int answer = scnr.nextInt();
+				
+				while (answer < 1 || answer > 11) {
+					System.out.println("Please enter an integer between 1 and 11:");
+					answer = scnr.nextInt();
+				}
+				
+				if (answer == 1) {
+					System.out.println("Please enter the updated name of the patient:");
+					String name = scnr.nextLine();
+					myUserDatabase.updateNameFN(fullName, name);
+					myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.returnID(fullName), myUserDatabase.returnRole(fullName), ActivityLog.AccountUpdateField.Name, fullName, name, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+					System.out.println("The account has been updated.");
+				}
+				if (answer == 2) {
+					System.out.println("Please enter the updated date of birth of the patient:");
+					String dob = scnr.nextLine();
+					String ogDob = myUserDatabase.returnDoBFN(fullName);
+					myUserDatabase.updateDateOfBirthFN(fullName, dob);
+					myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.returnID(fullName), myUserDatabase.returnRole(fullName), ActivityLog.AccountUpdateField.DateOfBirth, ogDob, dob, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+					System.out.println("The account has been updated.");
+
+				}
+				if (answer == 3) {
+					System.out.println("Please enter the updated gender of the patient (Male/Female/Other):");
+					String gender = scnr.next();
+					String newline = scnr.nextLine();
+					while (!(gender.equals("Male") || gender.equals("Female") || gender.equals("Other"))) {
+						System.out.println("Invalid entry. Please enter Male, Female, or Other.");
+						gender = scnr.next();
+						newline = scnr.nextLine();
+					}
+					User.Gender patientGender = User.Gender.Other;
+					if (gender.equals("Male")) {
+						patientGender = User.Gender.Male;
+					}
+					if (gender.equals("Female")) {
+						patientGender = User.Gender.Female;
+					}
+					if (gender.equals("Other")) {
+						patientGender = User.Gender.Other;
+					}
+					User.Gender ogGender = myUserDatabase.returnGenderFN(fullName);
+					myUserDatabase.updateGenderFN(fullName, patientGender);
+					myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.returnID(fullName), myUserDatabase.returnRole(fullName), ActivityLog.AccountUpdateField.Gender, ogGender.toString(), patientGender.toString(), 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+					System.out.println("The account has been updated.");
+				}
+				if (answer == 4) {
+					System.out.println("Please enter the updated 10 digit phone number of the patient in the form ##########:");
+					long phoneNumber = scnr.nextLong();
+					String newline = scnr.nextLine();
+					while (phoneNumber < 1000000000 || phoneNumber > 9999999999L) {
+						System.out.println("Invalid entry. Please enter a 10 digit phone number:");
+						phoneNumber = scnr.nextLong();
+						newline = scnr.nextLine();
+					}
+					long ogPhoneNumber = myUserDatabase.returnPhoneNumberFN(fullName);
+					myUserDatabase.updatePhoneNumberFN(fullName, phoneNumber);
+					myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.returnID(fullName), myUserDatabase.returnRole(fullName), ActivityLog.AccountUpdateField.PhoneNumber, Long.toString(ogPhoneNumber), Long.toString(phoneNumber), 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+					System.out.println("The account has been updated.");
+				}
+				if (answer == 5) {
+					System.out.println("Please enter the updated address of the patient:");
+					String address = scnr.nextLine();
+					String ogAddress = myUserDatabase.returnAddressFN(fullName);
+					myUserDatabase.updateAddressFN(fullName, address);
+					myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.returnID(fullName), myUserDatabase.returnRole(fullName), ActivityLog.AccountUpdateField.Address, ogAddress, address, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+					System.out.println("The account has been updated.");
+				}
+				if (answer == 6) {
+					System.out.println("Please enter the updated full name of the patient's doctor:");
+					String doctorsName = scnr.nextLine();
+					String ogDoctorsName = myUserDatabase.returnDoctorsName(fullName);
+					myUserDatabase.updateDoctorsName(fullName, doctorsName);
+					myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.returnID(fullName), myUserDatabase.returnRole(fullName), ActivityLog.AccountUpdateField.DoctorsName, ogDoctorsName, doctorsName, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+					System.out.println("The account has been updated.");
+				}
+				if (answer == 7) {
+					System.out.println("Please enter the updated 10 digit phone number of the patient's doctor in the form ##########:");
+					long docsPhoneNumber = scnr.nextLong();
+					long ogDoctorsPhoneNumber = myUserDatabase.returnDoctorsPhoneNumber(fullName);
+					String newline = scnr.nextLine();
+					while (docsPhoneNumber < 1000000000 || docsPhoneNumber > 9999999999L) {
+						System.out.println("Invalid entry. Please enter a 10 digit phone number:");
+						docsPhoneNumber = scnr.nextLong();
+						newline = scnr.nextLine();
+					}
+					myUserDatabase.updateDoctorsPhoneNumber(fullName, docsPhoneNumber);
+					myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.returnID(fullName), myUserDatabase.returnRole(fullName), ActivityLog.AccountUpdateField.DoctorsPhoneNumber, Long.toString(ogDoctorsPhoneNumber), Long.toString(docsPhoneNumber), 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+					System.out.println("The account has been updated.");
+				}
+				if (answer == 8) {
+					System.out.println("Please enter the updated name of the patient's insurance provider:");
+					String insuranceProvider = scnr.nextLine();
+					String ogInsuranceProvider = myUserDatabase.returnInsurnaceProvider(fullName);
+					myUserDatabase.updateInsurnaceProvider(fullName, insuranceProvider);
+					myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.returnID(fullName), myUserDatabase.returnRole(fullName), ActivityLog.AccountUpdateField.InsuranceProvider, ogInsuranceProvider, insuranceProvider, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+					System.out.println("The account has been updated.");
+				}
+				if (answer == 9) {
+					System.out.println("Please enter the patient's updated insurance policy number in the form of a 8-13 digit number:");
+					long insurancePolicyNumber = scnr.nextLong();
+					long ogPolicyNumber = myUserDatabase.returnInsurnacePolicyNumber(fullName);
+					String newline = scnr.nextLine();
+					while (insurancePolicyNumber < 10000000 || insurancePolicyNumber > 9999999999999L) {
+						System.out.println("Invalid entry. Please enter a 8-13 digit number:");
+						insurancePolicyNumber = scnr.nextLong();
+						newline = scnr.nextLine();
+					}
+					myUserDatabase.updateInsurnacePolicyNumber(fullName, insurancePolicyNumber);
+					myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.returnID(fullName), myUserDatabase.returnRole(fullName), ActivityLog.AccountUpdateField.InsurancePolicyNumber, Long.toString(ogPolicyNumber), Long.toString(insurancePolicyNumber), 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+					System.out.println("The account has been updated.");
+				}
+				if (answer == 10) {
+					System.out.println("Please list the patient's updated allergies in one line:");
+					String allergies = scnr.nextLine();
+					String ogAllergies = myUserDatabase.returnAllergies(fullName);
+					myUserDatabase.updateAllergies(fullName, allergies);
+					myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.returnID(fullName), myUserDatabase.returnRole(fullName), ActivityLog.AccountUpdateField.Allergies, ogAllergies, allergies, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+					System.out.println("The account has been updated.");
+				}
+				if (answer == 11) {
+					System.out.println("Please list the patient's updated notes in one line:");
+					String notes = scnr.nextLine();
+					String ogNotes = myUserDatabase.returnNotes(fullName);
+					myUserDatabase.updateNotes(fullName, notes);
+					myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.returnID(fullName), myUserDatabase.returnRole(fullName), ActivityLog.AccountUpdateField.Notes, ogNotes, notes, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+					System.out.println("The account has been updated.");
+				}
 			}
 		}
 	}
@@ -654,23 +782,303 @@ public class Menu {
 			return;
 		}
 		else {
-			if (myUserDatabase.searchCurrentRole(username) != User.Role.Pharmacist || myUserDatabase.searchCurrentRole(username) != User.Role.PharmacyTech || myUserDatabase.searchCurrentRole(username) != User.Role.Cashier) {
-				System.out.println("The account associated with this name is a " + myUserDatabase.searchCurrentRole(username) + " Account, not a Pharmacist, PharmacyTech, or Cashier Account");
-				System.out.println("Please use an alternate function to update this account.");
-				return;
+			if (currentRole == User.Role.PharmacyManager) {
+				if (myUserDatabase.searchCurrentRole(username) != User.Role.Pharmacist || myUserDatabase.searchCurrentRole(username) != User.Role.PharmacyTech || myUserDatabase.searchCurrentRole(username) != User.Role.Cashier) {
+					System.out.println("The account associated with this name is a " + myUserDatabase.searchCurrentRole(username) + " Account, not a Pharmacist, PharmacyTech, or Cashier Account");
+					System.out.println("Please use an alternate function to update this account.");
+					return;
+				}
+				else {
+					System.out.println("Please indicate which field you would like to update (1-8):");
+					System.out.println("1. Name");
+					System.out.println("2. Date of Birth");
+					System.out.println("3. Gender");
+					System.out.println("4. Phone Number");
+					System.out.println("5. Address");
+					System.out.println("6. Role");
+					System.out.println("7. Username");
+					System.out.println("8. Password");
+					
+					int answer = scnr.nextInt();
+					
+					while (answer < 1 || answer > 8) {
+						System.out.println("Please enter an integer between 1 and 8:");
+						answer = scnr.nextInt();
+					}
+					
+					if (answer == 1) {
+						System.out.println("Please enter the updated name of the employee:");
+						String name = scnr.nextLine();
+						String ogName = myUserDatabase.returnName(username);
+						myUserDatabase.updateNameU(username, name);
+						myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.Name, ogName, name, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+						System.out.println("The account has been updated.");
+					}
+					if (answer == 2) {
+						System.out.println("Please enter the updated date of birth of the employee:");
+						String dob = scnr.nextLine();
+						String ogDob = myUserDatabase.returnDoBU(username);
+						myUserDatabase.updateDateOfBirthU(username, dob);
+						myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.DateOfBirth, ogDob, dob, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+						System.out.println("The account has been updated.");
+					}
+					if (answer == 3) {
+						System.out.println("Please enter the updated gender of the employee (Male/Female/Other):");
+						String gender = scnr.next();
+						String newline = scnr.nextLine();
+						while (!(gender.equals("Male") || gender.equals("Female") || gender.equals("Other"))) {
+							System.out.println("Invalid entry. Please enter Male, Female, or Other.");
+							gender = scnr.next();
+							newline = scnr.nextLine();
+						}
+						User.Gender patientGender = User.Gender.Other;
+						if (gender.equals("Male")) {
+							patientGender = User.Gender.Male;
+						}
+						if (gender.equals("Female")) {
+							patientGender = User.Gender.Female;
+						}
+						if (gender.equals("Other")) {
+							patientGender = User.Gender.Other;
+						}
+						User.Gender ogGender = myUserDatabase.returnGenderU(username);
+						myUserDatabase.updateGenderU(username, patientGender);
+						myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.Gender, ogGender.toString(), patientGender.toString(), 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+						System.out.println("The account has been updated.");
+					}
+					if (answer == 4) {
+						System.out.println("Please enter the updated 10 digit phone number of the employee in the form ##########:");
+						long phoneNumber = scnr.nextLong();
+						String newline = scnr.nextLine();
+						while (phoneNumber < 1000000000 || phoneNumber > 9999999999L) {
+							System.out.println("Invalid entry. Please enter a 10 digit phone number:");
+							phoneNumber = scnr.nextLong();
+							newline = scnr.nextLine();
+						}
+						long ogPhoneNumber = myUserDatabase.returnPhoneNumberU(username);
+						myUserDatabase.updatePhoneNumberU(username, phoneNumber);
+						myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.PhoneNumber, Long.toString(ogPhoneNumber), Long.toString(phoneNumber), 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+						System.out.println("The account has been updated.");
+					}
+					if (answer == 5) {
+						System.out.println("Please enter the updated address of the employee:");
+						String address = scnr.nextLine();
+						String ogAddress = myUserDatabase.returnAddressU(username);
+						myUserDatabase.updateAddressU(username, address);
+						myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.Address, ogAddress, address, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+						System.out.println("The account has been updated.");
+					}
+					if (answer == 6) {
+						System.out.println("Please enter the updated role of the employee (Pharmacist, PharmacyTech, or Cashier):");
+						String role = scnr.next();
+						String newline = scnr.nextLine();
+						while (!(role.equals("Pharmacist") || role.equals("PharmacyTech") || role.equals("Cashier"))) {
+							System.out.println("Invalid entry. Please enter Pharmacist, PharmacyTech, or Cashier:");
+							role = scnr.next();
+							newline = scnr.nextLine();
+						}
+						User.Role employeeRole = User.Role.Cashier;
+						if (role.equals("Pharmacist")) {
+							employeeRole = User.Role.Pharmacist;
+						}
+						if (role.equals("PharmacyTech")) {
+							employeeRole = User.Role.PharmacyTech;
+						}
+						if (role.equals("Cashier")) {
+							employeeRole = User.Role.Cashier;
+						}
+						User.Role ogRole = myUserDatabase.searchCurrentRole(username);
+						myUserDatabase.updateRole(username, employeeRole);
+						myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.Role, ogRole.toString(), employeeRole.toString(), 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+						System.out.println("The account has been updated.");
+					}
+					if (answer == 7) {
+						System.out.println("Please enter the updated username for the employee:");
+						String newUsername = scnr.next();
+						String newline = scnr.nextLine();
+						while (myUserDatabase.searchUsername(newUsername)) {
+							System.out.println("This username is already taken. Please enter a new updated username:");
+							newUsername = scnr.next();
+							newline = scnr.nextLine();
+						}
+						myUserDatabase.updateUsername(username, newUsername);
+						myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.Username, username, newUsername, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+						System.out.println("The account has been updated.");
+					}
+					if (answer == 8) {
+						String password = "a";
+						String validatedPassword = "b";
+						int run = 0;
+						while (!validatedPassword.equals(password)) {
+							if (run != 0) {
+								System.out.println("Error: Initial password does not match.");
+							}
+							System.out.println("Please enter the updated password for the employee's account:");
+							password = scnr.next();
+							String newline = scnr.nextLine();
+							System.out.println("Please re-eneter the password:");
+							validatedPassword = scnr.next();
+							newline = scnr.nextLine();
+							++run;
+						}
+						String ogPassword = myUserDatabase.returnPassword(username);
+						myUserDatabase.updatePassword(username, validatedPassword);
+						myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.Password, ogPassword, validatedPassword, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+						System.out.println("The account has been updated.");
+					}
+				}
 			}
-			else {
-				System.out.println("Please indicate which field you would like to update (1-8):");
-				System.out.println("1. Name");
-				System.out.println("2. Date of Birth");
-				System.out.println("3. Gender");
-				System.out.println("4. Phone Number");
-				System.out.println("5. Address");
-				System.out.println("6. Role");
-				System.out.println("7. Username");
-				System.out.println("8. Password");
-				
-				int answer = scnr.nextInt();
+			if (currentRole == User.Role.ITAdministrator) {
+				if (myUserDatabase.searchCurrentRole(username) == User.Role.Patient) {
+					System.out.println("The account associated with this name is a " + myUserDatabase.searchCurrentRole(username) + " Account, not a Pharmacy Personnel Account");
+					System.out.println("Please use an alternate function to update this account.");
+					return;
+				}
+				else {
+					System.out.println("Please indicate which field you would like to update (1-8):");
+					System.out.println("1. Name");
+					System.out.println("2. Date of Birth");
+					System.out.println("3. Gender");
+					System.out.println("4. Phone Number");
+					System.out.println("5. Address");
+					System.out.println("6. Role");
+					System.out.println("7. Username");
+					System.out.println("8. Password");
+					
+					int answer = scnr.nextInt();
+					
+					while (answer < 1 || answer > 8) {
+						System.out.println("Please enter an integer between 1 and 8:");
+						answer = scnr.nextInt();
+					}
+					
+					if (answer == 1) {
+						System.out.println("Please enter the updated name of the employee:");
+						String name = scnr.nextLine();
+						String ogName = myUserDatabase.returnName(username);
+						myUserDatabase.updateNameU(username, name);
+						myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.Name, ogName, name, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+						System.out.println("The account has been updated.");
+					}
+					if (answer == 2) {
+						System.out.println("Please enter the updated date of birth of the employee:");
+						String dob = scnr.nextLine();
+						String ogDob = myUserDatabase.returnDoBU(username);
+						myUserDatabase.updateDateOfBirthU(username, dob);
+						myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.DateOfBirth, ogDob, dob, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+						System.out.println("The account has been updated.");
+					}
+					if (answer == 3) {
+						System.out.println("Please enter the updated gender of the employee (Male/Female/Other):");
+						String gender = scnr.next();
+						String newline = scnr.nextLine();
+						while (!(gender.equals("Male") || gender.equals("Female") || gender.equals("Other"))) {
+							System.out.println("Invalid entry. Please enter Male, Female, or Other.");
+							gender = scnr.next();
+							newline = scnr.nextLine();
+						}
+						User.Gender patientGender = User.Gender.Other;
+						if (gender.equals("Male")) {
+							patientGender = User.Gender.Male;
+						}
+						if (gender.equals("Female")) {
+							patientGender = User.Gender.Female;
+						}
+						if (gender.equals("Other")) {
+							patientGender = User.Gender.Other;
+						}
+						User.Gender ogGender = myUserDatabase.returnGenderU(username);
+						myUserDatabase.updateGenderU(username, patientGender);
+						myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.Gender, ogGender.toString(), patientGender.toString(), 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+						System.out.println("The account has been updated.");
+					}
+					if (answer == 4) {
+						System.out.println("Please enter the updated 10 digit phone number of the employee in the form ##########:");
+						long phoneNumber = scnr.nextLong();
+						String newline = scnr.nextLine();
+						while (phoneNumber < 1000000000 || phoneNumber > 9999999999L) {
+							System.out.println("Invalid entry. Please enter a 10 digit phone number:");
+							phoneNumber = scnr.nextLong();
+							newline = scnr.nextLine();
+						}
+						long ogPhoneNumber = myUserDatabase.returnPhoneNumberU(username);
+						myUserDatabase.updatePhoneNumberU(username, phoneNumber);
+						myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.PhoneNumber, Long.toString(ogPhoneNumber), Long.toString(phoneNumber), 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+						System.out.println("The account has been updated.");
+					}
+					if (answer == 5) {
+						System.out.println("Please enter the updated address of the employee:");
+						String address = scnr.nextLine();
+						String ogAddress = myUserDatabase.returnAddressU(username);
+						myUserDatabase.updateAddressU(username, address);
+						myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.Address, ogAddress, address, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+						System.out.println("The account has been updated.");
+					}
+					if (answer == 6) {
+						System.out.println("Please enter the updated role of the employee (ITAdministrator, PharmacyManager, Pharmacist, PharmacyTech, or Cashier):");
+						String role = scnr.next();
+						String newline = scnr.nextLine();
+						while (!(role.equals("ITAdministrator") || role.equals("PharmacyManager") || role.equals("Pharmacist") || role.equals("PharmacyTech") || role.equals("Cashier"))) {
+							System.out.println("Invalid entry. Please enter ITAdministrator, PharmacyManager, Pharmacist, PharmacyTech, or Cashier.");
+							role = scnr.next();
+							newline = scnr.nextLine();
+						}
+						User.Role employeeRole = User.Role.Cashier;
+						if (role.equals("ITAdministrator")) {
+							employeeRole = User.Role.ITAdministrator;
+						}
+						if (role.equals("PharmacyManager")) {
+							employeeRole = User.Role.PharmacyManager;
+						}
+						if (role.equals("Pharmacist")) {
+							employeeRole = User.Role.Pharmacist;
+						}
+						if (role.equals("PharmacyTech")) {
+							employeeRole = User.Role.PharmacyTech;
+						}
+						if (role.equals("Cashier")) {
+							employeeRole = User.Role.Cashier;
+						}
+						User.Role ogRole = myUserDatabase.searchCurrentRole(username);
+						myUserDatabase.updateRole(username, employeeRole);
+						myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.Role, ogRole.toString(), employeeRole.toString(), 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+						System.out.println("The account has been updated.");
+					}
+					if (answer == 7) {
+						System.out.println("Please enter the updated username for the employee:");
+						String newUsername = scnr.next();
+						String newline = scnr.nextLine();
+						while (myUserDatabase.searchUsername(newUsername)) {
+							System.out.println("This username is already taken. Please enter a new updated username:");
+							newUsername = scnr.next();
+							newline = scnr.nextLine();
+						}
+						myUserDatabase.updateUsername(username, newUsername);
+						myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.Username, username, newUsername, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+						System.out.println("The account has been updated.");
+					}
+					if (answer == 8) {
+						String password = "a";
+						String validatedPassword = "b";
+						int run = 0;
+						while (!validatedPassword.equals(password)) {
+							if (run != 0) {
+								System.out.println("Error: Initial password does not match.");
+							}
+							System.out.println("Please enter the updated password for the employee's account:");
+							password = scnr.next();
+							String newline = scnr.nextLine();
+							System.out.println("Please re-eneter the password:");
+							validatedPassword = scnr.next();
+							newline = scnr.nextLine();
+							++run;
+						}
+						String ogPassword = myUserDatabase.returnPassword(username);
+						myUserDatabase.updatePassword(username, validatedPassword);
+						myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.Password, ogPassword, validatedPassword, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+						System.out.println("The account has been updated.");
+					}
+				}
 			}
 		}
 	}
@@ -754,35 +1162,85 @@ public class Menu {
 		}
 	}
 	
-	public static void updatePharmacyManagerAccount(Scanner scnr, UserDatabase myUserDatabase, ActivityLog myActivityLog, String currentName, User.Role currentRole) {
-		System.out.println("Please enter the username associated with the account you would like to update:");
-		String username = scnr.nextLine();
-		
-		if (!myUserDatabase.searchUsername(username)) {
-			System.out.println("An account associated with this username does not exist.");
+	public static void createITAdministratorAccount(Scanner scnr, UserDatabase myUserDatabase, ActivityLog myActivityLog, String currentName, User.Role currentRole) {
+		System.out.println("Please enter the full name of the IT Administrator:");
+		String fullName = scnr.nextLine();
+				
+		if (myUserDatabase.checkIfAccountExists(fullName)) {
+			System.out.println("An account associated with this name already exists.");
+			System.out.println("Please try another name or update the existing account.");
 			return;
 		}
 		else {
-			if (myUserDatabase.searchCurrentRole(username) != User.Role.PharmacyManager) {
-				System.out.println("The account associated with this name is a " + myUserDatabase.searchCurrentRole(username) + " Account, not a Pharmacy Manager Account");
-				System.out.println("Please use an alternate function to update this account.");
-				return;
+			System.out.println("Please enter the date of birth of the IT Administrator in the form MM/DD/YYYY:");
+			String dob = scnr.nextLine();
+			
+			System.out.println("Please enter the address of the IT Administrator:");
+			String address = scnr.nextLine();
+			
+			System.out.println("Please indicate the gender of the IT Administrator (Male/Female/Other):");
+			String gender = scnr.next();
+			String newline = scnr.nextLine();
+			while (!(gender.equals("Male") || gender.equals("Female") || gender.equals("Other"))) {
+				System.out.println("Invalid entry. Please enter Male, Female, or Other.");
+				gender = scnr.next();
+				newline = scnr.nextLine();
 			}
-			else {
-				System.out.println("Please indicate which field you would like to update (1-8):");
-				System.out.println("1. Name");
-				System.out.println("2. Date of Birth");
-				System.out.println("3. Gender");
-				System.out.println("4. Phone Number");
-				System.out.println("5. Address");
-				System.out.println("6. Role");
-				System.out.println("7. Username");
-				System.out.println("8. Password");
-				
-				int answer = scnr.nextInt();
+			User.Gender employeeGender = User.Gender.Other;
+			if (gender.equals("Male")) {
+				employeeGender = User.Gender.Male;
 			}
+			if (gender.equals("Female")) {
+				employeeGender = User.Gender.Female;
+			}
+			if (gender.equals("Other")) {
+				employeeGender = User.Gender.Other;
+			}
+			
+			System.out.println("Please enter the 10 digit phone number of the IT Administrator in the form ##########:");
+			long phoneNumber = scnr.nextLong();
+			newline = scnr.nextLine();
+			while (phoneNumber < 1000000000 || phoneNumber > 9999999999L) {
+				System.out.println("Invalid entry. Please enter a 10 digit phone number:");
+				phoneNumber = scnr.nextLong();
+				newline = scnr.nextLine();
+			}
+			
+			System.out.println("Please enter the username for the IT Administrator's account:");
+			String username = scnr.next();
+			newline = scnr.nextLine();
+			
+			while (myUserDatabase.searchUsername(username)) {
+				System.out.println("An account associated with that username already exists.");
+				System.out.println("Please enter a new username:");
+				username = scnr.next();
+				newline = scnr.nextLine();
+			}
+			
+			String password = "a";
+			String validatedPassword = "b";
+			int run = 0;
+			while (!validatedPassword.equals(password)) {
+				if (run != 0) {
+					System.out.println("Error: Initial password does not match.");
+				}
+				System.out.println("Please enter the password for the IT Administrator's account:");
+				password = scnr.next();
+				newline = scnr.nextLine();
+				System.out.println("Please re-eneter the password:");
+				validatedPassword = scnr.next();
+				newline = scnr.nextLine();
+				++run;
+			}
+			
+			PharmacyPersonnel newPharmacyEmployee = new PharmacyPersonnel(fullName, dob, myUserDatabase.generateID(), employeeGender, phoneNumber, address, User.Role.ITAdministrator, username, password);
+			myUserDatabase.AddUser(newPharmacyEmployee);
+			myActivityLog.AddActivity (ActivityLog.Activity.AccountCreation, currentName, currentRole, myUserDatabase.readLastID(), User.Role.ITAdministrator, ActivityLog.AccountUpdateField.None, "", "", 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+			
+			System.out.println(fullName + " has successfully been added to the system under the username " + username + "!");
 		}
 	}
+	
 	
 	public static void unlockPharmacyPersonnelAccount(Scanner scnr, UserDatabase myUserDatabase, ActivityLog myActivityLog, String currentName, User.Role currentRole) {
 		System.out.println("Please enter the username associated with the account you would like to unlock:");
