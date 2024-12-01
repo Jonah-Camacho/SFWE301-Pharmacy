@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 
 public class Prescription extends DrugBatch {
 	
@@ -13,8 +14,8 @@ public class Prescription extends DrugBatch {
 	
 	// Constructor
 	
-	public Prescription (int batchID, String drugName, int strength, int quantity, String maxDosagePerDay, String expirationDate, String allergiesAndNotes, int pricePerMg, int prescriptionID, String dosage, String directions, int refillPeriodDays, int refillCount, boolean isSigned, Status prescriptionStatus) {
-		super(batchID, drugName, strength, quantity, maxDosagePerDay, expirationDate, allergiesAndNotes, pricePerMg);
+	public Prescription (int batchID, String drugName, int strength, int quantity, int maxDosagePerDay, LocalDate expirationDate, String allergiesAndNotes, double pricePerCapsule, int prescriptionID, String dosage, String directions, int refillPeriodDays, int refillCount, boolean isSigned, Status prescriptionStatus) {
+		super(batchID, drugName, strength, quantity, maxDosagePerDay, expirationDate, allergiesAndNotes, pricePerCapsule);
 		this.prescriptionID = prescriptionID;
 		this.dosage = dosage;
 		this.directions = directions;

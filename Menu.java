@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Menu {
 	
@@ -95,7 +96,7 @@ public class Menu {
 	
 	// Menu Selection
 	
-	public static void menuFunction(User.Role currentRole, int selection, Scanner scnr, UserDatabase myUserDatabase, PharmacyInfo myPharmacy, ActivityLog myActivityLog, PrescriptionDatabase myPrescriptionDatabase, Inventory myInventory, String currentName) {
+	public static void menuFunction(User.Role currentRole, int selection, Scanner scnr, UserDatabase myUserDatabase, PharmacyInfo myPharmacy, ActivityLog myActivityLog, PrescriptionDatabase myPrescriptionDatabase, Inventory myInventory, String currentName, DrugInformation myDrugInformation) {
 		if (currentRole == User.Role.ITAdministrator) {
 			switch(selection) {
 				case 1:
@@ -129,7 +130,7 @@ public class Menu {
 					viewPrescriptionHistory();
 					break;
 				case 11:
-					requestPrescription();
+					requestPrescription(scnr, myUserDatabase, myInventory, myActivityLog, currentName, currentRole, myDrugInformation, myPrescriptionDatabase);
 					break;
 				case 12:
 					fillPrescription();
@@ -147,7 +148,7 @@ public class Menu {
 					removeExpiredInventory();
 					break;
 				case 17:
-					purchaseDrugShipment();
+					purchaseDrugShipment(scnr, myInventory, myActivityLog, currentName, currentRole, myDrugInformation);
 					break;
 				case 18:
 					viewPrescriptionDatabase();
@@ -201,7 +202,7 @@ public class Menu {
 					viewPrescriptionHistory();
 					break;
 				case 9:
-					requestPrescription();
+					requestPrescription(scnr, myUserDatabase, myInventory, myActivityLog, currentName, currentRole, myDrugInformation, myPrescriptionDatabase);
 					break;
 				case 10:
 					updatePrescriptionStatus();
@@ -216,7 +217,7 @@ public class Menu {
 					removeExpiredInventory();
 					break;
 				case 14:
-					purchaseDrugShipment();
+					purchaseDrugShipment(scnr, myInventory, myActivityLog, currentName, currentRole, myDrugInformation);
 					break;
 				case 15:
 					viewPrescriptionDatabase();
@@ -255,7 +256,7 @@ public class Menu {
 					viewPrescriptionHistory();
 					break;
 				case 4:
-					requestPrescription();
+					requestPrescription(scnr, myUserDatabase, myInventory, myActivityLog, currentName, currentRole, myDrugInformation, myPrescriptionDatabase);
 					break;
 				case 5:
 					fillPrescription();
@@ -285,7 +286,7 @@ public class Menu {
 					viewPrescriptionHistory();
 					break;
 				case 4:
-					requestPrescription();
+					requestPrescription(scnr, myUserDatabase, myInventory, myActivityLog, currentName, currentRole, myDrugInformation, myPrescriptionDatabase);
 					break;
 				case 5:
 					updatePrescriptionStatus();
@@ -303,7 +304,7 @@ public class Menu {
 		if (currentRole == User.Role.Cashier) {
 			switch(selection) {
 				case 1:
-					requestPrescription();
+					requestPrescription(scnr, myUserDatabase, myInventory, myActivityLog, currentName, currentRole, myDrugInformation, myPrescriptionDatabase);
 					break;
 				case 2:
 					makeTransaction();
@@ -473,10 +474,12 @@ public class Menu {
 				System.out.println("11. Notes");
 				
 				int answer = scnr.nextInt();
+				String newline = scnr.nextLine();
 				
 				while (answer < 1 || answer > 11) {
 					System.out.println("Please enter an integer between 1 and 11:");
 					answer = scnr.nextInt();
+					newline = scnr.nextLine();
 				}
 				
 				if (answer == 1) {
@@ -498,7 +501,7 @@ public class Menu {
 				if (answer == 3) {
 					System.out.println("Please enter the updated gender of the patient (Male/Female/Other):");
 					String gender = scnr.next();
-					String newline = scnr.nextLine();
+					newline = scnr.nextLine();
 					while (!(gender.equals("Male") || gender.equals("Female") || gender.equals("Other"))) {
 						System.out.println("Invalid entry. Please enter Male, Female, or Other.");
 						gender = scnr.next();
@@ -522,7 +525,7 @@ public class Menu {
 				if (answer == 4) {
 					System.out.println("Please enter the updated 10 digit phone number of the patient in the form ##########:");
 					long phoneNumber = scnr.nextLong();
-					String newline = scnr.nextLine();
+					newline = scnr.nextLine();
 					while (phoneNumber < 1000000000 || phoneNumber > 9999999999L) {
 						System.out.println("Invalid entry. Please enter a 10 digit phone number:");
 						phoneNumber = scnr.nextLong();
@@ -552,13 +555,13 @@ public class Menu {
 				if (answer == 7) {
 					System.out.println("Please enter the updated 10 digit phone number of the patient's doctor in the form ##########:");
 					long docsPhoneNumber = scnr.nextLong();
-					long ogDoctorsPhoneNumber = myUserDatabase.returnDoctorsPhoneNumber(fullName);
-					String newline = scnr.nextLine();
+					newline = scnr.nextLine();
 					while (docsPhoneNumber < 1000000000 || docsPhoneNumber > 9999999999L) {
 						System.out.println("Invalid entry. Please enter a 10 digit phone number:");
 						docsPhoneNumber = scnr.nextLong();
 						newline = scnr.nextLine();
 					}
+					long ogDoctorsPhoneNumber = myUserDatabase.returnDoctorsPhoneNumber(fullName);
 					myUserDatabase.updateDoctorsPhoneNumber(fullName, docsPhoneNumber);
 					myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.returnID(fullName), myUserDatabase.returnRole(fullName), ActivityLog.AccountUpdateField.DoctorsPhoneNumber, Long.toString(ogDoctorsPhoneNumber), Long.toString(docsPhoneNumber), 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
 					System.out.println("The account has been updated.");
@@ -574,13 +577,13 @@ public class Menu {
 				if (answer == 9) {
 					System.out.println("Please enter the patient's updated insurance policy number in the form of a 8-13 digit number:");
 					long insurancePolicyNumber = scnr.nextLong();
-					long ogPolicyNumber = myUserDatabase.returnInsurnacePolicyNumber(fullName);
-					String newline = scnr.nextLine();
+					newline = scnr.nextLine();
 					while (insurancePolicyNumber < 10000000 || insurancePolicyNumber > 9999999999999L) {
 						System.out.println("Invalid entry. Please enter a 8-13 digit number:");
 						insurancePolicyNumber = scnr.nextLong();
 						newline = scnr.nextLine();
 					}
+					long ogPolicyNumber = myUserDatabase.returnInsurnacePolicyNumber(fullName);
 					myUserDatabase.updateInsurnacePolicyNumber(fullName, insurancePolicyNumber);
 					myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.returnID(fullName), myUserDatabase.returnRole(fullName), ActivityLog.AccountUpdateField.InsurancePolicyNumber, Long.toString(ogPolicyNumber), Long.toString(insurancePolicyNumber), 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
 					System.out.println("The account has been updated.");
@@ -800,10 +803,12 @@ public class Menu {
 					System.out.println("8. Password");
 					
 					int answer = scnr.nextInt();
+					String newline = scnr.nextLine();
 					
 					while (answer < 1 || answer > 8) {
 						System.out.println("Please enter an integer between 1 and 8:");
 						answer = scnr.nextInt();
+						newline = scnr.nextLine();
 					}
 					
 					if (answer == 1) {
@@ -825,7 +830,7 @@ public class Menu {
 					if (answer == 3) {
 						System.out.println("Please enter the updated gender of the employee (Male/Female/Other):");
 						String gender = scnr.next();
-						String newline = scnr.nextLine();
+						newline = scnr.nextLine();
 						while (!(gender.equals("Male") || gender.equals("Female") || gender.equals("Other"))) {
 							System.out.println("Invalid entry. Please enter Male, Female, or Other.");
 							gender = scnr.next();
@@ -849,7 +854,7 @@ public class Menu {
 					if (answer == 4) {
 						System.out.println("Please enter the updated 10 digit phone number of the employee in the form ##########:");
 						long phoneNumber = scnr.nextLong();
-						String newline = scnr.nextLine();
+						newline = scnr.nextLine();
 						while (phoneNumber < 1000000000 || phoneNumber > 9999999999L) {
 							System.out.println("Invalid entry. Please enter a 10 digit phone number:");
 							phoneNumber = scnr.nextLong();
@@ -871,7 +876,7 @@ public class Menu {
 					if (answer == 6) {
 						System.out.println("Please enter the updated role of the employee (Pharmacist, PharmacyTech, or Cashier):");
 						String role = scnr.next();
-						String newline = scnr.nextLine();
+						newline = scnr.nextLine();
 						while (!(role.equals("Pharmacist") || role.equals("PharmacyTech") || role.equals("Cashier"))) {
 							System.out.println("Invalid entry. Please enter Pharmacist, PharmacyTech, or Cashier:");
 							role = scnr.next();
@@ -895,7 +900,7 @@ public class Menu {
 					if (answer == 7) {
 						System.out.println("Please enter the updated username for the employee:");
 						String newUsername = scnr.next();
-						String newline = scnr.nextLine();
+						newline = scnr.nextLine();
 						while (myUserDatabase.searchUsername(newUsername)) {
 							System.out.println("This username is already taken. Please enter a new updated username:");
 							newUsername = scnr.next();
@@ -915,7 +920,7 @@ public class Menu {
 							}
 							System.out.println("Please enter the updated password for the employee's account:");
 							password = scnr.next();
-							String newline = scnr.nextLine();
+							newline = scnr.nextLine();
 							System.out.println("Please re-eneter the password:");
 							validatedPassword = scnr.next();
 							newline = scnr.nextLine();
@@ -946,10 +951,12 @@ public class Menu {
 					System.out.println("8. Password");
 					
 					int answer = scnr.nextInt();
+					String newline = scnr.nextLine();
 					
 					while (answer < 1 || answer > 8) {
 						System.out.println("Please enter an integer between 1 and 8:");
 						answer = scnr.nextInt();
+						newline = scnr.nextLine();
 					}
 					
 					if (answer == 1) {
@@ -971,7 +978,7 @@ public class Menu {
 					if (answer == 3) {
 						System.out.println("Please enter the updated gender of the employee (Male/Female/Other):");
 						String gender = scnr.next();
-						String newline = scnr.nextLine();
+						newline = scnr.nextLine();
 						while (!(gender.equals("Male") || gender.equals("Female") || gender.equals("Other"))) {
 							System.out.println("Invalid entry. Please enter Male, Female, or Other.");
 							gender = scnr.next();
@@ -995,7 +1002,7 @@ public class Menu {
 					if (answer == 4) {
 						System.out.println("Please enter the updated 10 digit phone number of the employee in the form ##########:");
 						long phoneNumber = scnr.nextLong();
-						String newline = scnr.nextLine();
+						newline = scnr.nextLine();
 						while (phoneNumber < 1000000000 || phoneNumber > 9999999999L) {
 							System.out.println("Invalid entry. Please enter a 10 digit phone number:");
 							phoneNumber = scnr.nextLong();
@@ -1017,7 +1024,7 @@ public class Menu {
 					if (answer == 6) {
 						System.out.println("Please enter the updated role of the employee (ITAdministrator, PharmacyManager, Pharmacist, PharmacyTech, or Cashier):");
 						String role = scnr.next();
-						String newline = scnr.nextLine();
+						newline = scnr.nextLine();
 						while (!(role.equals("ITAdministrator") || role.equals("PharmacyManager") || role.equals("Pharmacist") || role.equals("PharmacyTech") || role.equals("Cashier"))) {
 							System.out.println("Invalid entry. Please enter ITAdministrator, PharmacyManager, Pharmacist, PharmacyTech, or Cashier.");
 							role = scnr.next();
@@ -1047,7 +1054,7 @@ public class Menu {
 					if (answer == 7) {
 						System.out.println("Please enter the updated username for the employee:");
 						String newUsername = scnr.next();
-						String newline = scnr.nextLine();
+						newline = scnr.nextLine();
 						while (myUserDatabase.searchUsername(newUsername)) {
 							System.out.println("This username is already taken. Please enter a new updated username:");
 							newUsername = scnr.next();
@@ -1067,7 +1074,7 @@ public class Menu {
 							}
 							System.out.println("Please enter the updated password for the employee's account:");
 							password = scnr.next();
-							String newline = scnr.nextLine();
+							newline = scnr.nextLine();
 							System.out.println("Please re-eneter the password:");
 							validatedPassword = scnr.next();
 							newline = scnr.nextLine();
@@ -1281,8 +1288,108 @@ public class Menu {
 		
 	}
 	
-	public static void requestPrescription() {
-		
+	public static void requestPrescription(Scanner scnr, UserDatabase myUserDatabase, Inventory myInventory, ActivityLog myActivityLog, String currentName, User.Role currentRole, DrugInformation myDrugInformation, PrescriptionDatabase myPrescriptionDatabase) {
+		System.out.println("Please enter the full name of the patient that you would like to request a prescription for:");
+		String fullName = scnr.nextLine();
+		if (!myUserDatabase.checkIfAccountExists(fullName)) {
+			System.out.println("There is no account associated with this name.");
+			System.out.println("Please try another name or create an account.");
+			return;
+		}
+		else {
+			if (myUserDatabase.returnRole(fullName) != User.Role.Patient) {
+				System.out.println("This user is not a patient.");
+				System.out.println("Prescriptions can only be requested for patients");
+				System.out.println("Please try again with a patient account.");
+				return;
+			}
+			else {
+				if (!myUserDatabase.checkIfAccountIsActive(fullName)) {
+					System.out.println("This patient's account is archived.");
+					System.out.println("Please reactivate the account or create a new account.");
+					return;
+				}
+				else {
+					System.out.println("Please enter the name of the drug you would like prescribed:");
+					String drugName = scnr.nextLine();
+					while (!myInventory.checkIfDrugExists(drugName)) {
+						System.out.println("This drug is not available for purchase.");
+						System.out.println("Please enter another drug name:");
+						drugName = scnr.nextLine();
+					}
+					
+					ArrayList<Integer> strengthOptions = myInventory.returnDrugStrengthOptions(drugName);
+					int strengthChoice;
+					if (strengthOptions.size() > 1) {
+						System.out.println("You can be prescribed " + drugName + " with one of the following strength (mg/capsule) options:");
+						for (int strength:strengthOptions) {
+							System.out.println(strength);
+						}
+						
+						System.out.println("Please enter the strength (mg/capsule) of " + drugName + " that you would like:");
+						strengthChoice = scnr.nextInt();
+						String newline = scnr.nextLine();
+						boolean isValid = false;
+						for (int strength:strengthOptions) {
+							if (strengthChoice == strength) {
+								isValid = true;
+							}
+						}
+						
+						while (!isValid) {
+							System.out.println("That option is unavailable.");
+							System.out.println("Please try again and enter the strength (mg/capsule) of " + drugName + " that you would like:");
+							strengthChoice = scnr.nextInt();
+							newline = scnr.nextLine();
+							isValid = false;
+							for (int strength:strengthOptions) {
+								if (strengthChoice == strength) {
+									isValid = true;
+								}
+							}
+						}
+					}
+					else {
+						strengthChoice = strengthOptions.get(0);
+					}
+					
+					
+					System.out.println(drugName + " costs " + myInventory.returnPricePerCapsule(drugName, strengthChoice) + " per capsule.");
+					System.out.println("Please enter the quantity of " + drugName + " that you would like prescribed:");
+					int quantity = scnr.nextInt();
+					String newline = scnr.nextLine();
+					
+					while (myInventory.returnTotalQuantity(drugName, strengthChoice) < quantity) {
+						System.out.println("Sorry, there is not enough of this drug in stock.");
+						System.out.println("Please enter a new quantity below or equal to " + myInventory.returnTotalQuantity(drugName, strengthChoice));
+						quantity = scnr.nextInt();
+						newline = scnr.nextLine();
+					}
+					
+					// pull from oldest batch
+					
+					double totalPrice = quantity * myInventory.returnPricePerCapsule(drugName, strengthChoice);
+					System.out.println("The total cost will be: $" + totalPrice);
+					System.out.println("Would you like to make this purchase? (yes or no):");
+					String answer = scnr.next();
+					newline = scnr.nextLine();
+					while (!(answer.equals("yes") || answer.equals("no"))) {
+						System.out.println("Invalid entry. Please enter yes or no:");
+						answer = scnr.next();
+						newline = scnr.nextLine();
+					}
+					if (answer.equals("yes")) {
+						DrugBatch newDrugShipment = new DrugBatch(myInventory.generateID(), drugName, strengthChoice, quantity, myDrugInformation.returnMaxDosagePerDay(drugName, strengthChoice), myInventory.generateExpirationDate(), myDrugInformation.returnAllergiesAndNotes(drugName), myDrugInformation.returnPricePerCapsule(drugName, strengthChoice));
+						myInventory.addDrugBatch(newDrugShipment);
+						myActivityLog.AddActivity(ActivityLog.Activity.PurchaseDrugShipment, currentName, currentRole, 0, User.Role.None, ActivityLog.AccountUpdateField.None, "", "", 0, 0, drugName, strengthChoice, quantity, myInventory.returnLastID(), Prescription.Status.None, totalPrice, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+						System.out.println("Your prescription request has been processed!");
+					}
+					else {
+						System.out.println("Prescription request has been cancelled.");
+					}
+				}
+			}
+		}
 	}
 	
 	public static void fillPrescription() {
@@ -1305,7 +1412,75 @@ public class Menu {
 		
 	}
 	
-	public static void purchaseDrugShipment() {
+	public static void purchaseDrugShipment(Scanner scnr, Inventory myInventory, ActivityLog myActivityLog, String currentName, User.Role currentRole, DrugInformation myDrugInformation) {
+		
+		System.out.println("Please enter the name of the drug you would like to purchase:");
+		String drugName = scnr.nextLine();
+		while (!myDrugInformation.checkIfDrugExists(drugName)) {
+			System.out.println("This drug is not available for purchase.");
+			System.out.println("Please enter another drug name:");
+			drugName = scnr.nextLine();
+		}
+		
+		ArrayList<Integer> strengthOptions = myDrugInformation.returnDrugStrengthOptions(drugName);
+		int strengthChoice;
+		if (strengthOptions.size() > 1) {
+			System.out.println("You can purchase " + drugName + " with one of the following strength (mg/capsule) options:");
+			for (int strength:strengthOptions) {
+				System.out.println(strength);
+			}
+			
+			System.out.println("Please enter the strength (mg/capsule) of " + drugName + " that you would like:");
+			strengthChoice = scnr.nextInt();
+			String newline = scnr.nextLine();
+			boolean isValid = false;
+			for (int strength:strengthOptions) {
+				if (strengthChoice == strength) {
+					isValid = true;
+				}
+			}
+			
+			while (!isValid) {
+				System.out.println("That option is unavailable.");
+				System.out.println("Please try again and enter the strength (mg/capsule) of " + drugName + " that you would like:");
+				strengthChoice = scnr.nextInt();
+				newline = scnr.nextLine();
+				isValid = false;
+				for (int strength:strengthOptions) {
+					if (strengthChoice == strength) {
+						isValid = true;
+					}
+				}
+			}
+		}
+		else {
+			strengthChoice = strengthOptions.get(0);
+		}
+		
+		System.out.println(drugName + " costs " + myDrugInformation.returnPricePerCapsule(drugName, strengthChoice) + " per capsule.");
+		System.out.println("Please enter the quantity of " + drugName + " that you would like:");
+		int quantity = scnr.nextInt();
+		String newline = scnr.nextLine();
+		
+		double totalPrice = quantity * myDrugInformation.returnPricePerCapsule(drugName, strengthChoice);
+		System.out.println("The total cost will be: $" + totalPrice);
+		System.out.println("Would you like to make this purchase? (yes or no):");
+		String answer = scnr.next();
+		newline = scnr.nextLine();
+		while (!(answer.equals("yes") || answer.equals("no"))) {
+			System.out.println("Invalid entry. Please enter yes or no:");
+			answer = scnr.next();
+			newline = scnr.nextLine();
+		}
+		if (answer.equals("yes")) {
+			DrugBatch newDrugShipment = new DrugBatch(myInventory.generateID(), drugName, strengthChoice, quantity, myDrugInformation.returnMaxDosagePerDay(drugName, strengthChoice), myInventory.generateExpirationDate(), myDrugInformation.returnAllergiesAndNotes(drugName), myDrugInformation.returnPricePerCapsule(drugName, strengthChoice));
+			myInventory.addDrugBatch(newDrugShipment);
+			myActivityLog.AddActivity(ActivityLog.Activity.PurchaseDrugShipment, currentName, currentRole, 0, User.Role.None, ActivityLog.AccountUpdateField.None, "", "", 0, 0, drugName, strengthChoice, quantity, myInventory.returnLastID(), Prescription.Status.None, totalPrice, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+			System.out.println(drugName + " has been purchased!");
+		}
+		else {
+			System.out.println("Purchase has been cancelled.");
+		}
 		
 	}
 	

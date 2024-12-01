@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 
 public class DrugBatch {
 	
@@ -5,14 +6,14 @@ public class DrugBatch {
 	String drugName;
 	int strength;
 	int quantity;
-	String maxDosagePerDay;
-	String expirationDate;
+	int maxDosagePerDay;
+	LocalDate expirationDate;
 	String allergiesAndNotes = "";
-	int pricePerMg;
+	double pricePerCapsule;
 	
 	// Constructor
 	
-	public DrugBatch (int batchID, String drugName, int strength, int quantity, String maxDosagePerDay, String expirationDate, String allergiesAndNotes, int pricePerMg) {
+	public DrugBatch (int batchID, String drugName, int strength, int quantity, int maxDosagePerDay, LocalDate expirationDate, String allergiesAndNotes, double pricePerCapsule) {
 		this.batchID = batchID;
 		this.drugName = drugName;
 		this.strength = strength;
@@ -20,7 +21,7 @@ public class DrugBatch {
 		this.maxDosagePerDay = maxDosagePerDay;
 		this.expirationDate = expirationDate;
 		this.allergiesAndNotes = allergiesAndNotes;
-		this.pricePerMg = pricePerMg;
+		this.pricePerCapsule = pricePerCapsule;
 	}
 	
 }

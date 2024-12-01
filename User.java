@@ -2,7 +2,7 @@
 public abstract class User {
 	
 	enum Gender {Male, Female, Other};
-	enum Role {ITAdministrator, PharmacyManager, Pharmacist, PharmacyTech, Cashier, Patient};
+	enum Role {ITAdministrator, PharmacyManager, Pharmacist, PharmacyTech, Cashier, Patient, None};
 	
 	int IDNumber;
 	String fullName;

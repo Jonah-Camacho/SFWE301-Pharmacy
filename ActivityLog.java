@@ -22,7 +22,7 @@ public class ActivityLog {
 		int activityID = generateID();
 		LocalDate date = LocalDate.now();
 		LocalTime time = LocalTime.now();
-
+		
 		String newBeforeChange = "\"" + beforeChange + "\"";
 		String newAfterChange = "\"" + afterChange + "\"";
 		String newRecord = "" + activityID + "," + date + "," + time + "," + myActivity.toString() + "," + pharmacyPersonnelName + "," + pharmacyPersonnelRole.toString() + "," + createdOrUpdatedAccountID + "," + createdOrUpdatedAccountRole.toString() + "," + myAccountUpdateField.toString() + "," + newBeforeChange + "," + newAfterChange + "," + patientId + "," + prescriptionID + "," + drugName + "," + drugStrength + "," + drugQuantity + "," + batchID + "," + updatedPrescriptionStatus.toString() + "," + totalPrice + "," + cardNumber + "," + cardExpiration + "," + cardPin + "," + myPharmacyInfoUpdateField.toString();

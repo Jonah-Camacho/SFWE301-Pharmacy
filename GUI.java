@@ -9,6 +9,7 @@ public class GUI {
 		Inventory myInventory = new Inventory();
 		PrescriptionDatabase myPrescriptionDatabase = new PrescriptionDatabase();
 		ActivityLog myActivityLog = new ActivityLog();
+		DrugInformation myDrugInformation = new DrugInformation();
 		String usernameIn;
 		String passwordIn;
 		boolean usernameFound = false;
@@ -97,7 +98,7 @@ public class GUI {
 			Menu.printMenu(currentRole);
 			menuSelection = scnr.nextInt();
 			newline = scnr.nextLine();      // To absorb newline and avoid issues when working with menu functions
-			Menu.menuFunction(currentRole, menuSelection, scnr, myUserDatabase, myPharmacy, myActivityLog, myPrescriptionDatabase, myInventory, currentName);
+			Menu.menuFunction(currentRole, menuSelection, scnr, myUserDatabase, myPharmacy, myActivityLog, myPrescriptionDatabase, myInventory, currentName, myDrugInformation);
 		}
 		
 		System.out.println("You have been successfully logged out. Goodbye!");

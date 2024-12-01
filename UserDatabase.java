@@ -779,7 +779,7 @@ public class UserDatabase {
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[1].toLowerCase().equals(fullName.toLowerCase())) {
-					values[5] = newAddress;
+					values[5] = "\"" + newAddress + "\"";
 					updated = true;
 				}
 				lines.add(String.join(",", values));
@@ -1059,7 +1059,7 @@ public class UserDatabase {
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[14].equals(username)) {
-					values[5] = newAddress;
+					values[5] = "\"" + newAddress + "\"";
 					updated = true;
 				}
 				lines.add(String.join(",", values));
@@ -1354,7 +1354,7 @@ public class UserDatabase {
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[1].toLowerCase().equals(fullName.toLowerCase())) {
-					values[12] = newAllergies;
+					values[12] = "\"" + newAllergies + "\"";
 					updated = true;
 				}
 				lines.add(String.join(",", values));
@@ -1413,7 +1413,7 @@ public class UserDatabase {
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[1].toLowerCase().equals(fullName.toLowerCase())) {
-					values[13] = newNotes;
+					values[13] = "\"" + newNotes + "\"";
 					updated = true;
 				}
 				lines.add(String.join(",", values));
