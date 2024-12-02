@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.time.LocalDate;
 
 public class GUI {
 	
@@ -18,7 +19,7 @@ public class GUI {
 		String currentName;
 		User.Role currentRole;
 		int menuSelection = 0;
-				
+			
 		// Log-In System
 		
 		System.out.println("Welcome to the Pharmacy Management System!");
@@ -94,7 +95,7 @@ public class GUI {
 		currentName = myUserDatabase.searchCurrentName(usernameIn);
 		currentRole = myUserDatabase.searchCurrentRole(usernameIn);
 	
-		while ((currentRole == User.Role.ITAdministrator && menuSelection != 24) || (currentRole == User.Role.PharmacyManager && menuSelection != 21) || (currentRole == User.Role.Pharmacist && menuSelection != 8) || (currentRole == User.Role.PharmacyTech && menuSelection != 7) || (currentRole == User.Role.Cashier && menuSelection != 3)) {
+		while ((currentRole == User.Role.ITAdministrator && menuSelection != 23) || (currentRole == User.Role.PharmacyManager && menuSelection != 20) || (currentRole == User.Role.Pharmacist && menuSelection != 8) || (currentRole == User.Role.PharmacyTech && menuSelection != 6) || (currentRole == User.Role.Cashier && menuSelection != 3)) {
 			Menu.printMenu(currentRole);
 			menuSelection = scnr.nextInt();
 			newline = scnr.nextLine();      // To absorb newline and avoid issues when working with menu functions

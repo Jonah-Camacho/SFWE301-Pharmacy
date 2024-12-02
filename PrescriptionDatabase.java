@@ -99,7 +99,7 @@ public class PrescriptionDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (values[14].equals("InProgress")) {
+				if (values[15].equals("InProgress")) {
 					prescriptionsReadyToBeFilled.add(Integer.parseInt(values[0]));
 				}
 			}
@@ -122,8 +122,8 @@ public class PrescriptionDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (prescriptionID == Integer.parseInt(values[0])) {
-					values[14] = Prescription.Status.ReadyFilled.toString();
+				if (values[0].equals(Integer.toString(prescriptionID))) {
+					values[15] = Prescription.Status.ReadyFilled.toString();
 					updated = true;
 				}
 				lines.add(String.join(",", values));
@@ -158,7 +158,7 @@ public class PrescriptionDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (prescriptionID == Integer.parseInt(values[0])) {
+				if (values[0].equals(Integer.toString(prescriptionID))) {
 					values[14] = Prescription.Status.Cancelled.toString();
 					updated = true;
 				}
@@ -194,7 +194,7 @@ public class PrescriptionDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (prescriptionID == Integer.parseInt(values[0])) {
+				if (values[0].equals(Integer.toString(prescriptionID))) {
 					values[14] = Prescription.Status.Sold.toString();
 					updated = true;
 				}
@@ -230,7 +230,7 @@ public class PrescriptionDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (prescriptionID == Integer.parseInt(values[0])) {
+				if (values[0].equals(Integer.toString(prescriptionID))) {
 					patientID = Integer.parseInt(values[1]);
 				}
 			}
@@ -253,7 +253,7 @@ public class PrescriptionDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (prescriptionID == Integer.parseInt(values[0])) {
+				if (values[0].equals(Integer.toString(prescriptionID))) {
 					drugName = values[3];
 				}
 			}
@@ -276,7 +276,7 @@ public class PrescriptionDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (prescriptionID == Integer.parseInt(values[0])) {
+				if (values[0].equals(Integer.toString(prescriptionID))) {
 					drugStrength = Integer.parseInt(values[4]);
 				}
 			}
@@ -299,7 +299,7 @@ public class PrescriptionDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (prescriptionID == Integer.parseInt(values[0])) {
+				if (values[0].equals(Integer.toString(prescriptionID))) {
 					drugQuantity = Integer.parseInt(values[5]);
 				}
 			}
@@ -322,7 +322,7 @@ public class PrescriptionDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (prescriptionID == Integer.parseInt(values[0])) {
+				if (values[0].equals(Integer.toString(prescriptionID))) {
 					batchID = Integer.parseInt(values[2]);
 				}
 			}
@@ -345,7 +345,7 @@ public class PrescriptionDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (Integer.parseInt(values[0]) == prescriptionID) {
+				if (values[0].equals(Integer.toString(prescriptionID))) {
 					maxDosagePerDay = Integer.parseInt(values[6]);
 				}
 			}
@@ -368,7 +368,7 @@ public class PrescriptionDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (Integer.parseInt(values[0]) == prescriptionID) {
+				if (values[0].equals(Integer.toString(prescriptionID))) {
 					allergiesAndNotes = values[8];
 				}
 			}
@@ -391,7 +391,7 @@ public class PrescriptionDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (Integer.parseInt(values[0]) == prescriptionID) {
+				if (values[0].equals(Integer.toString(prescriptionID))) {
 					pricePerCapsule = Double.parseDouble(values[9]);
 				}
 			}
@@ -414,7 +414,7 @@ public class PrescriptionDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (Integer.parseInt(values[0]) == prescriptionID) {
+				if (values[0].equals(Integer.toString(prescriptionID))) {
 					expirationDate = LocalDate.parse(values[7]);
 				}
 			}
@@ -437,7 +437,7 @@ public class PrescriptionDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (Integer.parseInt(values[0]) == prescriptionID) {
+				if (values[0].equals(Integer.toString(prescriptionID))) {
 					dosage = values[10];
 				}
 			}
@@ -460,7 +460,7 @@ public class PrescriptionDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (Integer.parseInt(values[0]) == prescriptionID) {
+				if (values[0].equals(Integer.toString(prescriptionID))) {
 					directions = values[11];
 				}
 			}
@@ -483,7 +483,7 @@ public class PrescriptionDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (Integer.parseInt(values[0]) == prescriptionID) {
+				if (values[0].equals(Integer.toString(prescriptionID))) {
 					refillPeriod = Integer.parseInt(values[12]);
 				}
 			}
@@ -506,7 +506,7 @@ public class PrescriptionDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (Integer.parseInt(values[0]) == prescriptionID) {
+				if (values[0].equals(Integer.toString(prescriptionID))) {
 					refillCount = Integer.parseInt(values[13]);
 				}
 			}
@@ -529,7 +529,7 @@ public class PrescriptionDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (Integer.parseInt(values[0]) == prescriptionID) {
+				if (values[0].equals(Integer.toString(prescriptionID))) {
 					if (values[14].equals("InProgress")) {
 						status = Prescription.Status.InProgress;
 					}

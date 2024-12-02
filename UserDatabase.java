@@ -1632,7 +1632,7 @@ public class UserDatabase {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (Integer.parseInt(values[0]) == patientID) {
+				if (values[0].equals(Integer.toString(patientID))) {
 					values[17] = values[17] + prescriptionID + ",";
 					updated = true;
 				}

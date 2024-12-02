@@ -53,7 +53,7 @@ public class Inventory {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (batchID == Integer.parseInt(values[0])) {
+				if (values[0].equals(Integer.toString(batchID))) {
 					int newQuantity = Integer.parseInt(values[3]) - quantity;
 					values[3] = Integer.toString(newQuantity);
 					updated = true;
@@ -90,7 +90,7 @@ public class Inventory {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (batchID == Integer.parseInt(values[0])) {
+				if (values[0].equals(Integer.toString(batchID))) {
 					int newQuantity = Integer.parseInt(values[3]) + quantity;
 					values[3] = Integer.toString(newQuantity);
 					updated = true;
@@ -233,7 +233,7 @@ public class Inventory {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if ((values[1].toLowerCase().equals(drugName.toLowerCase())) && (Integer.parseInt(values[2])) == strength) {
+				if ((values[1].toLowerCase().equals(drugName.toLowerCase())) && (values[2].equals(Integer.toString(strength)))) {
 					maxDosagePerDay = Integer.parseInt(values[4]);
 				}
 			}
@@ -279,7 +279,7 @@ public class Inventory {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if ((values[1].toLowerCase().equals(drugName.toLowerCase())) && (Integer.parseInt(values[2])) == strength) {
+				if ((values[1].toLowerCase().equals(drugName.toLowerCase())) && (values[2].equals(Integer.toString(strength)))) {
 					pricePerCapsule = Double.parseDouble(values[7]);
 				}
 			}
@@ -302,7 +302,7 @@ public class Inventory {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if ((values[1].toLowerCase().equals(drugName.toLowerCase())) && (Integer.parseInt(values[2])) == strength) {
+				if ((values[1].toLowerCase().equals(drugName.toLowerCase())) && (values[2].equals(Integer.toString(strength)))) {
 					batchID = Integer.parseInt(values[0]);
 				}
 			}
@@ -325,7 +325,7 @@ public class Inventory {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (batchID == Integer.parseInt(values[0])) {
+				if (values[0].equals(Integer.toString(batchID))) {
 					expirationDate = LocalDate.parse(values[5]);
 				}
 			}
@@ -348,7 +348,7 @@ public class Inventory {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if ((values[1].toLowerCase().equals(drugName.toLowerCase())) && (Integer.parseInt(values[2])) == strength) {
+				if ((values[1].toLowerCase().equals(drugName.toLowerCase())) && (values[2].equals(Integer.toString(strength)))) {
 					totalQuantity += Integer.parseInt(values[3]);
 				}
 			}
@@ -371,7 +371,7 @@ public class Inventory {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if ((values[1].toLowerCase().equals(drugName.toLowerCase())) && (Integer.parseInt(values[2])) == strength && Integer.parseInt(values[3]) >= quantity) {
+				if ((values[1].toLowerCase().equals(drugName.toLowerCase())) && (values[2].equals(Integer.toString(strength))) && (values[3].equals(Integer.toString(quantity)))) {
 					batchID = Integer.parseInt(values[0]);
 					return batchID;
 				}
