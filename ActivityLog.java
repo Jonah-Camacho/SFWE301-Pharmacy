@@ -11,13 +11,13 @@ import java.time.LocalTime;
 public class ActivityLog {
 
 	String filePath = "ActivityLog.csv";
-	String[] headers = {"Activity ID", "Date", "Time", "Activity", "Pharmacy Personnel Name", "Pharmacy Personnel Role", "Created/Updated Account ID", "Created/Updated Account Role", "Account Updated Field", "Before Change", "After Change", "Patient ID", "Prescription ID", "Drug Name", "Drug Strength", "Drug Quantity", "Batch ID", "Updated Prescription Status", "Total Price", "Card Number", "Card Expiration", "Card Pin", "Pharmacy Info Update Field"};
+	String[] headers = {"Activity ID", "Date", "Time", "Activity", "Pharmacy Personnel Name", "Pharmacy Personnel Role", "Created/Updated Account ID", "Created/Updated Account Role", "Account Updated Field", "Before Change", "After Change", "Patient ID", "Prescription ID", "Drug Name", "Drug Strength", "Drug Quantity", "Batch ID", "Updated Prescription Status", "Total Price", "Card Number", "Card Expiration", "Card Security Code", "Pharmacy Info Update Field"};
 	
-	enum Activity {AccountCreation, AccountUpdate, RequestPrescription, FillPrescription, MakeTransaction, ViewInventory, RemoveExpiredInventory, PurchaseDrugShipment, ViewPrescriptionDatabase, ViewUserDatabase, ViewActivityLog, RequestFinancialReport, RequestInventoryReport, UpdatePharmacyInfo};
+	enum Activity {AccountCreation, AccountUpdate, RequestPrescription, FillPrescription, CancelPrescription, MakeTransaction, ViewInventory, RemoveExpiredInventory, PurchaseDrugShipment, ViewPrescriptionDatabase, ViewUserDatabase, ViewActivityLog, RequestFinancialReport, RequestInventoryReport, UpdatePharmacyInfo};
 	enum AccountUpdateField {Name, DateOfBirth, Gender, PhoneNumber, Address, DoctorsName, DoctorsPhoneNumber, InsuranceProvider, InsurancePolicyNumber, Allergies, Notes, Role, Username, Password, LockedStatus, ActiveStatus, Prescription, None};
 	enum PharmacyInfoUpdateField {Address, Hours, PhoneNumber, None};	
 	
-	public void AddActivity (Activity myActivity, String pharmacyPersonnelName, User.Role pharmacyPersonnelRole, int createdOrUpdatedAccountID, User.Role createdOrUpdatedAccountRole, AccountUpdateField myAccountUpdateField, String beforeChange, String afterChange, int patientId, int prescriptionID, String drugName, int drugStrength, int drugQuantity, int batchID, Prescription.Status updatedPrescriptionStatus, double totalPrice, long cardNumber, String cardExpiration, int cardPin, PharmacyInfoUpdateField myPharmacyInfoUpdateField) {
+	public void AddActivity (Activity myActivity, String pharmacyPersonnelName, User.Role pharmacyPersonnelRole, int createdOrUpdatedAccountID, User.Role createdOrUpdatedAccountRole, AccountUpdateField myAccountUpdateField, String beforeChange, String afterChange, int patientId, int prescriptionID, String drugName, int drugStrength, int drugQuantity, int batchID, Prescription.Status updatedPrescriptionStatus, double totalPrice, long cardNumber, String cardExpiration, int cardSecurityCode, PharmacyInfoUpdateField myPharmacyInfoUpdateField) {
 				
 		int activityID = generateID();
 		LocalDate date = LocalDate.now();
@@ -25,7 +25,7 @@ public class ActivityLog {
 		
 		String newBeforeChange = "\"" + beforeChange + "\"";
 		String newAfterChange = "\"" + afterChange + "\"";
-		String newRecord = "" + activityID + "," + date + "," + time + "," + myActivity.toString() + "," + pharmacyPersonnelName + "," + pharmacyPersonnelRole.toString() + "," + createdOrUpdatedAccountID + "," + createdOrUpdatedAccountRole.toString() + "," + myAccountUpdateField.toString() + "," + newBeforeChange + "," + newAfterChange + "," + patientId + "," + prescriptionID + "," + drugName + "," + drugStrength + "," + drugQuantity + "," + batchID + "," + updatedPrescriptionStatus.toString() + "," + totalPrice + "," + cardNumber + "," + cardExpiration + "," + cardPin + "," + myPharmacyInfoUpdateField.toString();
+		String newRecord = "" + activityID + "," + date + "," + time + "," + myActivity.toString() + "," + pharmacyPersonnelName + "," + pharmacyPersonnelRole.toString() + "," + createdOrUpdatedAccountID + "," + createdOrUpdatedAccountRole.toString() + "," + myAccountUpdateField.toString() + "," + newBeforeChange + "," + newAfterChange + "," + patientId + "," + prescriptionID + "," + drugName + "," + drugStrength + "," + drugQuantity + "," + batchID + "," + updatedPrescriptionStatus.toString() + "," + totalPrice + "," + cardNumber + "," + cardExpiration + "," + cardSecurityCode + "," + myPharmacyInfoUpdateField.toString();
 	
 		try {
 			File file = new File(filePath);

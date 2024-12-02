@@ -43,14 +43,6 @@ public class PrescriptionDatabase {
 		}
 	}
 	
-	public void updateStatus() {
-		
-	}
-	
-	public void cancelPrescription () {
-		
-	}
-	
 	// Generate Prescription Database ID
 	
 	public int generateID () {
@@ -132,6 +124,78 @@ public class PrescriptionDatabase {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (prescriptionID == Integer.parseInt(values[0])) {
 					values[14] = Prescription.Status.ReadyFilled.toString();
+					updated = true;
+				}
+				lines.add(String.join(",", values));
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file for update: " + e.getMessage());
+		}
+		
+		try (FileWriter writer = new FileWriter(filePath)) {
+			for (String line : lines) {
+				writer.write(line + "\n");
+			}
+			if (!updated) {
+				System.out.println("Name not found. No updates made.");
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error writing updated file: " + e.getMessage());
+		}
+	}
+	
+	// Cancel Prescription
+	
+	public void cancelPrescription (int prescriptionID) {
+		List<String> lines = new ArrayList<>();
+		boolean updated = false;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (prescriptionID == Integer.parseInt(values[0])) {
+					values[14] = Prescription.Status.Cancelled.toString();
+					updated = true;
+				}
+				lines.add(String.join(",", values));
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file for update: " + e.getMessage());
+		}
+		
+		try (FileWriter writer = new FileWriter(filePath)) {
+			for (String line : lines) {
+				writer.write(line + "\n");
+			}
+			if (!updated) {
+				System.out.println("Name not found. No updates made.");
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error writing updated file: " + e.getMessage());
+		}
+	}
+	
+	// Sold Prescription
+	
+	public void soldPrescription (int prescriptionID) {
+		List<String> lines = new ArrayList<>();
+		boolean updated = false;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (prescriptionID == Integer.parseInt(values[0])) {
+					values[14] = Prescription.Status.Sold.toString();
 					updated = true;
 				}
 				lines.add(String.join(",", values));

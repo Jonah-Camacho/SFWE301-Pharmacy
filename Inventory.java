@@ -80,6 +80,43 @@ public class Inventory {
 		}
 	}
 	
+	// Replace inventory for cancelled prescription
+	
+	public void cancelPrescription (int batchID, int quantity) {
+		List<String> lines = new ArrayList<>();
+		boolean updated = false;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (batchID == Integer.parseInt(values[0])) {
+					int newQuantity = Integer.parseInt(values[3]) + quantity;
+					values[3] = Integer.toString(newQuantity);
+					updated = true;
+				}
+				lines.add(String.join(",", values));
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file for update: " + e.getMessage());
+		}
+		
+		try (FileWriter writer = new FileWriter(filePath)) {
+			for (String line : lines) {
+				writer.write(line + "\n");
+			}
+			if (!updated) {
+				System.out.println("Name not found. No updates made.");
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error writing updated file: " + e.getMessage());
+		}
+	}
+	
 	// Remove expired inventory
 	
 	public void removeExpiredInventory () {
