@@ -9,7 +9,7 @@ import java.util.List;
 public class UserDatabase {
 	
 	String filePath = "UserDatabase.csv";
-	String[] headers = {"ID Number", "Full Name", "Date of Birth", "Gender", "Phone Number", "Address", "Active?", "Role", "Doctor's Name", "Doctor's Phone Number", "Insurance Provider", "Insurance Policy Number", "Allergies", "Notes", "Username", "Password", "Locked?"};
+	String[] headers = {"ID Number", "Full Name", "Date of Birth", "Gender", "Phone Number", "Address", "Active?", "Role", "Doctor's Name", "Doctor's Phone Number", "Insurance Provider", "Insurance Policy Number", "Allergies", "Notes", "Username", "Password", "Locked?", "Prescription IDs"};
 	
 	// Add Patient to UserDatabase
 	
@@ -17,7 +17,14 @@ public class UserDatabase {
 		String newAddress = "\"" + myPatient.address + "\"";
 		String newAllergies = "\"" + myPatient.allergies + "\"";
 		String newNotes = "\"" + myPatient.notes + "\"";
-		String newRecord = "" + myPatient.IDNumber + "," + myPatient.fullName + "," + myPatient.dateOfBirth + "," + myPatient.userGender + "," + myPatient.phoneNumber + "," + newAddress + "," + myPatient.isActive + "," + myPatient.userRole + "," + myPatient.doctorsName + "," + myPatient.doctorsPhoneNumber + "," + myPatient.insuranceProvider + "," + myPatient.insurancePolicyNumber + "," + newAllergies + "," + newNotes + ", , , ";
+		
+		String newPrescriptionIDs = "";
+		for (int prescriptionID:myPatient.prescriptionIDs) {
+			newPrescriptionIDs = newPrescriptionIDs + prescriptionID + ", ";
+		}
+		newPrescriptionIDs = "\"" + newPrescriptionIDs + "\"";
+		
+		String newRecord = "" + myPatient.IDNumber + "," + myPatient.fullName + "," + myPatient.dateOfBirth + "," + myPatient.userGender + "," + myPatient.phoneNumber + "," + newAddress + "," + myPatient.isActive + "," + myPatient.userRole + "," + myPatient.doctorsName + "," + myPatient.doctorsPhoneNumber + "," + myPatient.insuranceProvider + "," + myPatient.insurancePolicyNumber + "," + newAllergies + "," + newNotes + ", , , ," + newPrescriptionIDs;
 	
 		try {
 			File file = new File(filePath);
@@ -45,7 +52,7 @@ public class UserDatabase {
 	// Add Pharmacy Personnel to UserDatabase
 	public void AddUser (PharmacyPersonnel myPharmacyPersonnel) {
 		String newAddress = "\"" + myPharmacyPersonnel.address + "\"";
-		String newRecord = "" + myPharmacyPersonnel.IDNumber + "," + myPharmacyPersonnel.fullName + "," + myPharmacyPersonnel.dateOfBirth + "," + myPharmacyPersonnel.userGender + "," + myPharmacyPersonnel.phoneNumber + "," + newAddress + "," + myPharmacyPersonnel.isActive + "," + myPharmacyPersonnel.userRole + ", , , , , , ," + myPharmacyPersonnel.username + "," + myPharmacyPersonnel.password + "," + myPharmacyPersonnel.isLocked;
+		String newRecord = "" + myPharmacyPersonnel.IDNumber + "," + myPharmacyPersonnel.fullName + "," + myPharmacyPersonnel.dateOfBirth + "," + myPharmacyPersonnel.userGender + "," + myPharmacyPersonnel.phoneNumber + "," + newAddress + "," + myPharmacyPersonnel.isActive + "," + myPharmacyPersonnel.userRole + ", , , , , , ," + myPharmacyPersonnel.username + "," + myPharmacyPersonnel.password + "," + myPharmacyPersonnel.isLocked + "";
 	
 		try {
 			File file = new File(filePath);
@@ -1612,6 +1619,42 @@ public class UserDatabase {
 		catch (IOException e) {
 			System.out.println("Error reading file: " + e.getMessage());
 			return name;
+		}
+	}
+	
+	// Add prescription to patient's prescription ID array
+
+	public void addPrescriptionToPatient (int patientID, int prescriptionID) {
+		List<String> lines = new ArrayList<>();
+		boolean updated = false;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (Integer.parseInt(values[0]) == patientID) {
+					values[17] = values[17] + prescriptionID + ", ";
+					updated = true;
+				}
+				lines.add(String.join(",", values));
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file for update: " + e.getMessage());
+		}
+		
+		try (FileWriter writer = new FileWriter(filePath)) {
+			for (String line : lines) {
+				writer.write(line + "\n");
+			}
+			if (!updated) {
+				System.out.println("Name not found. No updates made.");
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error writing updated file: " + e.getMessage());
 		}
 	}
 	

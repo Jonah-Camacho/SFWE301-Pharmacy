@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Patient extends User {
 	
@@ -10,6 +11,7 @@ public class Patient extends User {
 	String allergies = "";
 	boolean hasNotes = false;
 	String notes = "";
+	ArrayList<Integer> prescriptionIDs = new ArrayList<>();
 	
 	
 	//Basic Patient Constructor
@@ -40,9 +42,7 @@ public class Patient extends User {
 		this.insuranceProvider = insuranceProvider;
 		this.insurancePolicyNumber = insurancePolicyNumber;
 	}
-	
-	
-	
+
 	//Setters
 	
 	public void addAllergies(String allergies) {
@@ -55,10 +55,11 @@ public class Patient extends User {
 		this.hasNotes = true;
 	}
 	
-	//Getters
+	public void addPrescription (int prescriptionID) {
+		this.prescriptionIDs.add(prescriptionID);
+	}
 	
-	
-	
+
 	//Methods
 	
 	public void PrintPatientInfo() {

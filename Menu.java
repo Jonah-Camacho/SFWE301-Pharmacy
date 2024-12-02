@@ -10,56 +10,54 @@ public class Menu {
 		System.out.print("Select an option (1-");
 		
 		if (userRole == User.Role.ITAdministrator) {
-			System.out.println("24):");
+			System.out.println("23):");
 			System.out.println("1.  Create Patient Account");
-			System.out.println("2.  Update Patient Account");
-			System.out.println("3.  Archive Account");
-			System.out.println("4.  Reactivate Account");
-			System.out.println("5.  Create Pharmacy Personnel Account");
+			System.out.println("2.  Create Pharmacist, PharmacyTech, or Cashier Account");
+			System.out.println("3.  Create Pharmacy Manager Account");
+			System.out.println("4.  Create IT Administrator Account");
+			System.out.println("5.  Update Patient Account");
 			System.out.println("6.  Update Pharmacy Personnel Account");
-			System.out.println("7.  Create Pharmacy Manager Account");
-			System.out.println("8.  Create IT Administrator Account");
+			System.out.println("7.  Archive Account");
+			System.out.println("8.  Reactivate Account");
 			System.out.println("9.  Unlock Pharmacy Personnel Account");
 			System.out.println("10. View Prescription History");
 			System.out.println("11. Request Prescription");
 			System.out.println("12. Fill Prescription");
-			System.out.println("13. Update Prescription Status");
-			System.out.println("14. Make Transaction");
-			System.out.println("15. View Inventory");
-			System.out.println("16. Remove Expired Inventory");
-			System.out.println("17. Purchase Drug Shipment");
-			System.out.println("18. View Prescription Database");
-			System.out.println("19. View User Database");
-			System.out.println("20. View Activity Log");
-			System.out.println("21. Request Financial Reports");
-			System.out.println("22. Request Inventory Reports");
-			System.out.println("23. Update Pharmacy Information");
-			System.out.println("24. Log Out");
+			System.out.println("13. Make Transaction");
+			System.out.println("14. View Inventory");
+			System.out.println("15. Remove Expired Inventory");
+			System.out.println("16. Purchase Drug Shipment");
+			System.out.println("17. View Prescription Database");
+			System.out.println("18. View User Database");
+			System.out.println("19. View Activity Log");
+			System.out.println("20. Request Financial Reports");
+			System.out.println("21. Request Inventory Reports");
+			System.out.println("22. Update Pharmacy Information");
+			System.out.println("23. Log Out");
 			System.out.println();
 		}
 		if (userRole == User.Role.PharmacyManager) {
-			System.out.println("21):");
+			System.out.println("20):");
 			System.out.println("1.  Create Patient Account");
-			System.out.println("2.  Update Patient Account");
-			System.out.println("3.  Archive Account");
-			System.out.println("4.  Reactivate Account");
-			System.out.println("5.  Create Pharmacy Personnel Account");
-			System.out.println("6.  Update Pharmacy Personnel Account");
+			System.out.println("2.  Create Pharmacist, PharmacyTech, or Cashier Account");
+			System.out.println("3.  Update Patient Account");
+			System.out.println("4.  Update Pharmacy Personnel Account");
+			System.out.println("5.  Archive Account");
+			System.out.println("6.  Reactivate Account");
 			System.out.println("7.  Unlock Pharmacy Personnel Account");
 			System.out.println("8.  View Prescription History");
 			System.out.println("9.  Request Prescription");
-			System.out.println("10. Update Prescription Status");
-			System.out.println("11. Make Transaction");
-			System.out.println("12. View Inventory");
-			System.out.println("13. Remove Expired Inventory");
-			System.out.println("14. Purchase Drug Shipment");
-			System.out.println("15. View Prescription Database");
-			System.out.println("16. View User Database");
-			System.out.println("17. View Activity Log");
-			System.out.println("18. Request Financial Reports");
-			System.out.println("19. Request Inventory Reports");
-			System.out.println("20. Update Pharmacy Information");
-			System.out.println("21. Log Out");
+			System.out.println("10. Make Transaction");
+			System.out.println("11. View Inventory");
+			System.out.println("12. Remove Expired Inventory");
+			System.out.println("13. Purchase Drug Shipment");
+			System.out.println("14. View Prescription Database");
+			System.out.println("15. View User Database");
+			System.out.println("16. View Activity Log");
+			System.out.println("17. Request Financial Reports");
+			System.out.println("18. Request Inventory Reports");
+			System.out.println("19. Update Pharmacy Information");
+			System.out.println("20. Log Out");
 			System.out.println();
 		}
 		if (userRole == User.Role.Pharmacist) {
@@ -69,20 +67,19 @@ public class Menu {
 			System.out.println("3.  View Prescription History");
 			System.out.println("4.  Request Prescription");
 			System.out.println("5.  Fill Prescription");
-			System.out.println("6.  Update Prescription Status");
-			System.out.println("7.  Make Transaction");
+			System.out.println("6.  Make Transaction");
+			System.out.println("7.  View Prescription Database");
 			System.out.println("8.  Log Out");
 			System.out.println();
 		}
 		if (userRole == User.Role.PharmacyTech) {
-			System.out.println("7):");
+			System.out.println("6):");
 			System.out.println("1.  Create Patient Account");
 			System.out.println("2.  Update Patient Account");
 			System.out.println("3.  View Prescription History");
 			System.out.println("4.  Request Prescription");
-			System.out.println("5.  Update Prescription Status");
-			System.out.println("6.  Make Transaction");
-			System.out.println("7.  Log Out");
+			System.out.println("5.  Make Transaction");
+			System.out.println("6.  Log Out");
 			System.out.println();
 		}
 		if (userRole == User.Role.Cashier) {
@@ -103,25 +100,25 @@ public class Menu {
 					createPatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 2:
-					updatePatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
+					createPharmacyPersonnelAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 3:
-					archiveAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
+					createPharmacyManagerAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 4:
-					reactivateAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
+					createITAdministratorAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 5:
-					createPharmacyPersonnelAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
+					updatePatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 6:
 					updatePharmacyPersonnelAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 7:
-					createPharmacyManagerAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
+					archiveAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 8:
-					createITAdministratorAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
+					reactivateAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 9:
 					unlockPharmacyPersonnelAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
@@ -136,39 +133,36 @@ public class Menu {
 					fillPrescription(scnr, myPrescriptionDatabase, myInventory, myActivityLog, currentName, currentRole);
 					break;
 				case 13:
-					updatePrescriptionStatus();
-					break;
-				case 14:
 					makeTransaction();
 					break;
-				case 15:
+				case 14:
 					viewInventory();
 					break;
-				case 16:
+				case 15:
 					removeExpiredInventory();
 					break;
-				case 17:
+				case 16:
 					purchaseDrugShipment(scnr, myInventory, myActivityLog, currentName, currentRole, myDrugInformation);
 					break;
-				case 18:
+				case 17:
 					viewPrescriptionDatabase();
 					break;
-				case 19:
+				case 18:
 					viewUserDatabase();
 					break;
-				case 20:
+				case 19:
 					viewActivityLog();
 					break;
-				case 21:
+				case 20:
 					requestFinancialReport();
 					break;
-				case 22:
+				case 21:
 					requestInventoryReport();
 					break;
-				case 23:
+				case 22:
 					updatePharmacyInformation();
 					break;
-				case 24:
+				case 23:
 					break;
 				default:
 					System.out.println("Invalid selection. Please try again.");
@@ -181,19 +175,19 @@ public class Menu {
 					createPatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 2:
-					updatePatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
-					break;
-				case 3:
-					archiveAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
-					break;
-				case 4:
-					reactivateAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
-					break;
-				case 5:
 					createPharmacyPersonnelAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
-				case 6:
+				case 3:
+					updatePatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
+					break;
+				case 4:
 					updatePharmacyPersonnelAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
+					break;
+				case 5:
+					archiveAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
+					break;
+				case 6:
+					reactivateAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 7:
 					unlockPharmacyPersonnelAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
@@ -205,39 +199,36 @@ public class Menu {
 					requestPrescription(scnr, myUserDatabase, myInventory, myActivityLog, currentName, currentRole, myDrugInformation, myPrescriptionDatabase);
 					break;
 				case 10:
-					updatePrescriptionStatus();
-					break;
-				case 11:
 					makeTransaction();
 					break;
-				case 12:
+				case 11:
 					viewInventory();
 					break;
-				case 13:
+				case 12:
 					removeExpiredInventory();
 					break;
-				case 14:
+				case 13:
 					purchaseDrugShipment(scnr, myInventory, myActivityLog, currentName, currentRole, myDrugInformation);
 					break;
-				case 15:
+				case 14:
 					viewPrescriptionDatabase();
 					break;
-				case 16:
+				case 15:
 					viewUserDatabase();
 					break;
-				case 17:
+				case 16:
 					viewActivityLog();
 					break;
-				case 18:
+				case 17:
 					requestFinancialReport();
 					break;
-				case 19:
+				case 18:
 					requestInventoryReport();
 					break;
-				case 20:
+				case 19:
 					updatePharmacyInformation();
 					break;
-				case 21:
+				case 20:
 					break;
 				default:
 					System.out.println("Invalid selection. Please try again.");
@@ -262,10 +253,10 @@ public class Menu {
 					fillPrescription(scnr, myPrescriptionDatabase, myInventory, myActivityLog, currentName, currentRole);
 					break;
 				case 6:
-					updatePrescriptionStatus();
+					makeTransaction();
 					break;
 				case 7:
-					makeTransaction();
+					viewPrescriptionDatabase();
 					break;
 				case 8:
 					break;
@@ -289,12 +280,9 @@ public class Menu {
 					requestPrescription(scnr, myUserDatabase, myInventory, myActivityLog, currentName, currentRole, myDrugInformation, myPrescriptionDatabase);
 					break;
 				case 5:
-					updatePrescriptionStatus();
-					break;
-				case 6:
 					makeTransaction();
 					break;
-				case 7:
+				case 6:
 					break;
 				default:
 					System.out.println("Invalid selection. Please try again.");
@@ -1403,6 +1391,7 @@ public class Menu {
 						if (answer.equals("yes")) {
 							int batchID = myInventory.returnOldestStockedBatchID(drugName, strengthChoice, quantity);
 							Prescription newPrescription = new Prescription(batchID, drugName, strengthChoice, quantity, myInventory.returnMaxDosagePerDay(drugName, strengthChoice), myInventory.returnExpirationDate(batchID), myInventory.returnAllergiesAndNotes(drugName), myInventory.returnPricePerCapsule(drugName, strengthChoice), myPrescriptionDatabase.generateID(), myUserDatabase.returnID(fullName), dosage, directions, refillPeriod, refillCount, true, Prescription.Status.InProgress);
+							myUserDatabase.addPrescriptionToPatient(myUserDatabase.returnID(fullName), myPrescriptionDatabase.returnLastID());
 							myPrescriptionDatabase.addPrescription(newPrescription);
 							myActivityLog.AddActivity(ActivityLog.Activity.RequestPrescription, currentName, currentRole, myUserDatabase.returnID(fullName), User.Role.Patient, ActivityLog.AccountUpdateField.Prescription, "", "", myUserDatabase.returnID(fullName), myPrescriptionDatabase.returnLastID(), drugName, strengthChoice, quantity, batchID, Prescription.Status.InProgress, totalPrice, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
 							System.out.println("Your prescription request has been processed!");
@@ -1443,7 +1432,7 @@ public class Menu {
 			if (answer.equals("yes")) {
 				for (int prescriptionID:prescriptionsReadyToBeFilled) {
 					myPrescriptionDatabase.fillPrescription(prescriptionID);
-					myActivityLog.AddActivity(ActivityLog.Activity.UpdatePrescriptionStatus, currentName, currentRole, myPrescriptionDatabase.returnPatientID(prescriptionID), User.Role.Patient, ActivityLog.AccountUpdateField.Prescription, "Prescription In Progress", "Prescription Filled", myPrescriptionDatabase.returnPatientID(prescriptionID), prescriptionID, myPrescriptionDatabase.returnDrugName(prescriptionID), myPrescriptionDatabase.returnDrugStrength(prescriptionID), myPrescriptionDatabase.returnDrugQuantity(prescriptionID), myPrescriptionDatabase.returnDrugBatchID(prescriptionID), Prescription.Status.ReadyFilled, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+					myActivityLog.AddActivity(ActivityLog.Activity.FillPrescription, currentName, currentRole, myPrescriptionDatabase.returnPatientID(prescriptionID), User.Role.Patient, ActivityLog.AccountUpdateField.Prescription, "Prescription In Progress", "Prescription Filled", myPrescriptionDatabase.returnPatientID(prescriptionID), prescriptionID, myPrescriptionDatabase.returnDrugName(prescriptionID), myPrescriptionDatabase.returnDrugStrength(prescriptionID), myPrescriptionDatabase.returnDrugQuantity(prescriptionID), myPrescriptionDatabase.returnDrugBatchID(prescriptionID), Prescription.Status.ReadyFilled, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
 					System.out.println("Prescription " + prescriptionID + " has been successfully filled!");
 				}
 				System.out.println("All prescriptions have been successfully filled!");
@@ -1474,7 +1463,7 @@ public class Menu {
 						}
 					}
 					myPrescriptionDatabase.fillPrescription(id);
-					myActivityLog.AddActivity(ActivityLog.Activity.UpdatePrescriptionStatus, currentName, currentRole, myPrescriptionDatabase.returnPatientID(id), User.Role.Patient, ActivityLog.AccountUpdateField.Prescription, "Prescription In Progress", "Prescription Filled", myPrescriptionDatabase.returnPatientID(id), id, myPrescriptionDatabase.returnDrugName(id), myPrescriptionDatabase.returnDrugStrength(id), myPrescriptionDatabase.returnDrugQuantity(id), myPrescriptionDatabase.returnDrugBatchID(id), Prescription.Status.ReadyFilled, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+					myActivityLog.AddActivity(ActivityLog.Activity.FillPrescription, currentName, currentRole, myPrescriptionDatabase.returnPatientID(id), User.Role.Patient, ActivityLog.AccountUpdateField.Prescription, "Prescription In Progress", "Prescription Filled", myPrescriptionDatabase.returnPatientID(id), id, myPrescriptionDatabase.returnDrugName(id), myPrescriptionDatabase.returnDrugStrength(id), myPrescriptionDatabase.returnDrugQuantity(id), myPrescriptionDatabase.returnDrugBatchID(id), Prescription.Status.ReadyFilled, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
 					System.out.println("Prescription " + id + " has been successfully filled!");
 					
 					
@@ -1493,10 +1482,6 @@ public class Menu {
 			System.out.println("There are no prescriptions ready to be filled.");
 			return;
 		}	
-	}
-	
-	public static void updatePrescriptionStatus() {
-		
 	}
 	
 	public static void makeTransaction() {
