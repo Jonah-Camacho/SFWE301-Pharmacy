@@ -1293,8 +1293,7 @@ public class Menu {
 					return;
 				}
 				else {
-					ArrayList<Integer> prescriptionIDs = new ArrayList<>();
-					prescriptionIDs = myUserDatabase.returnPatientPrescriptionIDArray(fullName);
+					ArrayList<Integer> prescriptionIDs = myUserDatabase.returnPatientPrescriptionIDArray(fullName);
 					if (prescriptionIDs.size() > 0) {
 						System.out.println("PrescriptionID: DrugName, DrugStrength (mg/capsule), DrugQuantity, BatchID, ExpirationDate, Dosage, MaxDosagePerDay, Directions, RefillPeriod (days), RefillCount, Status, TotalCost");
 						System.out.println(fullName + "'s Prescription History:");
@@ -1543,8 +1542,7 @@ public class Menu {
 					return;
 				}
 				else {
-					ArrayList<Integer> prescriptionIDs = new ArrayList<>();
-					prescriptionIDs = myUserDatabase.returnPatientPrescriptionIDArray(fullName);
+					ArrayList<Integer> prescriptionIDs = myUserDatabase.returnPatientPrescriptionIDArray(fullName);
 					if (prescriptionIDs.size() > 0) {
 						System.out.println("The following prescriptions are filled and ready for purchase:");
 						System.out.println("PrescriptionID: DrugName, DrugStrength (mg/capsule), DrugQuantity, BatchID, ExpirationDate, Dosage, MaxDosagePerDay, Directions, RefillPeriod (days), RefillCount, Status, TotalCost");
