@@ -159,7 +159,7 @@ public class PrescriptionDatabase {
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[0].equals(Integer.toString(prescriptionID))) {
-					values[14] = Prescription.Status.Cancelled.toString();
+					values[15] = Prescription.Status.Cancelled.toString();
 					updated = true;
 				}
 				lines.add(String.join(",", values));
@@ -195,7 +195,7 @@ public class PrescriptionDatabase {
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[0].equals(Integer.toString(prescriptionID))) {
-					values[14] = Prescription.Status.Sold.toString();
+					values[15] = Prescription.Status.Sold.toString();
 					updated = true;
 				}
 				lines.add(String.join(",", values));
@@ -530,16 +530,16 @@ public class PrescriptionDatabase {
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[0].equals(Integer.toString(prescriptionID))) {
-					if (values[14].equals("InProgress")) {
+					if (values[15].equals("InProgress")) {
 						status = Prescription.Status.InProgress;
 					}
-					if (values[14].equals("ReadyFilled")) {
+					if (values[15].equals("ReadyFilled")) {
 						status = Prescription.Status.ReadyFilled;
 					}
-					if (values[14].equals("Sold")) {
+					if (values[15].equals("Sold")) {
 						status = Prescription.Status.Sold;
 					}
-					if (values[14].equals("Cancelled")) {
+					if (values[15].equals("Cancelled")) {
 						status = Prescription.Status.Cancelled;
 					}
 				}

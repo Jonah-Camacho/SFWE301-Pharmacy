@@ -1633,7 +1633,7 @@ public class UserDatabase {
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[0].equals(Integer.toString(patientID))) {
-					values[17] = values[17] + prescriptionID + ",";
+					values[17] = "\"" + values[17] + prescriptionID + ",\"";
 					updated = true;
 				}
 				lines.add(String.join(",", values));
@@ -1672,6 +1672,7 @@ public class UserDatabase {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[1].toLowerCase().equals(fullName.toLowerCase())) {
 					prescriptionIDs = values[17];
+					prescriptionIDs = prescriptionIDs.substring(1, prescriptionIDs.length() - 1);
 				}
 			}
 			String[] IDs = prescriptionIDs.split(",");

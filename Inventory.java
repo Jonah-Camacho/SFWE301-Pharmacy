@@ -371,7 +371,7 @@ public class Inventory {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if ((values[1].toLowerCase().equals(drugName.toLowerCase())) && (values[2].equals(Integer.toString(strength))) && (values[3].equals(Integer.toString(quantity)))) {
+				if ((values[1].toLowerCase().equals(drugName.toLowerCase())) && (values[2].equals(Integer.toString(strength))) && (quantity <= Integer.parseInt(values[3]))) {
 					batchID = Integer.parseInt(values[0]);
 					return batchID;
 				}

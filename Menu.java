@@ -1426,8 +1426,8 @@ public class Menu {
 						if (answer.equals("yes")) {
 							int batchID = myInventory.returnOldestStockedBatchID(drugName, strengthChoice, quantity);
 							Prescription newPrescription = new Prescription(batchID, drugName, strengthChoice, quantity, myInventory.returnMaxDosagePerDay(drugName, strengthChoice), myInventory.returnExpirationDate(batchID), myInventory.returnAllergiesAndNotes(drugName), myInventory.returnPricePerCapsule(drugName, strengthChoice), myPrescriptionDatabase.generateID(), myUserDatabase.returnID(fullName), dosage, directions, refillPeriod, refillCount, true, Prescription.Status.InProgress);
-							myUserDatabase.addPrescriptionToPatient(myUserDatabase.returnID(fullName), myPrescriptionDatabase.returnLastID());
 							myPrescriptionDatabase.addPrescription(newPrescription);
+							myUserDatabase.addPrescriptionToPatient(myUserDatabase.returnID(fullName), myPrescriptionDatabase.returnLastID());
 							myActivityLog.AddActivity(ActivityLog.Activity.RequestPrescription, currentName, currentRole, myUserDatabase.returnID(fullName), User.Role.Patient, ActivityLog.AccountUpdateField.Prescription, "", "", myUserDatabase.returnID(fullName), myPrescriptionDatabase.returnLastID(), drugName, strengthChoice, quantity, batchID, Prescription.Status.InProgress, totalPrice, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
 							System.out.println("Your prescription request has been processed!");
 							System.out.println("Your prescription ID is " + myPrescriptionDatabase.returnLastID());
@@ -1544,104 +1544,55 @@ public class Menu {
 				else {
 					ArrayList<Integer> prescriptionIDs = myUserDatabase.returnPatientPrescriptionIDArray(fullName);
 					if (prescriptionIDs.size() > 0) {
-						System.out.println("The following prescriptions are filled and ready for purchase:");
-						System.out.println("PrescriptionID: DrugName, DrugStrength (mg/capsule), DrugQuantity, BatchID, ExpirationDate, Dosage, MaxDosagePerDay, Directions, RefillPeriod (days), RefillCount, Status, TotalCost");
+						boolean readyForSale = false;
 						for (int i = 0; i < prescriptionIDs.size(); ++i) {
 							if (myPrescriptionDatabase.returnPrescriptionStatus(prescriptionIDs.get(i)) == Prescription.Status.ReadyFilled) {
-								int id = prescriptionIDs.get(i);
-								System.out.println(id + ":\t" + myPrescriptionDatabase.returnDrugName(id) + ",\t" + myPrescriptionDatabase.returnDrugStrength(id) + " mg/capsule,\t" + myPrescriptionDatabase.returnDrugQuantity(id) + " capsules,\tbatch" + myPrescriptionDatabase.returnDrugBatchID(id) + ",\tExpires " + myPrescriptionDatabase.returnExpirationDate(id) + ",\t" + myPrescriptionDatabase.returnDosage(id) + ",\t" + myPrescriptionDatabase.returnMaxDosagePerDay(id) + ",\t" + myPrescriptionDatabase.returnDirections(id) + ",\tCan refill every " + myPrescriptionDatabase.returnRefillPeriod(id) + " days,\tOn refill number " + myPrescriptionDatabase.returnRefillCount(id) + ",\t" + myPrescriptionDatabase.returnPrescriptionStatus(id) + ",\t$" + (myPrescriptionDatabase.returnDrugQuantity(id) * myPrescriptionDatabase.returnPricePerCapsule(id)));
+								readyForSale = true;
 							}
 						}
 						
-						System.out.println("Please enter the prescription ID of the prescription you would like to purchase:");
-						int prescriptionID = scnr.nextInt();
-						String newline = scnr.nextLine();
-						boolean isValid = false;
-						for (int ID:prescriptionIDs) {
-							if (prescriptionID == ID) {
-								isValid = true;
-							}
+						if (!readyForSale) {
+							System.out.println("There are no prescriptions ready for sale associated with this account.");
+							System.out.println("Please request a prescription or wait for it to be filled by the pharmacist.");
+							return;
 						}
-						while (!isValid) {
-							System.out.println("That option is unavailable.");
-							System.out.println("Please try again and enter the prescription ID of the prescription you would like to purchase:");
-							prescriptionID = scnr.nextInt();
-							newline = scnr.nextLine();
-							isValid = false;
+						else {
+							System.out.println("The following prescriptions are filled and ready for purchase:");
+							System.out.println("PrescriptionID: DrugName, DrugStrength (mg/capsule), DrugQuantity, BatchID, ExpirationDate, Dosage, MaxDosagePerDay, Directions, RefillPeriod (days), RefillCount, Status, TotalCost");
+							for (int i = 0; i < prescriptionIDs.size(); ++i) {
+								if (myPrescriptionDatabase.returnPrescriptionStatus(prescriptionIDs.get(i)) == Prescription.Status.ReadyFilled) {
+									int id = prescriptionIDs.get(i);
+									System.out.println(id + ":\t" + myPrescriptionDatabase.returnDrugName(id) + ",\t" + myPrescriptionDatabase.returnDrugStrength(id) + " mg/capsule,\t" + myPrescriptionDatabase.returnDrugQuantity(id) + " capsules,\tbatch" + myPrescriptionDatabase.returnDrugBatchID(id) + ",\tExpires " + myPrescriptionDatabase.returnExpirationDate(id) + ",\t" + myPrescriptionDatabase.returnDosage(id) + ",\t" + myPrescriptionDatabase.returnMaxDosagePerDay(id) + ",\t" + myPrescriptionDatabase.returnDirections(id) + ",\tCan refill every " + myPrescriptionDatabase.returnRefillPeriod(id) + " days,\tOn refill number " + myPrescriptionDatabase.returnRefillCount(id) + ",\t" + myPrescriptionDatabase.returnPrescriptionStatus(id) + ",\t$" + (myPrescriptionDatabase.returnDrugQuantity(id) * myPrescriptionDatabase.returnPricePerCapsule(id)));
+								}
+							}
+							System.out.println();
+							System.out.println("Please enter the prescription ID of the prescription you would like to purchase:");
+							int prescriptionID = scnr.nextInt();
+							String newline = scnr.nextLine();
+							boolean isValid = false;
 							for (int ID:prescriptionIDs) {
 								if (prescriptionID == ID) {
 									isValid = true;
 								}
 							}
-						}
-						
-						double totalPrice = myPrescriptionDatabase.returnDrugQuantity(prescriptionID) * myPrescriptionDatabase.returnPricePerCapsule(prescriptionID);
-						System.out.println("The total price for this prescription is $" + totalPrice);
-						
-						System.out.println("Would you like to purchase this prescription? (yes or no):");
-						String answer = scnr.next();
-						newline = scnr.nextLine();
-						while (!(answer.equals("yes") || answer.equals("no"))) {
-							System.out.println("Invalid entry. Please enter yes or no:");
-							answer = scnr.next();
-							newline = scnr.nextLine();
-						}
-						if (answer.equals("yes")) {
-							System.out.println("Would you like to pay with cash or credit? (cash or credit):");
-							answer = scnr.next();
-							newline = scnr.nextLine();
-							while (!(answer.equals("cash") || answer.equals("credit"))) {
-								System.out.println("Invalid entry. Please enter cash or credit:");
-								answer = scnr.next();
+							while (!isValid) {
+								System.out.println("That option is unavailable.");
+								System.out.println("Please try again and enter the prescription ID of the prescription you would like to purchase:");
+								prescriptionID = scnr.nextInt();
 								newline = scnr.nextLine();
+								isValid = false;
+								for (int ID:prescriptionIDs) {
+									if (prescriptionID == ID) {
+										isValid = true;
+									}
+								}
 							}
-							if (answer.equals("cash")) {
-								System.out.println("Please enter the amount of cash paid by the patient:");
-								double cash = scnr.nextDouble();
-								newline = scnr.nextLine();
-								while (cash < totalPrice) {
-									System.out.println("Invalid amount. Please pay at least $" + totalPrice + " in cash:");
-									cash = scnr.nextDouble();
-									newline = scnr.nextLine();
-								}
-								if (cash != totalPrice) {
-									System.out.println("Please return $" + (totalPrice - cash) + " to the patient.");
-								}
-								System.out.println("The transaction is completed!");
-								myPrescriptionDatabase.soldPrescription(prescriptionID);
-								myActivityLog.AddActivity(ActivityLog.Activity.MakeTransaction, currentName, currentRole, myPrescriptionDatabase.returnPatientID(prescriptionID), User.Role.Patient, ActivityLog.AccountUpdateField.Prescription, "Prescription Is Ready", "Prescription Sold", myPrescriptionDatabase.returnPatientID(prescriptionID), prescriptionID, myPrescriptionDatabase.returnDrugName(prescriptionID), myPrescriptionDatabase.returnDrugStrength(prescriptionID), myPrescriptionDatabase.returnDrugQuantity(prescriptionID), myPrescriptionDatabase.returnDrugBatchID(prescriptionID), Prescription.Status.Sold, totalPrice, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
-							}
-							if (answer.equals("credit")) {
-								System.out.println("Please enter the 16 digit card number:");
-								long cardNumber = scnr.nextLong();
-								newline = scnr.nextLine();
-								while (cardNumber < 1000000000000000L || cardNumber > 9999999999999999L) {
-									System.out.println("Invalid entry. Please enter a 16 digit card number:");
-									cardNumber = scnr.nextLong();
-									newline = scnr.nextLine();
-								}
-								
-								System.out.println("Please enter the expiration date in the form MM/YYYY:");
-								String cardExpiration = scnr.next();
-								newline = scnr.nextLine();
-								
-								System.out.println("Please enter the 3 digit security code:");
-								int code = scnr.nextInt();
-								newline = scnr.nextLine();
-								while (cardNumber < 100 || cardNumber > 999) {
-									System.out.println("Invalid entry. Please enter a 3 digit security code:");
-									code = scnr.nextInt();
-									newline = scnr.nextLine();
-								}
-								System.out.println("The transaction is completed!");
-								myPrescriptionDatabase.soldPrescription(prescriptionID);
-								myActivityLog.AddActivity(ActivityLog.Activity.MakeTransaction, currentName, currentRole, myPrescriptionDatabase.returnPatientID(prescriptionID), User.Role.Patient, ActivityLog.AccountUpdateField.Prescription, "Prescription Is Ready", "Prescription Sold", myPrescriptionDatabase.returnPatientID(prescriptionID), prescriptionID, myPrescriptionDatabase.returnDrugName(prescriptionID), myPrescriptionDatabase.returnDrugStrength(prescriptionID), myPrescriptionDatabase.returnDrugQuantity(prescriptionID), myPrescriptionDatabase.returnDrugBatchID(prescriptionID), Prescription.Status.Sold, totalPrice, cardNumber, cardExpiration, code, ActivityLog.PharmacyInfoUpdateField.None);
-							}
-							return;
-						}
-						if (answer.equals("no")) {
-							System.out.println("Would you like to cancel this prescription? (yes or no):");
-							answer = scnr.next();
+							
+							double totalPrice = myPrescriptionDatabase.returnDrugQuantity(prescriptionID) * myPrescriptionDatabase.returnPricePerCapsule(prescriptionID);
+							System.out.println("The total price for this prescription is $" + totalPrice);
+							
+							System.out.println("Would you like to purchase this prescription? (yes or no):");
+							String answer = scnr.next();
 							newline = scnr.nextLine();
 							while (!(answer.equals("yes") || answer.equals("no"))) {
 								System.out.println("Invalid entry. Please enter yes or no:");
@@ -1649,12 +1600,75 @@ public class Menu {
 								newline = scnr.nextLine();
 							}
 							if (answer.equals("yes")) {
-								myPrescriptionDatabase.cancelPrescription(prescriptionID);
-								myInventory.cancelPrescription(myPrescriptionDatabase.returnDrugBatchID(prescriptionID), myPrescriptionDatabase.returnDrugQuantity(prescriptionID));
-								myActivityLog.AddActivity(ActivityLog.Activity.CancelPrescription, currentName, currentRole, myPrescriptionDatabase.returnPatientID(prescriptionID), User.Role.Patient, ActivityLog.AccountUpdateField.Prescription, "Prescription Is Ready", "Prescription Cancelled", myPrescriptionDatabase.returnPatientID(prescriptionID), prescriptionID, myPrescriptionDatabase.returnDrugName(prescriptionID), myPrescriptionDatabase.returnDrugStrength(prescriptionID), myPrescriptionDatabase.returnDrugQuantity(prescriptionID), myPrescriptionDatabase.returnDrugBatchID(prescriptionID), Prescription.Status.Cancelled, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+								System.out.println("Would you like to pay with cash or credit? (cash or credit):");
+								answer = scnr.next();
+								newline = scnr.nextLine();
+								while (!(answer.equals("cash") || answer.equals("credit"))) {
+									System.out.println("Invalid entry. Please enter cash or credit:");
+									answer = scnr.next();
+									newline = scnr.nextLine();
+								}
+								if (answer.equals("cash")) {
+									System.out.println("Please enter the amount of cash paid by the patient:");
+									double cash = scnr.nextDouble();
+									newline = scnr.nextLine();
+									while (cash < totalPrice) {
+										System.out.println("Invalid amount. Please pay at least $" + totalPrice + " in cash:");
+										cash = scnr.nextDouble();
+										newline = scnr.nextLine();
+									}
+									if (cash != totalPrice) {
+										System.out.println("Please return $" + (cash - totalPrice) + " to the patient.");
+									}
+									System.out.println("The transaction is completed!");
+									myPrescriptionDatabase.soldPrescription(prescriptionID);
+									myActivityLog.AddActivity(ActivityLog.Activity.MakeTransaction, currentName, currentRole, myPrescriptionDatabase.returnPatientID(prescriptionID), User.Role.Patient, ActivityLog.AccountUpdateField.Prescription, "Prescription Is Ready", "Prescription Sold", myPrescriptionDatabase.returnPatientID(prescriptionID), prescriptionID, myPrescriptionDatabase.returnDrugName(prescriptionID), myPrescriptionDatabase.returnDrugStrength(prescriptionID), myPrescriptionDatabase.returnDrugQuantity(prescriptionID), myPrescriptionDatabase.returnDrugBatchID(prescriptionID), Prescription.Status.Sold, totalPrice, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+								}
+								if (answer.equals("credit")) {
+									System.out.println("Please enter the 16 digit card number:");
+									long cardNumber = scnr.nextLong();
+									newline = scnr.nextLine();
+									while (cardNumber < 1000000000000000L || cardNumber > 9999999999999999L) {
+										System.out.println("Invalid entry. Please enter a 16 digit card number:");
+										cardNumber = scnr.nextLong();
+										newline = scnr.nextLine();
+									}
+									
+									System.out.println("Please enter the expiration date in the form MM/YYYY:");
+									String cardExpiration = scnr.next();
+									newline = scnr.nextLine();
+									
+									System.out.println("Please enter the 3 digit security code:");
+									int code = scnr.nextInt();
+									newline = scnr.nextLine();
+									while (code < 100 || code > 999) {
+										System.out.println("Invalid entry. Please enter a 3 digit security code:");
+										code = scnr.nextInt();
+										newline = scnr.nextLine();
+									}
+									System.out.println("The transaction is completed!");
+									myPrescriptionDatabase.soldPrescription(prescriptionID);
+									myActivityLog.AddActivity(ActivityLog.Activity.MakeTransaction, currentName, currentRole, myPrescriptionDatabase.returnPatientID(prescriptionID), User.Role.Patient, ActivityLog.AccountUpdateField.Prescription, "Prescription Is Ready", "Prescription Sold", myPrescriptionDatabase.returnPatientID(prescriptionID), prescriptionID, myPrescriptionDatabase.returnDrugName(prescriptionID), myPrescriptionDatabase.returnDrugStrength(prescriptionID), myPrescriptionDatabase.returnDrugQuantity(prescriptionID), myPrescriptionDatabase.returnDrugBatchID(prescriptionID), Prescription.Status.Sold, totalPrice, cardNumber, cardExpiration, code, ActivityLog.PharmacyInfoUpdateField.None);
+								}
+								return;
 							}
 							if (answer.equals("no")) {
-								return;
+								System.out.println("Would you like to cancel this prescription? (yes or no):");
+								answer = scnr.next();
+								newline = scnr.nextLine();
+								while (!(answer.equals("yes") || answer.equals("no"))) {
+									System.out.println("Invalid entry. Please enter yes or no:");
+									answer = scnr.next();
+									newline = scnr.nextLine();
+								}
+								if (answer.equals("yes")) {
+									myPrescriptionDatabase.cancelPrescription(prescriptionID);
+									myInventory.cancelPrescription(myPrescriptionDatabase.returnDrugBatchID(prescriptionID), myPrescriptionDatabase.returnDrugQuantity(prescriptionID));
+									myActivityLog.AddActivity(ActivityLog.Activity.CancelPrescription, currentName, currentRole, myPrescriptionDatabase.returnPatientID(prescriptionID), User.Role.Patient, ActivityLog.AccountUpdateField.Prescription, "Prescription Is Ready", "Prescription Cancelled", myPrescriptionDatabase.returnPatientID(prescriptionID), prescriptionID, myPrescriptionDatabase.returnDrugName(prescriptionID), myPrescriptionDatabase.returnDrugStrength(prescriptionID), myPrescriptionDatabase.returnDrugQuantity(prescriptionID), myPrescriptionDatabase.returnDrugBatchID(prescriptionID), Prescription.Status.Cancelled, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+								}
+								if (answer.equals("no")) {
+									return;
+								}
 							}
 						}
 					}
