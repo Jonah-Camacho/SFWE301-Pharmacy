@@ -1633,7 +1633,7 @@ public class UserDatabase {
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (Integer.parseInt(values[0]) == patientID) {
-					values[17] = values[17] + prescriptionID + ", ";
+					values[17] = values[17] + prescriptionID + ",";
 					updated = true;
 				}
 				lines.add(String.join(",", values));
@@ -1655,6 +1655,36 @@ public class UserDatabase {
 		
 		catch (IOException e) {
 			System.out.println("Error writing updated file: " + e.getMessage());
+		}
+	}
+	
+	
+	// Return Patient's prescription array
+	
+	public ArrayList<Integer> returnPatientPrescriptionIDArray (String fullName) {
+		
+		ArrayList<Integer> patientPrescriptionIDs = new ArrayList<>();
+		String prescriptionIDs = "";
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (values[1].toLowerCase().equals(fullName.toLowerCase())) {
+					prescriptionIDs = values[17];
+				}
+			}
+			String[] IDs = prescriptionIDs.split(",");
+			for (int i = 0; i < IDs.length; ++i) {
+				patientPrescriptionIDs.add(Integer.parseInt(IDs[i]));
+			}
+			
+			return patientPrescriptionIDs;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return patientPrescriptionIDs;
 		}
 	}
 	

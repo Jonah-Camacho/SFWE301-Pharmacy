@@ -124,7 +124,7 @@ public class Menu {
 					unlockPharmacyPersonnelAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 10:
-					viewPrescriptionHistory();
+					viewPrescriptionHistory(scnr, myUserDatabase, myPrescriptionDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 11:
 					requestPrescription(scnr, myUserDatabase, myInventory, myActivityLog, currentName, currentRole, myDrugInformation, myPrescriptionDatabase);
@@ -133,7 +133,7 @@ public class Menu {
 					fillPrescription(scnr, myPrescriptionDatabase, myInventory, myActivityLog, currentName, currentRole);
 					break;
 				case 13:
-					makeTransaction();
+					makeTransaction(scnr, myUserDatabase, myPrescriptionDatabase, myInventory, myActivityLog, currentName, currentRole);
 					break;
 				case 14:
 					viewInventory();
@@ -193,13 +193,13 @@ public class Menu {
 					unlockPharmacyPersonnelAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 8:
-					viewPrescriptionHistory();
+					viewPrescriptionHistory(scnr, myUserDatabase, myPrescriptionDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 9:
 					requestPrescription(scnr, myUserDatabase, myInventory, myActivityLog, currentName, currentRole, myDrugInformation, myPrescriptionDatabase);
 					break;
 				case 10:
-					makeTransaction();
+					makeTransaction(scnr, myUserDatabase, myPrescriptionDatabase, myInventory, myActivityLog, currentName, currentRole);
 					break;
 				case 11:
 					viewInventory();
@@ -244,7 +244,7 @@ public class Menu {
 					updatePatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 3:
-					viewPrescriptionHistory();
+					viewPrescriptionHistory(scnr, myUserDatabase, myPrescriptionDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 4:
 					requestPrescription(scnr, myUserDatabase, myInventory, myActivityLog, currentName, currentRole, myDrugInformation, myPrescriptionDatabase);
@@ -253,7 +253,7 @@ public class Menu {
 					fillPrescription(scnr, myPrescriptionDatabase, myInventory, myActivityLog, currentName, currentRole);
 					break;
 				case 6:
-					makeTransaction();
+					makeTransaction(scnr, myUserDatabase, myPrescriptionDatabase, myInventory, myActivityLog, currentName, currentRole);
 					break;
 				case 7:
 					viewPrescriptionDatabase();
@@ -274,13 +274,13 @@ public class Menu {
 					updatePatientAccount(scnr, myUserDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 3:
-					viewPrescriptionHistory();
+					viewPrescriptionHistory(scnr, myUserDatabase, myPrescriptionDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 4:
 					requestPrescription(scnr, myUserDatabase, myInventory, myActivityLog, currentName, currentRole, myDrugInformation, myPrescriptionDatabase);
 					break;
 				case 5:
-					makeTransaction();
+					makeTransaction(scnr, myUserDatabase, myPrescriptionDatabase, myInventory, myActivityLog, currentName, currentRole);
 					break;
 				case 6:
 					break;
@@ -295,7 +295,7 @@ public class Menu {
 					requestPrescription(scnr, myUserDatabase, myInventory, myActivityLog, currentName, currentRole, myDrugInformation, myPrescriptionDatabase);
 					break;
 				case 2:
-					makeTransaction();
+					makeTransaction(scnr, myUserDatabase, myPrescriptionDatabase, myInventory, myActivityLog, currentName, currentRole);
 					break;
 				case 3:
 					break;
@@ -1272,8 +1272,44 @@ public class Menu {
 		}
 	}
 	
-	public static void viewPrescriptionHistory() {
+	public static void viewPrescriptionHistory(Scanner scnr, UserDatabase myUserDatabase, PrescriptionDatabase myPrescriptionDatabase, ActivityLog myActivityLog, String currentName, User.Role currentRole) {
+		System.out.println("Please enter the full name of the patient:");
+		String fullName = scnr.nextLine();
 		
+		if (!myUserDatabase.checkIfAccountExists(fullName)) {
+			System.out.println("An account associated with this name does not exist.");
+			System.out.println("Please try another name or create a new patient account.");
+			return;
+		}
+		else {
+			if (myUserDatabase.returnRole(fullName) != User.Role.Patient) {
+				System.out.println("This account is not a patient account and therefore has no prescription history.");
+				return;
+			}
+			else {
+				if (!myUserDatabase.checkIfAccountIsActive(fullName)) {
+					System.out.println("This account is inactive.");
+					System.out.println("Please try another name or reactivate this account.");
+					return;
+				}
+				else {
+					ArrayList<Integer> prescriptionIDs = new ArrayList<>();
+					prescriptionIDs = myUserDatabase.returnPatientPrescriptionIDArray(fullName);
+					if (prescriptionIDs.size() > 0) {
+						for (int i = 0; i < prescriptionIDs.size(); ++i) {
+							int id = prescriptionIDs.get(i);
+							System.out.println("PrescriptionID: DrugName, DrugStrength (mg/capsule), DrugQuantity, BatchID, ExpirationDate, Dosage, MaxDosagePerDay, Directions, RefillPeriod (days), RefillCount, Status, TotalCost");
+							System.out.println(fullName + "'s Prescription History:");
+							System.out.println(id + ":\t" + myPrescriptionDatabase.returnDrugName(id) + ",\t" + myPrescriptionDatabase.returnDrugStrength(id) + " mg/capsule,\t" + myPrescriptionDatabase.returnDrugQuantity(id) + " capsules,\tbatch" + myPrescriptionDatabase.returnDrugBatchID(id) + ",\tExpires " + myPrescriptionDatabase.returnExpirationDate(id) + ",\t" + myPrescriptionDatabase.returnDosage(id) + ",\t" + myPrescriptionDatabase.returnMaxDosagePerDay(id) + ",\t" + myPrescriptionDatabase.returnDirections(id) + ",\tCan refill every " + myPrescriptionDatabase.returnRefillPeriod(id) + " days,\tOn refill number " + myPrescriptionDatabase.returnRefillCount(id) + ",\t" + myPrescriptionDatabase.returnPrescriptionStatus(id) + ",\t$" + (myPrescriptionDatabase.returnDrugQuantity(id) * myPrescriptionDatabase.returnPricePerCapsule(id)));
+						}
+					}
+					else {
+						System.out.println("There are no prescriptions associated with this account.");
+						return;
+					}
+				}
+			}
+		}
 	}
 	
 	public static void requestPrescription(Scanner scnr, UserDatabase myUserDatabase, Inventory myInventory, ActivityLog myActivityLog, String currentName, User.Role currentRole, DrugInformation myDrugInformation, PrescriptionDatabase myPrescriptionDatabase) {
@@ -1432,6 +1468,7 @@ public class Menu {
 			if (answer.equals("yes")) {
 				for (int prescriptionID:prescriptionsReadyToBeFilled) {
 					myPrescriptionDatabase.fillPrescription(prescriptionID);
+					myInventory.fillPrescription(myPrescriptionDatabase.returnDrugBatchID(prescriptionID), myPrescriptionDatabase.returnDrugQuantity(prescriptionID));
 					myActivityLog.AddActivity(ActivityLog.Activity.FillPrescription, currentName, currentRole, myPrescriptionDatabase.returnPatientID(prescriptionID), User.Role.Patient, ActivityLog.AccountUpdateField.Prescription, "Prescription In Progress", "Prescription Filled", myPrescriptionDatabase.returnPatientID(prescriptionID), prescriptionID, myPrescriptionDatabase.returnDrugName(prescriptionID), myPrescriptionDatabase.returnDrugStrength(prescriptionID), myPrescriptionDatabase.returnDrugQuantity(prescriptionID), myPrescriptionDatabase.returnDrugBatchID(prescriptionID), Prescription.Status.ReadyFilled, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
 					System.out.println("Prescription " + prescriptionID + " has been successfully filled!");
 				}
@@ -1463,6 +1500,7 @@ public class Menu {
 						}
 					}
 					myPrescriptionDatabase.fillPrescription(id);
+					myInventory.fillPrescription(myPrescriptionDatabase.returnDrugBatchID(id), myPrescriptionDatabase.returnDrugQuantity(id));
 					myActivityLog.AddActivity(ActivityLog.Activity.FillPrescription, currentName, currentRole, myPrescriptionDatabase.returnPatientID(id), User.Role.Patient, ActivityLog.AccountUpdateField.Prescription, "Prescription In Progress", "Prescription Filled", myPrescriptionDatabase.returnPatientID(id), id, myPrescriptionDatabase.returnDrugName(id), myPrescriptionDatabase.returnDrugStrength(id), myPrescriptionDatabase.returnDrugQuantity(id), myPrescriptionDatabase.returnDrugBatchID(id), Prescription.Status.ReadyFilled, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
 					System.out.println("Prescription " + id + " has been successfully filled!");
 					
@@ -1484,8 +1522,62 @@ public class Menu {
 		}	
 	}
 	
-	public static void makeTransaction() {
+	public static void makeTransaction(Scanner scnr, UserDatabase myUserDatabase, PrescriptionDatabase myPrescriptionDatabase, Inventory myInventory, ActivityLog myActivityLog, String currentName, User.Role currentRole) {
+		System.out.println("Please enter the full name of the patient purchasing a prescription:");
+		String fullName = scnr.nextLine();
 		
+		if (!myUserDatabase.checkIfAccountExists(fullName)) {
+			System.out.println("An account associated with this name does not exist.");
+			System.out.println("Please try another name or create a new patient account.");
+			return;
+		}
+		else {
+			
+		}
+		
+		// print all prescriptions for patient that are readyfilled
+		// ask which ones to buy
+		// buy them, can cancel them too
+		
+		
+		/// Ex:
+		System.out.println("Please enter the full name of the patient:");
+		String fullName = scnr.nextLine();
+		
+		if (!myUserDatabase.checkIfAccountExists(fullName)) {
+			System.out.println("An account associated with this name does not exist.");
+			System.out.println("Please try another name or create a new patient account.");
+			return;
+		}
+		else {
+			if (myUserDatabase.returnRole(fullName) != User.Role.Patient) {
+				System.out.println("This account is not a patient account and therefore has no prescription history.");
+				return;
+			}
+			else {
+				if (!myUserDatabase.checkIfAccountIsActive(fullName)) {
+					System.out.println("This account is inactive.");
+					System.out.println("Please try another name or reactivate this account.");
+					return;
+				}
+				else {
+					ArrayList<Integer> prescriptionIDs = new ArrayList<>();
+					prescriptionIDs = myUserDatabase.returnPatientPrescriptionIDArray(fullName);
+					if (prescriptionIDs.size() > 0) {
+						for (int i = 0; i < prescriptionIDs.size(); ++i) {
+							int id = prescriptionIDs.get(i);
+							System.out.println("PrescriptionID: DrugName, DrugStrength (mg/capsule), DrugQuantity, BatchID, ExpirationDate, Dosage, MaxDosagePerDay, Directions, RefillPeriod (days), RefillCount, Status, TotalCost");
+							System.out.println(fullName + "'s Prescription History:");
+							System.out.println(id + ":\t" + myPrescriptionDatabase.returnDrugName(id) + ",\t" + myPrescriptionDatabase.returnDrugStrength(id) + " mg/capsule,\t" + myPrescriptionDatabase.returnDrugQuantity(id) + " capsules,\tbatch" + myPrescriptionDatabase.returnDrugBatchID(id) + ",\tExpires " + myPrescriptionDatabase.returnExpirationDate(id) + ",\t" + myPrescriptionDatabase.returnDosage(id) + ",\t" + myPrescriptionDatabase.returnMaxDosagePerDay(id) + ",\t" + myPrescriptionDatabase.returnDirections(id) + ",\tCan refill every " + myPrescriptionDatabase.returnRefillPeriod(id) + " days,\tOn refill number " + myPrescriptionDatabase.returnRefillCount(id) + ",\t" + myPrescriptionDatabase.returnPrescriptionStatus(id) + ",\t$" + (myPrescriptionDatabase.returnDrugQuantity(id) * myPrescriptionDatabase.returnPricePerCapsule(id)));
+						}
+					}
+					else {
+						System.out.println("There are no prescriptions associated with this account.");
+						return;
+					}
+				}
+			}
+		}
 	}
 	
 	public static void viewInventory() {

@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class PrescriptionDatabase {
@@ -247,7 +248,7 @@ public class PrescriptionDatabase {
 		}
 	}
 	
-	// Return drug quantity
+	// Return drug batch ID
 	
 	public int returnDrugBatchID (int prescriptionID) {
 		
@@ -269,5 +270,224 @@ public class PrescriptionDatabase {
 			return batchID;
 		}
 	}
+	
+	// Return max dosage per day
+	
+	public int returnMaxDosagePerDay (int prescriptionID) {
 		
+		int maxDosagePerDay = 0;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (Integer.parseInt(values[0]) == prescriptionID) {
+					maxDosagePerDay = Integer.parseInt(values[6]);
+				}
+			}
+			return maxDosagePerDay;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return maxDosagePerDay;
+		}
+	}
+	
+	// Return allergies and notes
+
+	public String returnAllergiesAndNotes (int prescriptionID) {
+		
+		String allergiesAndNotes = "";
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (Integer.parseInt(values[0]) == prescriptionID) {
+					allergiesAndNotes = values[8];
+				}
+			}
+			return allergiesAndNotes;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return allergiesAndNotes;
+		}
+	}
+	
+	// Return price per capsule
+	
+	public double returnPricePerCapsule (int prescriptionID) {
+		
+		double pricePerCapsule = 0;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (Integer.parseInt(values[0]) == prescriptionID) {
+					pricePerCapsule = Double.parseDouble(values[9]);
+				}
+			}
+			return pricePerCapsule;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return pricePerCapsule;
+		}
+	}
+	
+	// Return expiration date
+	
+	public LocalDate returnExpirationDate (int prescriptionID) {
+		
+		LocalDate expirationDate = LocalDate.now();
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (Integer.parseInt(values[0]) == prescriptionID) {
+					expirationDate = LocalDate.parse(values[7]);
+				}
+			}
+			return expirationDate;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return expirationDate;
+		}
+	}
+	
+	// Return dosage
+
+	public String returnDosage (int prescriptionID) {
+		
+		String dosage = "";
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (Integer.parseInt(values[0]) == prescriptionID) {
+					dosage = values[10];
+				}
+			}
+			return dosage;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return dosage;
+		}
+	}
+	
+	// Return directions
+
+	public String returnDirections (int prescriptionID) {
+		
+		String directions = "";
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (Integer.parseInt(values[0]) == prescriptionID) {
+					directions = values[11];
+				}
+			}
+			return directions;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return directions;
+		}
+	}
+	
+	// Return refill period
+
+	public int returnRefillPeriod (int prescriptionID) {
+		
+		int refillPeriod = 0;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (Integer.parseInt(values[0]) == prescriptionID) {
+					refillPeriod = Integer.parseInt(values[12]);
+				}
+			}
+			return refillPeriod;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return refillPeriod;
+		}
+	}
+	
+	// Return refill count
+
+	public int returnRefillCount (int prescriptionID) {
+		
+		int refillCount = 0;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (Integer.parseInt(values[0]) == prescriptionID) {
+					refillCount = Integer.parseInt(values[13]);
+				}
+			}
+			return refillCount;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return refillCount;
+		}
+	}
+	
+	// Return status
+
+	public Prescription.Status returnPrescriptionStatus (int prescriptionID) {
+		
+		Prescription.Status status = Prescription.Status.None;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (Integer.parseInt(values[0]) == prescriptionID) {
+					if (values[14].equals("InProgress")) {
+						status = Prescription.Status.InProgress;
+					}
+					if (values[14].equals("ReadyFilled")) {
+						status = Prescription.Status.ReadyFilled;
+					}
+					if (values[14].equals("Sold")) {
+						status = Prescription.Status.Sold;
+					}
+					if (values[14].equals("Cancelled")) {
+						status = Prescription.Status.Cancelled;
+					}
+				}
+			}
+			return status;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return status;
+		}
+	}
+	
+	
 }
