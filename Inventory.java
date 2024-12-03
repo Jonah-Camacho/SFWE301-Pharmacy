@@ -116,12 +116,6 @@ public class Inventory {
 		}
 	}
 	
-	// Remove expired inventory
-	
-	public void removeExpiredInventory () {
-		
-	}
-	
 	// Generate Drug Batch ID
 	
 	public int generateID () {
@@ -322,11 +316,15 @@ public class Inventory {
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
 			String line;
+			int run = 0;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (values[0].equals(Integer.toString(batchID))) {
-					expirationDate = LocalDate.parse(values[5]);
+				if (run != 0) {
+					if (values[0].equals(Integer.toString(batchID))) {
+						expirationDate = LocalDate.parse(values[5]);
+					}
 				}
+				++run;
 			}
 			return expirationDate;
 		}
@@ -385,5 +383,70 @@ public class Inventory {
 		}
 	}
 	
+	// Return expired batch IDs
 	
+	public ArrayList<Integer> returnExpiredBatchIDs () {
+		
+		ArrayList<Integer> expiredBatchIDs = new ArrayList<>();
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			int run = 0;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (run != 0) {
+					if (LocalDate.parse(values[5]).isBefore(LocalDate.now())) {
+						expiredBatchIDs.add(Integer.parseInt(values[0]));
+					}
+				}
+				++run;
+			}
+			return expiredBatchIDs;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return expiredBatchIDs;
+		}
+	}
+	
+	// Remove expired inventory
+	
+	public void removeExpiredInventory (ArrayList<Integer> expiredBatchIDs) {
+		List<String> lines = new ArrayList<>();
+		boolean updated = false;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				for (int i = 0; i < expiredBatchIDs.size(); ++i) {
+					if (values[0].equals(expiredBatchIDs.get(i).toString())) {
+						values[3] = Integer.toString(0);
+						updated = true;
+					}
+					lines.add(String.join(",", values));
+				}
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file for update: " + e.getMessage());
+		}
+		
+		try (FileWriter writer = new FileWriter(filePath)) {
+			for (String line : lines) {
+				writer.write(line + "\n");
+			}
+			if (!updated) {
+				System.out.println("Name not found. No updates made.");
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error writing updated file: " + e.getMessage());
+		}
+	}
+	
+		
 }

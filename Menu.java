@@ -1704,7 +1704,37 @@ public class Menu {
 	}
 	
 	public static void removeExpiredInventory(Scanner scnr, Inventory myInventory, PrescriptionDatabase myPrescriptionDatabase, ActivityLog myActivityLog, String currentName, User.Role currentRole) {
-
+		ArrayList<Integer> expiredBatchIDs = myInventory.returnExpiredBatchIDs();
+		
+		if (expiredBatchIDs.size() > 0) {
+			System.out.println("There are " + expiredBatchIDs.size() + " expired drug batches.");
+			System.out.println("Would you like to remove all of them?");
+			String answer = scnr.next();
+			String newline = scnr.nextLine();
+			while (!(answer.equals("yes") || answer.equals("no"))) {
+				System.out.println("Invalid entry. Please enter yes or no:");
+				answer = scnr.next();
+				newline = scnr.nextLine();
+			}
+			if (answer.equals("yes")) {
+				myInventory.removeExpiredInventory(expiredBatchIDs);
+				myPrescriptionDatabase.cancelExpiredPrescriptions(expiredBatchIDs);
+				for (int i = 0; i < expiredBatchIDs.size(); ++i) {
+					myActivityLog.AddActivity(ActivityLog.Activity.RemoveExpiredInventory, currentName, currentRole, 0, User.Role.None, ActivityLog.AccountUpdateField.None, "", "", 0, 0, "", 0, 0, expiredBatchIDs.get(i), Prescription.Status.Cancelled, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
+				}
+				System.out.println("Thank you - all expired drug batches and prescriptions have been removed.");
+				System.out.println("Please be sure to dispose of them properly.");
+				return;
+			}
+			if (answer.equals("no")) {
+				System.out.println("Ok - please remove them soon though! It's dangerous!");
+				return;
+			}
+		}
+		else {
+			System.out.println("There are currently no expired drug batches or prescriptions.");
+			return;
+		}	
 	}
 	
 	public static void purchaseDrugShipment(Scanner scnr, Inventory myInventory, ActivityLog myActivityLog, String currentName, User.Role currentRole, DrugInformation myDrugInformation) {
