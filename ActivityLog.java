@@ -15,17 +15,15 @@ public class ActivityLog {
 	
 	enum Activity {AccountCreation, AccountUpdate, RequestPrescription, FillPrescription, CancelPrescription, MakeTransaction, ViewInventory, RemoveExpiredInventory, PurchaseDrugShipment, ViewPrescriptionDatabase, ViewUserDatabase, ViewActivityLog, RequestFinancialReport, RequestInventoryReport, UpdatePharmacyInfo};
 	enum AccountUpdateField {Name, DateOfBirth, Gender, PhoneNumber, Address, DoctorsName, DoctorsPhoneNumber, InsuranceProvider, InsurancePolicyNumber, Allergies, Notes, Role, Username, Password, LockedStatus, ActiveStatus, Prescription, None};
-	enum PharmacyInfoUpdateField {Address, Hours, PhoneNumber, None};	
+	enum PharmacyInfoUpdateField {Name, Address, Hours, PhoneNumber, None};	
 	
 	public void AddActivity (Activity myActivity, String pharmacyPersonnelName, User.Role pharmacyPersonnelRole, int createdOrUpdatedAccountID, User.Role createdOrUpdatedAccountRole, AccountUpdateField myAccountUpdateField, String beforeChange, String afterChange, int patientId, int prescriptionID, String drugName, int drugStrength, int drugQuantity, int batchID, Prescription.Status updatedPrescriptionStatus, double totalPrice, long cardNumber, String cardExpiration, int cardSecurityCode, PharmacyInfoUpdateField myPharmacyInfoUpdateField) {
 				
 		int activityID = generateID();
 		LocalDate date = LocalDate.now();
 		LocalTime time = LocalTime.now();
-		
-		String newBeforeChange = "\"" + beforeChange + "\"";
-		String newAfterChange = "\"" + afterChange + "\"";
-		String newRecord = "" + activityID + "," + date + "," + time + "," + myActivity.toString() + "," + pharmacyPersonnelName + "," + pharmacyPersonnelRole.toString() + "," + createdOrUpdatedAccountID + "," + createdOrUpdatedAccountRole.toString() + "," + myAccountUpdateField.toString() + "," + newBeforeChange + "," + newAfterChange + "," + patientId + "," + prescriptionID + "," + drugName + "," + drugStrength + "," + drugQuantity + "," + batchID + "," + updatedPrescriptionStatus.toString() + "," + totalPrice + "," + cardNumber + "," + cardExpiration + "," + cardSecurityCode + "," + myPharmacyInfoUpdateField.toString();
+	
+		String newRecord = "" + activityID + "," + date + "," + time + "," + myActivity.toString() + "," + pharmacyPersonnelName + "," + pharmacyPersonnelRole.toString() + "," + createdOrUpdatedAccountID + "," + createdOrUpdatedAccountRole.toString() + "," + myAccountUpdateField.toString() + ",\"" + beforeChange + "\",\"" + afterChange + "\"," + patientId + "," + prescriptionID + "," + drugName + "," + drugStrength + "," + drugQuantity + "," + batchID + "," + updatedPrescriptionStatus.toString() + "," + totalPrice + "," + cardNumber + "," + cardExpiration + "," + cardSecurityCode + "," + myPharmacyInfoUpdateField.toString();
 	
 		try {
 			File file = new File(filePath);

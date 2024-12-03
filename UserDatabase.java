@@ -14,17 +14,7 @@ public class UserDatabase {
 	// Add Patient to UserDatabase
 	
 	public void AddUser (Patient myPatient) {
-		String newAddress = "\"" + myPatient.address + "\"";
-		String newAllergies = "\"" + myPatient.allergies + "\"";
-		String newNotes = "\"" + myPatient.notes + "\"";
-		
-		String newPrescriptionIDs = "";
-		for (int prescriptionID:myPatient.prescriptionIDs) {
-			newPrescriptionIDs = newPrescriptionIDs + prescriptionID + ", ";
-		}
-		newPrescriptionIDs = "\"" + newPrescriptionIDs + "\"";
-		
-		String newRecord = "" + myPatient.IDNumber + "," + myPatient.fullName + "," + myPatient.dateOfBirth + "," + myPatient.userGender + "," + myPatient.phoneNumber + "," + newAddress + "," + myPatient.isActive + "," + myPatient.userRole + "," + myPatient.doctorsName + "," + myPatient.doctorsPhoneNumber + "," + myPatient.insuranceProvider + "," + myPatient.insurancePolicyNumber + "," + newAllergies + "," + newNotes + ", , , ," + newPrescriptionIDs;
+		String newRecord = "" + myPatient.IDNumber + "," + myPatient.fullName + "," + myPatient.dateOfBirth + "," + myPatient.userGender + "," + myPatient.phoneNumber + ",\"" + myPatient.address + "\"," + myPatient.isActive + "," + myPatient.userRole + "," + myPatient.doctorsName + "," + myPatient.doctorsPhoneNumber + "," + myPatient.insuranceProvider + "," + myPatient.insurancePolicyNumber + ",\"" + myPatient.allergies + "\",\"" + myPatient.notes + "\", , , ," + "";
 	
 		try {
 			File file = new File(filePath);
@@ -1633,7 +1623,8 @@ public class UserDatabase {
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[0].equals(Integer.toString(patientID))) {
-					values[17] = "\"" + values[17] + prescriptionID + ",\"";
+					values[17] = values[17].substring(0, values[1].length() - 1);
+					values[17] = values[17] + prescriptionID + ",\"";
 					updated = true;
 				}
 				lines.add(String.join(",", values));
@@ -1658,7 +1649,6 @@ public class UserDatabase {
 		}
 	}
 	
-	
 	// Return Patient's prescription array
 	
 	public ArrayList<Integer> returnPatientPrescriptionIDArray (String fullName) {
@@ -1672,14 +1662,13 @@ public class UserDatabase {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[1].toLowerCase().equals(fullName.toLowerCase())) {
 					prescriptionIDs = values[17];
-					prescriptionIDs = prescriptionIDs.substring(1, prescriptionIDs.length() - 1);
 				}
 			}
+			prescriptionIDs = prescriptionIDs.substring(1, prescriptionIDs.length() - 2);
 			String[] IDs = prescriptionIDs.split(",");
 			for (int i = 0; i < IDs.length; ++i) {
 				patientPrescriptionIDs.add(Integer.parseInt(IDs[i]));
 			}
-			
 			return patientPrescriptionIDs;
 		}
 		
@@ -1687,6 +1676,6 @@ public class UserDatabase {
 			System.out.println("Error reading file: " + e.getMessage());
 			return patientPrescriptionIDs;
 		}
-	}
+	}	
 	
 }

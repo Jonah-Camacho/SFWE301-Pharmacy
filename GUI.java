@@ -1,5 +1,13 @@
 import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GUI {
 	
@@ -19,7 +27,114 @@ public class GUI {
 		String currentName;
 		User.Role currentRole;
 		int menuSelection = 0;
-			
+	
+		
+		/*String filePath = "Workspace.csv";
+		
+		// Write record - works for expiration and list!
+		
+		LocalDate expirationDate = LocalDate.now().plusYears(1);
+		String list = "1,2,3";
+		String newRecord = "" + expirationDate + ",\"" + list + "\"";
+	
+		try {
+			File file = new File(filePath);
+			boolean fileExists = file.exists();
+		
+		try (FileWriter writer = new FileWriter(filePath, true)) {
+			writer.write(newRecord + "\n");
+		}
+		
+		System.out.println("Data written successfully.");
+		
+		}
+		
+		catch(IOException e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+		
+		
+		// Return expiration - works!
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				LocalDate newExpirationDate = LocalDate.parse(values[0]);
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+		}
+		
+		// Return list - works!
+		
+		ArrayList<Integer> myValues = new ArrayList<>();
+		String stringValues = "";
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				stringValues = values[1];
+			}
+			stringValues = stringValues.substring(1, stringValues.length() - 1);
+			String [] newValues = stringValues.split(",");
+			for (int i = 0; i < newValues.length; ++i) {
+				myValues.add(Integer.parseInt(newValues[i]));
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+		}
+		
+		// Update List - works!
+		
+		List<String> lines = new ArrayList<>();
+		boolean updated = false;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (values[1].length() > 0) {
+					values[1] = values[1].substring(0, values[1].length() - 1);
+					values[1] = values[1] + "," + "5" + "\"";
+					updated = true;
+					lines.add(String.join(",", values));
+				}
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+		}
+
+		try (FileWriter writer = new FileWriter(filePath)) {
+			for (String line : lines) {
+				writer.write(line + "\n");
+			}
+			if (!updated) {
+				System.out.println("Name not found. No updates made.");
+			}
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error writing updated file: " + e.getMessage());
+		}*/
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		// Log-In System
 		
 		System.out.println("Welcome to the Pharmacy Management System!");

@@ -1,5 +1,9 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalTime;
+import java.awt.Desktop;
 
 public class Menu {
 	
@@ -139,7 +143,7 @@ public class Menu {
 					viewInventory();
 					break;
 				case 15:
-					removeExpiredInventory();
+					removeExpiredInventory(scnr, myInventory, myPrescriptionDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 16:
 					purchaseDrugShipment(scnr, myInventory, myActivityLog, currentName, currentRole, myDrugInformation);
@@ -160,7 +164,7 @@ public class Menu {
 					requestInventoryReport();
 					break;
 				case 22:
-					updatePharmacyInformation();
+					updatePharmacyInformation(scnr, myPharmacy, myActivityLog, currentName, currentRole);
 					break;
 				case 23:
 					break;
@@ -205,7 +209,7 @@ public class Menu {
 					viewInventory();
 					break;
 				case 12:
-					removeExpiredInventory();
+					removeExpiredInventory(scnr, myInventory, myPrescriptionDatabase, myActivityLog, currentName, currentRole);
 					break;
 				case 13:
 					purchaseDrugShipment(scnr, myInventory, myActivityLog, currentName, currentRole, myDrugInformation);
@@ -226,7 +230,7 @@ public class Menu {
 					requestInventoryReport();
 					break;
 				case 19:
-					updatePharmacyInformation();
+					updatePharmacyInformation(scnr, myPharmacy, myActivityLog, currentName, currentRole);
 					break;
 				case 20:
 					break;
@@ -1683,11 +1687,24 @@ public class Menu {
 	}
 	
 	public static void viewInventory() {
-		
+		String filePath = "Inventory.csv";
+
+        File file = new File(filePath);
+
+        if (file.exists()) {
+            try {
+                Desktop.getDesktop().open(file);
+                System.out.println(filePath + " is opening.");
+            } catch (IOException e) {
+                System.out.println("Error opening file: " + e.getMessage());
+            }
+        } else {
+            System.out.println("File not found: " + filePath);
+        }
 	}
 	
-	public static void removeExpiredInventory() {
-		
+	public static void removeExpiredInventory(Scanner scnr, Inventory myInventory, PrescriptionDatabase myPrescriptionDatabase, ActivityLog myActivityLog, String currentName, User.Role currentRole) {
+
 	}
 	
 	public static void purchaseDrugShipment(Scanner scnr, Inventory myInventory, ActivityLog myActivityLog, String currentName, User.Role currentRole, DrugInformation myDrugInformation) {
@@ -1763,15 +1780,54 @@ public class Menu {
 	}
 	
 	public static void viewPrescriptionDatabase() {
-		
+		String filePath = "PrescriptionDatabase.csv";
+
+        File file = new File(filePath);
+
+        if (file.exists()) {
+            try {
+                Desktop.getDesktop().open(file);
+                System.out.println(filePath + " is opening.");
+            } catch (IOException e) {
+                System.out.println("Error opening file: " + e.getMessage());
+            }
+        } else {
+            System.out.println("File not found: " + filePath);
+        }
 	}
 	
 	public static void viewUserDatabase() {
-		
+		String filePath = "UserDatabase.csv";
+
+        File file = new File(filePath);
+
+        if (file.exists()) {
+            try {
+                Desktop.getDesktop().open(file);
+                System.out.println(filePath + " is opening.");
+            } catch (IOException e) {
+                System.out.println("Error opening file: " + e.getMessage());
+            }
+        } else {
+            System.out.println("File not found: " + filePath);
+        }
 	}
 	
 	public static void viewActivityLog() {
-		
+		String filePath = "ActivityLog.csv";
+
+        File file = new File(filePath);
+
+        if (file.exists()) {
+            try {
+                Desktop.getDesktop().open(file);
+                System.out.println(filePath + " is opening.");
+            } catch (IOException e) {
+                System.out.println("Error opening file: " + e.getMessage());
+            }
+        } else {
+            System.out.println("File not found: " + filePath);
+        }
 	}
 	
 	public static void requestFinancialReport() {
@@ -1782,7 +1838,161 @@ public class Menu {
 		System.out.println("This function is not currently available.");
 	}
 	
-	public static void updatePharmacyInformation() {
-		
+	public static void updatePharmacyInformation(Scanner scnr, PharmacyInfo myPharmacy, ActivityLog myActivityLog, String currentName, User.Role currentRole) {
+		System.out.println("Would you like to update the pharmacy name, address, phone number, or hours? (name, address, phone number, or hours):");
+		String answer = scnr.nextLine();
+		while (!(answer.equals("name") || answer.equals("address") || answer.equals("phone number") || answer.equals("hours"))) {
+			System.out.println("Invalid entry. Please enter name, address, phone number, or hours:");
+			answer = scnr.nextLine();
+		}
+		if (answer.equals("name")) {
+			System.out.println("Please enter the updated pharmacy name:");
+			String name = scnr.nextLine();
+			System.out.println("Are you sure you would like to change the pharmacy name from " + myPharmacy.returnName() +  " to " + name +  "? (yes or no):");
+			answer = scnr.next();
+			String newline = scnr.nextLine();
+			while (!(answer.equals("yes") || answer.equals("no"))) {
+				System.out.println("Invalid entry. Please enter yes or no:");
+				answer = scnr.next();
+				newline = scnr.nextLine();
+			}
+			if (answer.equals("yes")) {
+				String ogName = myPharmacy.returnName();
+				myPharmacy.updatePharmacyName(name);
+				myActivityLog.AddActivity(ActivityLog.Activity.UpdatePharmacyInfo, currentName, currentRole, 0, User.Role.None, ActivityLog.AccountUpdateField.None, ogName, name, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.Name);
+				System.out.println("The pharmacy name has been successfully updated to " + name);
+				return;
+			}
+			if (answer.equals("no")) {
+				System.out.println("The pharmacy name has not been updated.");
+				return;
+			}
+		}
+		if (answer.equals("address")) {
+			System.out.println("Please enter the updated pharmacy address:");
+			String address = scnr.nextLine();
+			System.out.println("Are you sure you would like to change the pharmacy address from " + myPharmacy.returnAddress() +  " to " + address +  "? (yes or no):");
+			answer = scnr.next();
+			String newline = scnr.nextLine();
+			while (!(answer.equals("yes") || answer.equals("no"))) {
+				System.out.println("Invalid entry. Please enter yes or no:");
+				answer = scnr.next();
+				newline = scnr.nextLine();
+			}
+			if (answer.equals("yes")) {
+				String ogAddress = myPharmacy.returnAddress();
+				myPharmacy.updatePharmacyAddress(address);
+				myActivityLog.AddActivity(ActivityLog.Activity.UpdatePharmacyInfo, currentName, currentRole, 0, User.Role.None, ActivityLog.AccountUpdateField.None, ogAddress, address, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.Address);
+				System.out.println("The pharmacy address has been successfully updated to " + address);
+				return;
+			}
+			if (answer.equals("no")) {
+				System.out.println("The pharmacy address has not been updated.");
+				return;
+			}
+		}
+		if (answer.equals("phone number")) {
+			System.out.println("Please enter the updated pharmacy phone number:");
+			long phoneNumber = scnr.nextLong();
+			String newline = scnr.nextLine();
+			System.out.println("Are you sure you would like to change the pharmacy phone number from " + myPharmacy.returnPhoneNumber() +  " to " + phoneNumber +  "? (yes or no):");
+			answer = scnr.next();
+			newline = scnr.nextLine();
+			while (!(answer.equals("yes") || answer.equals("no"))) {
+				System.out.println("Invalid entry. Please enter yes or no:");
+				answer = scnr.next();
+				newline = scnr.nextLine();
+			}
+			if (answer.equals("yes")) {
+				long ogPhoneNumber = myPharmacy.returnPhoneNumber();
+				myPharmacy.updatePharmacyPhoneNumber(phoneNumber);
+				myActivityLog.AddActivity(ActivityLog.Activity.UpdatePharmacyInfo, currentName, currentRole, 0, User.Role.None, ActivityLog.AccountUpdateField.None, Long.toString(ogPhoneNumber), Long.toString(phoneNumber), 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.PhoneNumber);
+				System.out.println("The pharmacy phone number has been successfully updated to " + phoneNumber);
+				return;
+			}
+			if (answer.equals("no")) {
+				System.out.println("The pharmacy phone number has not been updated.");
+				return;
+			}
+		}
+		if (answer.equals("hours")) {
+			System.out.println("What day would you like to update the hours for? (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, or Sunday):");
+			String day = scnr.next();
+			String newline = scnr.nextLine();
+			while (!(day.equals("Monday") || day.equals("Tuesday") || day.equals("Wednesday") || day.equals("Thursday") || day.equals("Friday") || day.equals("Saturday") || day.equals("Sunday"))) {
+				System.out.println("Invalid entry. Please enter Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, or Sunday:");
+				day = scnr.next();
+				newline = scnr.nextLine();
+			}
+			
+			System.out.println("Would you like to update opening or closing hours on " + day + "? (opening or closing):");
+			answer = scnr.next();
+			newline = scnr.nextLine();
+			while (!(answer.equals("opening") || answer.equals("closing"))) {
+				System.out.println("Invalid entry. Please enter opening or closing:");
+				answer = scnr.next();
+				newline = scnr.nextLine();
+			}
+			if (answer.equals("opening")) {
+				System.out.println("Currently, the pharmacy opens at " + myPharmacy.returnOpeningHours(day) + " on " + day);
+				System.out.println("Please enter the hour value for the new time you would like the pharmacy to open in the form of an integer:");
+				int hour = scnr.nextInt();
+				newline = scnr.nextLine();
+				System.out.println("Please enter the minute value for the new time you would like the pharmacy to open in the form of an integer:");
+				int minute = scnr.nextInt();
+				newline = scnr.nextLine();
+				LocalTime newOpeningHours = LocalTime.of(hour, minute);
+				
+				System.out.println("Are you sure you would like to change the pharmacy opening hours on " + day + " from " + myPharmacy.returnOpeningHours(day) +  " to " + newOpeningHours +  "? (yes or no):");
+				answer = scnr.next();
+				newline = scnr.nextLine();
+				while (!(answer.equals("yes") || answer.equals("no"))) {
+					System.out.println("Invalid entry. Please enter yes or no:");
+					answer = scnr.next();
+					newline = scnr.nextLine();
+				}
+				if (answer.equals("yes")) {
+					LocalTime ogOpeningHours = myPharmacy.returnOpeningHours(day);
+					myPharmacy.updateOpeningHours(day, newOpeningHours);
+					myActivityLog.AddActivity(ActivityLog.Activity.UpdatePharmacyInfo, currentName, currentRole, 0, User.Role.None, ActivityLog.AccountUpdateField.None, ogOpeningHours.toString(), newOpeningHours.toString(), 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.Hours);
+					System.out.println("The pharmacy opening hours on " + day + " has been successfully updated to " + newOpeningHours);
+					return;
+				}
+				if (answer.equals("no")) {
+					System.out.println("The pharmacy hours have not been updated.");
+					return;
+				}			
+			}
+			if (answer.equals("closing")) {
+				System.out.println("Currently, the pharmacy closes at " + myPharmacy.returnClosingHours(day) + " on " + day);
+				System.out.println("Please enter the hour value for the new time you would like the pharmacy to close in the form of an integer:");
+				int hour = scnr.nextInt();
+				newline = scnr.nextLine();
+				System.out.println("Please enter the minute value for the new time you would like the pharmacy to close in the form of an integer:");
+				int minute = scnr.nextInt();
+				newline = scnr.nextLine();
+				LocalTime newClosingHours = LocalTime.of(hour, minute);
+				
+				System.out.println("Are you sure you would like to change the pharmacy closing hours on " + day + " from " + myPharmacy.returnClosingHours(day) +  " to " + newClosingHours +  "? (yes or no):");
+				answer = scnr.next();
+				newline = scnr.nextLine();
+				while (!(answer.equals("yes") || answer.equals("no"))) {
+					System.out.println("Invalid entry. Please enter yes or no:");
+					answer = scnr.next();
+					newline = scnr.nextLine();
+				}
+				if (answer.equals("yes")) {
+					LocalTime ogClosingHours = myPharmacy.returnClosingHours(day);
+					myPharmacy.updateClosingHours(day, newClosingHours);
+					myActivityLog.AddActivity(ActivityLog.Activity.UpdatePharmacyInfo, currentName, currentRole, 0, User.Role.None, ActivityLog.AccountUpdateField.None, ogClosingHours.toString(), newClosingHours.toString(), 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.Hours);
+					System.out.println("The pharmacy closing hours on " + day + " has been successfully updated to " + newClosingHours);
+					return;
+				}
+				if (answer.equals("no")) {
+					System.out.println("The pharmacy hours have not been updated.");
+					return;
+				}	
+			}
+		}
 	}
 }
