@@ -29,11 +29,12 @@ public class GUI {
 		int menuSelection = 0;
 	
 		
-		/*String filePath = "Workspace.csv";
+		String filePath = "Workspace.csv";
+		String[] headers = {"Expiration Date", "List"};
 		
 		// Write record - works for expiration and list!
 		
-		LocalDate expirationDate = LocalDate.now().plusYears(1);
+		/*LocalDate expirationDate = LocalDate.now().plusYears(1);
 		String list = "1,2,3";
 		String newRecord = "" + expirationDate + ",\"" + list + "\"";
 	
@@ -42,6 +43,11 @@ public class GUI {
 			boolean fileExists = file.exists();
 		
 		try (FileWriter writer = new FileWriter(filePath, true)) {
+			
+			if (!fileExists) {
+				writer.write(String.join(",", headers) + "\n");
+				
+			}
 			writer.write(newRecord + "\n");
 		}
 		
@@ -56,11 +62,15 @@ public class GUI {
 		
 		// Return expiration - works!
 		
-		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+		/*try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
 			String line;
+			int run = 0;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				LocalDate newExpirationDate = LocalDate.parse(values[0]);
+				if (run != 0) {
+					LocalDate newExpirationDate = LocalDate.parse(values[0]);
+					System.out.println(newExpirationDate);				}
+				++run;
 			}
 		}
 		
@@ -77,12 +87,18 @@ public class GUI {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				stringValues = values[1];
+				if (values[0].equals("h")) {
+					stringValues = values[1];
+					System.out.println(stringValues);
+				}
 			}
-			stringValues = stringValues.substring(1, stringValues.length() - 1);
-			String [] newValues = stringValues.split(",");
-			for (int i = 0; i < newValues.length; ++i) {
-				myValues.add(Integer.parseInt(newValues[i]));
+			if (stringValues.length() > 3) {
+				stringValues = stringValues.substring(1, stringValues.length() - 1);
+				System.out.println(stringValues);
+				String [] newValues = stringValues.split(",");
+				for (int i = 0; i < newValues.length; ++i) {
+					myValues.add(Integer.parseInt(newValues[i]));
+				}
 			}
 		}
 		
@@ -99,19 +115,23 @@ public class GUI {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				if (values[1].length() > 0) {
-					values[1] = values[1].substring(0, values[1].length() - 1);
-					values[1] = values[1] + "," + "5" + "\"";
-					updated = true;
-					lines.add(String.join(",", values));
-				}
+					if (values[1].length() > 0) {
+						values[1] = values[1].substring(0, values[1].length() - 1);
+						values[1] = values[1] + 100 + ",\"";
+						updated = true;
+					}
+					else {
+						values[1] = "\"" + 100 + ",\"";
+						updated = true;
+					}
+				lines.add(String.join(",", values));
 			}
 		}
 		
 		catch (IOException e) {
-			System.out.println("Error reading file: " + e.getMessage());
+			System.out.println("Error reading file for update: " + e.getMessage());
 		}
-
+		
 		try (FileWriter writer = new FileWriter(filePath)) {
 			for (String line : lines) {
 				writer.write(line + "\n");
@@ -124,15 +144,6 @@ public class GUI {
 		catch (IOException e) {
 			System.out.println("Error writing updated file: " + e.getMessage());
 		}*/
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		// Log-In System

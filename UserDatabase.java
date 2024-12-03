@@ -1623,9 +1623,15 @@ public class UserDatabase {
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[0].equals(Integer.toString(patientID))) {
-					values[17] = values[17].substring(0, values[1].length() - 1);
-					values[17] = values[17] + prescriptionID + ",\"";
-					updated = true;
+					if (values[17].length() > 0) {
+						values[17] = values[17].substring(0, values[17].length() - 1);
+						values[17] = values[17] + prescriptionID + ",\"";
+						updated = true;
+					}
+					else {
+						values[17] = "\"" + prescriptionID + ",\"";
+						updated = true;
+					}
 				}
 				lines.add(String.join(",", values));
 			}
@@ -1664,10 +1670,12 @@ public class UserDatabase {
 					prescriptionIDs = values[17];
 				}
 			}
-			prescriptionIDs = prescriptionIDs.substring(1, prescriptionIDs.length() - 2);
-			String[] IDs = prescriptionIDs.split(",");
-			for (int i = 0; i < IDs.length; ++i) {
-				patientPrescriptionIDs.add(Integer.parseInt(IDs[i]));
+			if (prescriptionIDs.length() > 3) {
+				prescriptionIDs = prescriptionIDs.substring(1, prescriptionIDs.length() - 2);
+				String[] IDs = prescriptionIDs.split(",");
+				for (int i = 0; i < IDs.length; ++i) {
+					patientPrescriptionIDs.add(Integer.parseInt(IDs[i]));
+				}
 			}
 			return patientPrescriptionIDs;
 		}
@@ -1677,5 +1685,4 @@ public class UserDatabase {
 			return patientPrescriptionIDs;
 		}
 	}	
-	
 }

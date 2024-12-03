@@ -16,7 +16,7 @@ public class PrescriptionDatabase {
 	// Add prescription to database
 	
 	public void addPrescription (Prescription myPrescription) {
-		String newRecord = "" + myPrescription.prescriptionID + "," + myPrescription.patientID + "," + myPrescription.batchID + "," + myPrescription.drugName + "," + myPrescription.strength + "," + myPrescription.quantity + "," + myPrescription.maxDosagePerDay + "," + myPrescription.expirationDate + ",\"" + myPrescription.allergiesAndNotes + "\"," + myPrescription.pricePerCapsule + "," + myPrescription.dosage + ",\"" + myPrescription.directions + "\"," + myPrescription.refillPeriodDays + "," + myPrescription.refillCount + "," + myPrescription.isSigned + "," + myPrescription.prescriptionStatus.toString(); 
+		String newRecord = "" + myPrescription.prescriptionID + "," + myPrescription.patientID + "," + myPrescription.batchID + "," + myPrescription.drugName + "," + myPrescription.strength + "," + myPrescription.quantity + "," + myPrescription.maxDosagePerDay + "," + myPrescription.expirationDate + "," + myPrescription.allergiesAndNotes + "," + myPrescription.pricePerCapsule + "," + myPrescription.dosage + ",\"" + myPrescription.directions + "\"," + myPrescription.refillPeriodDays + "," + myPrescription.refillCount + "," + myPrescription.isSigned + "," + myPrescription.prescriptionStatus.toString(); 
 		
 		try {
 			File file = new File(filePath);
@@ -428,6 +428,7 @@ public class PrescriptionDatabase {
 			return expirationDate;
 		}
 	}
+
 	
 	// Return dosage
 

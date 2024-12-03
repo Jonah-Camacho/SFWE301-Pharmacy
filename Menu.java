@@ -1303,7 +1303,7 @@ public class Menu {
 						System.out.println(fullName + "'s Prescription History:");
 						for (int i = 0; i < prescriptionIDs.size(); ++i) {
 							int id = prescriptionIDs.get(i);
-							System.out.println(id + ":\t" + myPrescriptionDatabase.returnDrugName(id) + ",\t" + myPrescriptionDatabase.returnDrugStrength(id) + " mg/capsule,\t" + myPrescriptionDatabase.returnDrugQuantity(id) + " capsules,\tbatch" + myPrescriptionDatabase.returnDrugBatchID(id) + ",\tExpires " + myPrescriptionDatabase.returnExpirationDate(id) + ",\t" + myPrescriptionDatabase.returnDosage(id) + ",\t" + myPrescriptionDatabase.returnMaxDosagePerDay(id) + ",\t" + myPrescriptionDatabase.returnDirections(id) + ",\tCan refill every " + myPrescriptionDatabase.returnRefillPeriod(id) + " days,\tOn refill number " + myPrescriptionDatabase.returnRefillCount(id) + ",\t" + myPrescriptionDatabase.returnPrescriptionStatus(id) + ",\t$" + (myPrescriptionDatabase.returnDrugQuantity(id) * myPrescriptionDatabase.returnPricePerCapsule(id)));
+							System.out.println(id + ":\t" + myPrescriptionDatabase.returnDrugName(id) + ",\t" + myPrescriptionDatabase.returnDrugStrength(id) + " mg/capsule,\t" + myPrescriptionDatabase.returnDrugQuantity(id) + " capsules,\tbatch" + myPrescriptionDatabase.returnDrugBatchID(id) + ",\tExpires " + myPrescriptionDatabase.returnExpirationDate(id) + ",\t" + myPrescriptionDatabase.returnDosage(id) + ",\t" + myPrescriptionDatabase.returnMaxDosagePerDay(id) + ",\t" + myPrescriptionDatabase.returnDirections(id) + ",\tCan refill every " + myPrescriptionDatabase.returnRefillPeriod(id) + " days,\tOn refill number " + myPrescriptionDatabase.returnRefillCount(id) + ",\t" + myPrescriptionDatabase.returnPrescriptionStatus(id) + ",\t$" + String.format("%.2f", myPrescriptionDatabase.returnDrugQuantity(id) * myPrescriptionDatabase.returnPricePerCapsule(id)));
 						}
 					}
 					else {
@@ -1418,7 +1418,9 @@ public class Menu {
 					if (answer.equals("yes")) {
 						boolean isSigned = true;
 						double totalPrice = quantity * myInventory.returnPricePerCapsule(drugName, strengthChoice);
-						System.out.println("The total cost will be: $" + totalPrice);
+						System.out.println("The total cost will be: $" + String.format("%.2f", totalPrice));
+						System.out.println("Warning, the drug you are requesting cannot be taken with the following: " + myInventory.returnAllergiesAndNotes(drugName));
+						System.out.println("Warning, the max dosage for the drug you are requesting is " + myInventory.returnMaxDosagePerDay(drugName, strengthChoice) + " capsules every day.");
 						System.out.println("Would you like to request this prescription? (yes or no):");
 						answer = scnr.next();
 						newline = scnr.nextLine();
