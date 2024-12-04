@@ -1,3 +1,6 @@
+// Pharmacy Management System - SFWE 301
+// Written by Molly Auer
+// December 2024
 
 public class PharmacyPersonnel extends User {
 	
@@ -18,14 +21,6 @@ public class PharmacyPersonnel extends User {
 		this.password = password;
 	}
 
-		
-	//Setters
-	
-	
-	
-	//Getters
-	
-	
 	
 	//Methods
 	

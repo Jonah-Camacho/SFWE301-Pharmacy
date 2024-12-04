@@ -1,3 +1,6 @@
+// Pharmacy Management System - SFWE 301
+// Written by Molly Auer
+// December 2024
 
 public abstract class User {
 	

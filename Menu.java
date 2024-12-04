@@ -1,3 +1,7 @@
+// Pharmacy Management System - SFWE 301
+// Written by Molly Auer
+// December 2024
+
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.File;
