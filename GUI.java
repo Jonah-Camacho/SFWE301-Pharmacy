@@ -3,15 +3,7 @@
 // December 2024
 
 import java.util.Scanner;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.List;
 
 public class GUI {
 	
@@ -111,8 +103,8 @@ public class GUI {
 			for (int i = 0; i < lowStockBatchIDs.size(); ++i) {
 				System.out.print(lowStockBatchIDs.get(i) + " ");
 			}
+			System.out.println();
 		}
-		System.out.println();
 		
 		ArrayList<Integer> expiringBatchIDs = myInventory.returnExpiringBatchIDs();
 		if (expiringBatchIDs.size() > 0) {
@@ -120,8 +112,8 @@ public class GUI {
 			for (int i = 0; i < expiringBatchIDs.size(); ++i) {
 				System.out.print(expiringBatchIDs.get(i) + " ");
 			}
+			System.out.println();
 		}
-		System.out.println();
 
 		
 		ArrayList<Integer> urgentExpiringBatchIDs = myInventory.returnUrgentExpiringBatchIDs();
@@ -130,12 +122,11 @@ public class GUI {
 			for (int i = 0; i < urgentExpiringBatchIDs.size(); ++i) {
 				System.out.print(urgentExpiringBatchIDs.get(i) + " ");
 			}
+			System.out.println();
 		}
-		System.out.println();
-
 		
 		System.out.println();
-		System.out.println();
+
 		
 		// Menu Options
 		
