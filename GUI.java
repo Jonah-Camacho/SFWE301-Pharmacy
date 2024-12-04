@@ -144,6 +144,8 @@ public class GUI {
 		catch (IOException e) {
 			System.out.println("Error writing updated file: " + e.getMessage());
 		}*/
+
+		
 		
 		
 		// Log-In System
@@ -215,8 +217,43 @@ public class GUI {
 			}
 		}
 		
-		
 		// Logged-In
+		
+		// Notifications
+		
+		ArrayList<Integer> lowStockBatchIDs = myInventory.returnLowStockBatchIDs();
+		if (lowStockBatchIDs.size() > 0) {
+			System.out.print("Warning - The following drug batches have fewer than 120 capsules left in inventory: ");
+			for (int i = 0; i < lowStockBatchIDs.size(); ++i) {
+				System.out.print(lowStockBatchIDs.get(i) + " ");
+			}
+		}
+		System.out.println();
+		
+		ArrayList<Integer> expiringBatchIDs = myInventory.returnExpiringBatchIDs();
+		if (expiringBatchIDs.size() > 0) {
+			System.out.print("Warning - The following drug batches are expiring in 60 days: ");
+			for (int i = 0; i < expiringBatchIDs.size(); ++i) {
+				System.out.print(expiringBatchIDs.get(i) + " ");
+			}
+		}
+		System.out.println();
+
+		
+		ArrayList<Integer> urgentExpiringBatchIDs = myInventory.returnUrgentExpiringBatchIDs();
+		if (urgentExpiringBatchIDs.size() > 0) {
+			System.out.print("Warning - The following drug batches are expiring in 30 days: ");
+			for (int i = 0; i < urgentExpiringBatchIDs.size(); ++i) {
+				System.out.print(urgentExpiringBatchIDs.get(i) + " ");
+			}
+		}
+		System.out.println();
+
+		
+		System.out.println();
+		System.out.println();
+		
+		// Menu Options
 		
 		currentName = myUserDatabase.searchCurrentName(usernameIn);
 		currentRole = myUserDatabase.searchCurrentRole(usernameIn);

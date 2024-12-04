@@ -736,12 +736,18 @@ public class Menu {
 			System.out.println("Please enter the username for the employee's account:");
 			String username = scnr.next();
 			newline = scnr.nextLine();
-			
-			while (myUserDatabase.searchUsername(username)) {
-				System.out.println("An account associated with that username already exists.");
-				System.out.println("Please enter a new username:");
-				username = scnr.next();
-				newline = scnr.nextLine();
+			while (myUserDatabase.searchUsername(username) || username.length() < 8) {
+				while (myUserDatabase.searchUsername(username)) {
+					System.out.println("This username is already taken. Please enter a new updated username:");
+					username = scnr.next();
+					newline = scnr.nextLine();
+				}
+				while (username.length() < 8) {
+					System.out.println("Usernames must be at least 8 characters.");
+					System.out.println("Please enter a new username:");
+					username = scnr.next();
+					newline = scnr.nextLine();
+				}
 			}
 			
 			String password = "a";
@@ -893,10 +899,18 @@ public class Menu {
 						System.out.println("Please enter the updated username for the employee:");
 						String newUsername = scnr.next();
 						newline = scnr.nextLine();
-						while (myUserDatabase.searchUsername(newUsername)) {
-							System.out.println("This username is already taken. Please enter a new updated username:");
-							newUsername = scnr.next();
-							newline = scnr.nextLine();
+						while (myUserDatabase.searchUsername(newUsername) || newUsername.length() < 8) {
+							while (myUserDatabase.searchUsername(newUsername)) {
+								System.out.println("This username is already taken. Please enter a new updated username:");
+								newUsername = scnr.next();
+								newline = scnr.nextLine();
+							}
+							while (newUsername.length() < 8) {
+								System.out.println("Usernames must be at least 8 characters.");
+								System.out.println("Please enter a new username:");
+								newUsername = scnr.next();
+								newline = scnr.nextLine();
+							}
 						}
 						myUserDatabase.updateUsername(username, newUsername);
 						myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.Username, username, newUsername, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
@@ -1047,10 +1061,18 @@ public class Menu {
 						System.out.println("Please enter the updated username for the employee:");
 						String newUsername = scnr.next();
 						newline = scnr.nextLine();
-						while (myUserDatabase.searchUsername(newUsername)) {
-							System.out.println("This username is already taken. Please enter a new updated username:");
-							newUsername = scnr.next();
-							newline = scnr.nextLine();
+						while (myUserDatabase.searchUsername(newUsername) || newUsername.length() < 8) {
+							while (myUserDatabase.searchUsername(newUsername)) {
+								System.out.println("This username is already taken. Please enter a new updated username:");
+								newUsername = scnr.next();
+								newline = scnr.nextLine();
+							}
+							while (newUsername.length() < 8) {
+								System.out.println("Usernames must be at least 8 characters.");
+								System.out.println("Please enter a new username:");
+								newUsername = scnr.next();
+								newline = scnr.nextLine();
+							}
 						}
 						myUserDatabase.updateUsername(username, newUsername);
 						myActivityLog.AddActivity (ActivityLog.Activity.AccountUpdate, currentName, currentRole, myUserDatabase.searchCurrentID(username), myUserDatabase.searchCurrentRole(username), ActivityLog.AccountUpdateField.Username, username, newUsername, 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
@@ -1129,12 +1151,18 @@ public class Menu {
 			System.out.println("Please enter the username for the pharmacy manager's account:");
 			String username = scnr.next();
 			newline = scnr.nextLine();
-			
-			while (myUserDatabase.searchUsername(username)) {
-				System.out.println("An account associated with that username already exists.");
-				System.out.println("Please enter a new username:");
-				username = scnr.next();
-				newline = scnr.nextLine();
+			while (myUserDatabase.searchUsername(username) || username.length() < 8) {
+				while (myUserDatabase.searchUsername(username)) {
+					System.out.println("This username is already taken. Please enter a new updated username:");
+					username = scnr.next();
+					newline = scnr.nextLine();
+				}
+				while (username.length() < 8) {
+					System.out.println("Usernames must be at least 8 characters.");
+					System.out.println("Please enter a new username:");
+					username = scnr.next();
+					newline = scnr.nextLine();
+				}
 			}
 			
 			String password = "a";
@@ -1209,11 +1237,18 @@ public class Menu {
 			String username = scnr.next();
 			newline = scnr.nextLine();
 			
-			while (myUserDatabase.searchUsername(username)) {
-				System.out.println("An account associated with that username already exists.");
-				System.out.println("Please enter a new username:");
-				username = scnr.next();
-				newline = scnr.nextLine();
+			while (myUserDatabase.searchUsername(username) || username.length() < 8) {
+				while (myUserDatabase.searchUsername(username)) {
+					System.out.println("This username is already taken. Please enter a new updated username:");
+					username = scnr.next();
+					newline = scnr.nextLine();
+				}
+				while (username.length() < 8) {
+					System.out.println("Usernames must be at least 8 characters.");
+					System.out.println("Please enter a new username:");
+					username = scnr.next();
+					newline = scnr.nextLine();
+				}
 			}
 			
 			String password = "a";
@@ -1719,11 +1754,11 @@ public class Menu {
 				newline = scnr.nextLine();
 			}
 			if (answer.equals("yes")) {
-				myInventory.removeExpiredInventory(expiredBatchIDs);
 				myPrescriptionDatabase.cancelExpiredPrescriptions(expiredBatchIDs);
 				for (int i = 0; i < expiredBatchIDs.size(); ++i) {
 					myActivityLog.AddActivity(ActivityLog.Activity.RemoveExpiredInventory, currentName, currentRole, 0, User.Role.None, ActivityLog.AccountUpdateField.None, "", "", 0, 0, "", 0, 0, expiredBatchIDs.get(i), Prescription.Status.Cancelled, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.None);
 				}
+				myInventory.removeExpiredInventory(expiredBatchIDs);
 				System.out.println("Thank you - all expired drug batches and prescriptions have been removed.");
 				System.out.println("Please be sure to dispose of them properly.");
 				return;

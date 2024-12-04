@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Period;
 
 public class Inventory {
 
@@ -395,7 +396,7 @@ public class Inventory {
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (run != 0) {
-					if (LocalDate.parse(values[5]).isBefore(LocalDate.now())) {
+					if (LocalDate.parse(values[5]).isBefore(LocalDate.now()) && Integer.parseInt(values[3]) > 0) {
 						expiredBatchIDs.add(Integer.parseInt(values[0]));
 					}
 				}
@@ -448,5 +449,85 @@ public class Inventory {
 		}
 	}
 	
+	// Return low stock batch IDs for low stock notification
+	
+	public ArrayList<Integer> returnLowStockBatchIDs () {
+		
+		ArrayList<Integer> lowStockBatchIDs = new ArrayList<>();
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			int run = 0;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (run != 0) {
+					if (Integer.parseInt(values[3]) < 120 && Integer.parseInt(values[3]) > 0) {
+						lowStockBatchIDs.add(Integer.parseInt(values[0]));
+					}
+				}
+				++run;
+			}
+			return lowStockBatchIDs;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return lowStockBatchIDs;
+		}
+	}
+	
+	// Return batch IDs for batches expiring in 60 days
+	
+	public ArrayList<Integer> returnExpiringBatchIDs () {
+		
+		ArrayList<Integer> expiringBatchIDs = new ArrayList<>();
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			int run = 0;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (run != 0) {
+					if (Period.between(LocalDate.now(), LocalDate.parse(values[5])).getYears() == 0 && Period.between(LocalDate.now(), LocalDate.parse(values[5])).getMonths() <= 0 && Period.between(LocalDate.now(), LocalDate.parse(values[5])).getDays() <= 60 && Integer.parseInt(values[3]) > 0) {
+						expiringBatchIDs.add(Integer.parseInt(values[0]));
+					}
+				}
+				++run;
+			}
+			return expiringBatchIDs;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return expiringBatchIDs;
+		}
+	}
+	
+	// Return batch IDs for batches expiring in 30 days
+	
+	public ArrayList<Integer> returnUrgentExpiringBatchIDs () {
+		
+		ArrayList<Integer> urgentExpiringBatchIDs = new ArrayList<>();
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			int run = 0;
+			while ((line = reader.readLine()) != null) {
+				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+				if (run != 0) {
+					if (Period.between(LocalDate.now(), LocalDate.parse(values[5])).getYears() == 0 && Period.between(LocalDate.now(), LocalDate.parse(values[5])).getMonths() == 0 && Period.between(LocalDate.now(), LocalDate.parse(values[5])).getDays() <= 30 && Integer.parseInt(values[3]) > 0) {
+						urgentExpiringBatchIDs.add(Integer.parseInt(values[0]));
+					}
+				}
+				++run;
+			}
+			return urgentExpiringBatchIDs;
+		}
+		
+		catch (IOException e) {
+			System.out.println("Error reading file: " + e.getMessage());
+			return urgentExpiringBatchIDs;
+		}
+	}
 		
 }

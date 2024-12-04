@@ -560,7 +560,7 @@ public class PrescriptionDatabase {
 	
 	public void cancelExpiredPrescriptions (ArrayList<Integer> expiredBatchIDs) {
 		List<String> lines = new ArrayList<>();
-		boolean updated = false;
+		boolean updated = true;
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
 			String line;
