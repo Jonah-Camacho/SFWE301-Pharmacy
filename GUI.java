@@ -22,7 +22,7 @@ public class GUI {
 		int remainingAttempts = 4;
 		String currentName;
 		User.Role currentRole;
-		int menuSelection = 0;
+		int menuSelection = 0;		
 	
 		// Log-In System
 		

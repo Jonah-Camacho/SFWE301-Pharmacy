@@ -21,7 +21,7 @@ public class Inventory {
 	
 	public void addDrugBatch(DrugBatch newDrugBatch) {
 		double newPrice = newDrugBatch.pricePerCapsule + 0.01;  // To make a profit
-		String newRecord = "" + newDrugBatch.batchID + "," + newDrugBatch.drugName + "," + newDrugBatch.strength + "," + newDrugBatch.quantity + "," + newDrugBatch.maxDosagePerDay + "," + newDrugBatch.expirationDate + ",\"" + newDrugBatch.allergiesAndNotes + "\"," + newPrice;
+		String newRecord = "" + newDrugBatch.batchID + "," + newDrugBatch.drugName + "," + newDrugBatch.strength + "," + newDrugBatch.quantity + "," + newDrugBatch.maxDosagePerDay + "," + newDrugBatch.expirationDate + "," + newDrugBatch.allergiesAndNotes + "," + newPrice;
 	
 		try {
 			File file = new File(filePath);
