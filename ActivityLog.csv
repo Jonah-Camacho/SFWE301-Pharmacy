@@ -1,0 +1,95 @@
+Activity ID,Date,Time,Activity,Pharmacy Personnel Name,Pharmacy Personnel Role,Created/Updated Account ID,Created/Updated Account Role,Account Updated Field,Before Change,After Change,Patient ID,Prescription ID,Drug Name,Drug Strength,Drug Quantity,Batch ID,Updated Prescription Status,Total Price,Card Number,Card Expiration,Card Pin,Pharmacy Info Update Field
+1,11/30/2024,1:30:46 PM,AccountCreation,Molly Auer,ITAdministrator,2,Patient,None,,,2,0,,0,0,0,None,0,0,,0,None
+2,11/30/2024,1:34:27 PM,AccountCreation,Molly Auer,ITAdministrator,3,Patient,None,,,3,0,,0,0,0,None,0,0,,0,None
+3,11/30/2024,1:35:33 PM,AccountCreation,Molly Auer,ITAdministrator,4,Patient,None,,,4,0,,0,0,0,None,0,0,,0,None
+4,11/30/2024,1:39:18 PM,AccountCreation,Molly Auer,ITAdministrator,5,Patient,None,,,5,0,,0,0,0,None,0,0,,0,None
+5,11/30/2024,1:52:26 PM,AccountCreation,Molly Auer,ITAdministrator,6,PharmacyTech,None,,,0,0,,0,0,0,None,0,0,,0,None
+6,11/30/2024,2:23:52 PM,AccountCreation,Molly Auer,ITAdministrator,7,Cashier,None,,,0,0,,0,0,0,None,0,0,,0,None
+7,11/30/2024,2:25:49 PM,AccountCreation,Molly Auer,ITAdministrator,8,ITAdministrator,None,,,0,0,,0,0,0,None,0,0,,0,None
+8,11/30/2024,2:26:13 PM,AccountCreation,Molly Auer,ITAdministrator,9,ITAdministrator,None,,,0,0,,0,0,0,None,0,0,,0,None
+9,11/30/2024,2:29:01 PM,AccountCreation,Molly Auer,ITAdministrator,10,ITAdministrator,None,,,0,0,,0,0,0,None,0,0,,0,None
+10,11/30/2024,37:06.4,AccountCreation,Molly Auer,ITAdministrator,11,Pharmacist,None,,,0,0,,0,0,0,None,0,0,,0,None
+11,11/30/2024,43:44.5,AccountCreation,Molly Auer,ITAdministrator,12,PharmacyManager,None,,,0,0,,0,0,0,None,0,0,,0,None
+12,11/30/2024,34:37.0,AccountUpdate,Molly Auer,ITAdministrator,5,Patient,ActiveStatus,Active,Archived,0,0,,0,0,0,None,0,0,,0,None
+13,11/30/2024,49:12.7,AccountCreation,Elanore Green,PharmacyManager,13,Patient,None,,,13,0,,0,0,0,None,0,0,,0,None
+14,11/30/2024,51:52.1,AccountUpdate,Molly Auer,ITAdministrator,12,PharmacyManager,ActiveStatus,Active,Archived,0,0,,0,0,0,None,0,0,,0,None
+15,11/30/2024,55:17.7,AccountUpdate,Molly Auer,ITAdministrator,12,PharmacyManager,ActiveStatus,Archived,Active,0,0,,0,0,0,None,0,0,,0,None
+16,12/1/2024,44:51.2,AccountUpdate,Molly Auer,ITAdministrator,13,Patient,DateOfBirth,6/18/1975,,0,0,,0,0,0,None,0,0,,0,None
+17,12/1/2024,52:22.9,AccountUpdate,Molly Auer,ITAdministrator,13,Patient,DateOfBirth,,8/26/1975,0,0,,0,0,0,None,0,0,,0,None
+18,12/1/2024,53:19.9,AccountCreation,Molly Auer,ITAdministrator,14,Patient,None,,,14,0,,0,0,0,None,0,0,,0,None
+19,12/1/2024,53:34.4,AccountUpdate,Molly Auer,ITAdministrator,14,Patient,Gender,Female,Male,0,0,,0,0,0,None,0,0,,0,None
+20,12/1/2024,53:42.9,AccountUpdate,Molly Auer,ITAdministrator,14,Patient,Gender,Male,Female,0,0,,0,0,0,None,0,0,,0,None
+21,12/1/2024,54:00.0,AccountUpdate,Molly Auer,ITAdministrator,13,Patient,ActiveStatus,Active,Archived,0,0,,0,0,0,None,0,0,,0,None
+22,12/1/2024,54:11.0,AccountUpdate,Molly Auer,ITAdministrator,13,Patient,ActiveStatus,Archived,Active,0,0,,0,0,0,None,0,0,,0,None
+23,12/1/2024,55:07.1,AccountCreation,Molly Auer,ITAdministrator,15,Cashier,None,,,0,0,,0,0,0,None,0,0,,0,None
+24,12/1/2024,55:30.2,AccountUpdate,Molly Auer,ITAdministrator,15,Patient,Address,"546 W McDonald Ln, Tucson,  AZ 8795","342 W McDonald Ln, Tucson, AZ 89765",0,0,,0,0,0,None,0,0,,0,None
+25,12/1/2024,56:41.5,AccountCreation,Molly Auer,ITAdministrator,16,PharmacyManager,None,,,0,0,,0,0,0,None,0,0,,0,None
+26,12/1/2024,58:03.9,AccountCreation,Molly Auer,ITAdministrator,17,ITAdministrator,None,,,0,0,,0,0,0,None,0,0,,0,None
+27,12/1/2024,58:36.0,AccountUpdate,Molly Auer,ITAdministrator,17,ITAdministrator,ActiveStatus,Active,Archived,0,0,,0,0,0,None,0,0,,0,None
+28,12/1/2024,12:24.1,AccountUpdate,Diana Saldana,ITAdministrator,16,PharmacyManager,Address,"679 N Outback Ln, Tucson,  AZ 87956","4356 W Grumman Ln, Tucson, AZ 85976",0,0,,0,0,0,None,0,0,,0,None
+29,12/1/2024,17:34.1,AccountCreation,Molly Auer,ITAdministrator,18,Patient,None,,,18,0,,0,0,0,None,0,0,,0,None
+30,12/1/2024,17:58.9,AccountUpdate,Molly Auer,ITAdministrator,18,Patient,Address,"452 W Spot Dr, Tucson,  AZ 85697","548 N Starlight Dr, Tucson, AZ 85746",0,0,,0,0,0,None,0,0,,0,None
+31,12/1/2024,23:11.1,AccountUpdate,Molly Auer,ITAdministrator,16,PharmacyManager,Address,"4356 W Grumman Ln, Tucson,  AZ 85976",,0,0,,0,0,0,None,0,0,,0,None
+32,12/1/2024,19:32.2,PurchaseDrugShipment,Molly Auer,ITAdministrator,0,None,None,,,0,0,Ibuprofen,400,500,1,None,25,0,,0,None
+33,12/1/2024,34:02.5,PurchaseDrugShipment,Molly Auer,ITAdministrator,0,None,None,,,0,0,Day quill,500,400,2,None,26,0,,0,None
+34,12/1/2024,34:29.1,PurchaseDrugShipment,Molly Auer,ITAdministrator,0,None,None,,,0,0,Day quill,325,1000,3,None,60,0,,0,None
+35,12/1/2024,38:33.1,PurchaseDrugShipment,Molly Auer,ITAdministrator,0,None,None,,,0,0,Night quill,325,600,4,None,36,0,,0,None
+36,12/1/2024,16:34.5,PurchaseDrugShipment,Molly Auer,ITAdministrator,0,None,None,,,0,0,Ibuprofen,600,800,5,None,44,0,,0,None
+37,12/2/2024,35:27.1,RequestPrescription,Molly Auer,ITAdministrator,13,Patient,Prescription,,,13,1,ibuprofen,400,30,1,InProgress,1.8,0,,0,None
+38,12/2/2024,49:15.9,FillPrescription,Molly Auer,ITAdministrator,13,Patient,Prescription,Prescription In Progress,Prescription Filled,13,1,ibuprofen,400,30,1,ReadyFilled,0,0,,0,None
+39,12/2/2024,11:59.3,RequestPrescription,Molly Auer,ITAdministrator,13,Patient,Prescription,,,13,2,Day Quill,325,20,0,InProgress,1.4,0,,0,None
+40,12/2/2024,46:38.6,RequestPrescription,Molly Auer,ITAdministrator,13,Patient,Prescription,,,13,3,Night quill,325,60,4,InProgress,4.2,0,,0,None
+41,12/2/2024,03:51.1,FillPrescription,Molly Auer,ITAdministrator,13,Patient,Prescription,Prescription In Progress,Prescription Filled,13,2,Day Quill,325,20,3,ReadyFilled,0,0,,0,None
+42,12/2/2024,03:51.2,FillPrescription,Molly Auer,ITAdministrator,13,Patient,Prescription,Prescription In Progress,Prescription Filled,13,3,Night quill,325,60,4,ReadyFilled,0,0,,0,None
+43,12/2/2024,28:11.3,MakeTransaction,Molly Auer,ITAdministrator,13,Patient,Prescription,Prescription Is Ready,Prescription Sold,13,1,Ibuprofen,400,30,1,Sold,1.8,4.20E+15,1-May,456,None
+44,12/2/2024,29:21.0,MakeTransaction,Molly Auer,ITAdministrator,13,Patient,Prescription,Prescription Is Ready,Prescription Sold,13,2,Day Quill,325,20,3,Sold,1.4,0,,0,None
+45,12/2/2024,32:15.4,MakeTransaction,Molly Auer,ITAdministrator,13,Patient,Prescription,Prescription Is Ready,Prescription Sold,13,3,Night quill,325,60,4,Sold,4.2,4.20E+15,28-May,456,None
+46,12/3/2024,14:27.7,AccountCreation,Molly Auer,ITAdministrator,19,Cashier,None,,,0,0,,0,0,0,None,0,0,,0,None
+47,12/3/2024,03:29.6,AccountCreation,Molly Auer,ITAdministrator,20,Patient,None,,,20,0,,0,0,0,None,0,0,,0,None
+48,12/3/2024,05:21.6,AccountUpdate,Molly Auer,ITAdministrator,5,Patient,DateOfBirth,7/18/1936,6/28/1995,0,0,,0,0,0,None,0,0,,0,None
+49,12/3/2024,05:46.9,AccountUpdate,Molly Auer,ITAdministrator,19,Cashier,Gender,Female,Other,0,0,,0,0,0,None,0,0,,0,None
+50,12/3/2024,06:01.0,AccountUpdate,Molly Auer,ITAdministrator,19,Cashier,ActiveStatus,Active,Archived,0,0,,0,0,0,None,0,0,,0,None
+51,12/3/2024,06:13.8,AccountUpdate,Molly Auer,ITAdministrator,19,Cashier,ActiveStatus,Archived,Active,0,0,,0,0,0,None,0,0,,0,None
+52,12/3/2024,18:09.8,AccountCreation,Molly Auer,ITAdministrator,21,Patient,None,,,21,0,,0,0,0,None,0,0,,0,None
+53,12/3/2024,20:11.0,RequestPrescription,Molly Auer,ITAdministrator,21,Patient,Prescription,,,21,4,ibuprofen,600,50,5,InProgress,3.25,0,,0,None
+54,12/3/2024,44:40.2,RequestPrescription,Molly Auer,ITAdministrator,21,Patient,Prescription,,,21,5,Day Quill,325,50,3,InProgress,3.5,0,,0,None
+55,12/3/2024,46:51.0,RequestPrescription,Molly Auer,ITAdministrator,21,Patient,Prescription,,,21,6,night quill,325,30,4,InProgress,2.1,0,,0,None
+56,12/3/2024,48:47.3,RequestPrescription,Molly Auer,ITAdministrator,0,Patient,Prescription,,,0,7,Ibuprofen,400,60,1,InProgress,3.6,0,,0,None
+57,12/3/2024,49:03.6,FillPrescription,Molly Auer,ITAdministrator,21,Patient,Prescription,Prescription In Progress,Prescription Filled,21,4,Ibuprofen,600,50,5,ReadyFilled,0,0,,0,None
+58,12/3/2024,49:03.6,FillPrescription,Molly Auer,ITAdministrator,21,Patient,Prescription,Prescription In Progress,Prescription Filled,21,5,Day Quill,325,50,3,ReadyFilled,0,0,,0,None
+59,12/3/2024,49:03.6,FillPrescription,Molly Auer,ITAdministrator,21,Patient,Prescription,Prescription In Progress,Prescription Filled,21,6,night quill,325,30,4,ReadyFilled,0,0,,0,None
+60,12/3/2024,49:03.7,FillPrescription,Molly Auer,ITAdministrator,18,Patient,Prescription,Prescription In Progress,Prescription Filled,18,7,Ibuprofen,400,60,1,ReadyFilled,0,0,,0,None
+61,12/3/2024,00:21.9,MakeTransaction,Molly Auer,ITAdministrator,21,Patient,Prescription,Prescription Is Ready,Prescription Sold,21,4,Ibuprofen,600,50,5,Sold,3.25,0,,0,None
+62,12/3/2024,00:36.2,MakeTransaction,Molly Auer,ITAdministrator,21,Patient,Prescription,Prescription Is Ready,Prescription Sold,21,5,Day Quill,325,50,3,Sold,3.5,0,,0,None
+63,12/3/2024,00:46.9,CancelPrescription,Molly Auer,ITAdministrator,21,Patient,Prescription,Prescription Is Ready,Prescription Cancelled,21,6,night quill,325,30,4,Cancelled,0,0,,0,None
+64,12/3/2024,08:28.6,MakeTransaction,Molly Auer,ITAdministrator,18,Patient,Prescription,Prescription Is Ready,Prescription Sold,18,7,Ibuprofen,400,60,1,Sold,3.6,2.56353E+15,May-24,321,None
+65,12/3/2024,09:33.8,RequestPrescription,Molly Auer,ITAdministrator,0,Patient,Prescription,,,0,8,day quill,325,40,3,InProgress,2.8,0,,0,None
+66,12/3/2024,58:57.7,RequestPrescription,Molly Auer,ITAdministrator,4,Patient,Prescription,,,4,9,night quill,325,10,4,InProgress,0.7,0,,0,None
+67,12/3/2024,00:20.3,AccountCreation,Molly Auer,ITAdministrator,22,Patient,None,,,22,0,,0,0,0,None,0,0,,0,None
+68,12/3/2024,00:48.7,RequestPrescription,Molly Auer,ITAdministrator,22,Patient,Prescription,,,22,10,Ibuprofen,400,20,1,InProgress,1.2,0,,0,None
+69,12/3/2024,02:35.1,FillPrescription,Molly Auer,ITAdministrator,4,Patient,Prescription,Prescription In Progress,Prescription Filled,4,8,day quill,325,40,3,ReadyFilled,0,0,,0,None
+70,12/3/2024,02:35.1,FillPrescription,Molly Auer,ITAdministrator,4,Patient,Prescription,Prescription In Progress,Prescription Filled,4,9,night quill,325,10,4,ReadyFilled,0,0,,0,None
+71,12/3/2024,02:35.2,FillPrescription,Molly Auer,ITAdministrator,22,Patient,Prescription,Prescription In Progress,Prescription Filled,22,10,Ibuprofen,400,20,1,ReadyFilled,0,0,,0,None
+72,12/3/2024,02:47.0,MakeTransaction,Molly Auer,ITAdministrator,22,Patient,Prescription,Prescription Is Ready,Prescription Sold,22,10,Ibuprofen,400,20,1,Sold,1.2,0,,0,None
+73,12/3/2024,03:14.8,PurchaseDrugShipment,Molly Auer,ITAdministrator,0,None,None,,,0,0,Amoxicillin,500,1000,6,None,60,0,,0,None
+74,12/3/2024,04:21.9,AccountCreation,Molly Auer,ITAdministrator,23,Patient,None,,,23,0,,0,0,0,None,0,0,,0,None
+75,12/3/2024,04:58.8,RequestPrescription,Molly Auer,ITAdministrator,23,Patient,Prescription,,,23,11,amoxicillin,500,30,6,InProgress,2.1,0,,0,None
+76,12/3/2024,05:04.3,FillPrescription,Molly Auer,ITAdministrator,23,Patient,Prescription,Prescription In Progress,Prescription Filled,23,11,amoxicillin,500,30,6,ReadyFilled,0,0,,0,None
+77,12/3/2024,05:18.9,MakeTransaction,Molly Auer,ITAdministrator,23,Patient,Prescription,Prescription Is Ready,Prescription Sold,23,11,amoxicillin,500,30,6,Sold,2.1,0,,0,None
+78,12/3/2024,06:35.6,UpdatePharmacyInfo,Molly Auer,ITAdministrator,0,None,None,5206879468,5204246299,0,0,,0,0,0,None,0,0,,0,PhoneNumber
+79,12/3/2024,07:03.0,UpdatePharmacyInfo,Molly Auer,ITAdministrator,0,None,None,8:00,7:00,0,0,,0,0,0,None,0,0,,0,Hours
+80,2024-12-03,16:58:22.870256,RemoveExpiredInventory,Molly Auer,ITAdministrator,0,None,None,"","",0,0,,0,0,7,Cancelled,0.0,0,,0,None
+81,2024-12-03,17:03:55.942348600,RemoveExpiredInventory,Molly Auer,ITAdministrator,0,None,None,"","",0,0,,0,0,7,Cancelled,0.0,0,,0,None
+82,2024-12-03,17:04:06.307504300,RemoveExpiredInventory,Molly Auer,ITAdministrator,0,None,None,"","",0,0,,0,0,7,Cancelled,0.0,0,,0,None
+83,2024-12-03,17:08:54.276942600,RemoveExpiredInventory,Molly Auer,ITAdministrator,0,None,None,"","",0,0,,0,0,7,Cancelled,0.0,0,,0,None
+84,2024-12-03,17:10:47.261994400,RemoveExpiredInventory,Molly Auer,ITAdministrator,0,None,None,"","",0,0,,0,0,7,Cancelled,0.0,0,,0,None
+85,2024-12-04,12:53:31.988108100,AccountCreation,Molly Auer,ITAdministrator,24,PharmacyManager,None,"","",0,0,,0,0,0,None,0.0,0,,0,None
+86,2024-12-04,13:26:04.102171500,AccountCreation,Molly Auer,ITAdministrator,24,Patient,None,"","",24,0,,0,0,0,None,0.0,0,,0,None
+87,2024-12-04,13:29:05.142657500,AccountCreation,Molly Auer,ITAdministrator,25,Patient,None,"","",25,0,,0,0,0,None,0.0,0,,0,None
+88,2024-12-04,13:45:10.256620100,AccountCreation,Molly Auer,ITAdministrator,26,PharmacyTech,None,"","",0,0,,0,0,0,None,0.0,0,,0,None
+89,2024-12-04,13:59:40.485187400,RequestPrescription,Molly Auer,ITAdministrator,18,Patient,Prescription,"","",18,12,Night Quill,325,30,4,InProgress,2.1,0,,0,None
+90,2024-12-04,14:00:43.005878600,FillPrescription,Molly Auer,ITAdministrator,18,Patient,Prescription,"Prescription In Progress","Prescription Filled",18,12,Night Quill,325,30,4,ReadyFilled,0.0,0,,0,None
+91,2024-12-04,14:03:08.103618100,MakeTransaction,Molly Auer,ITAdministrator,18,Patient,Prescription,"Prescription Is Ready","Prescription Sold",18,12,Night Quill,325,30,4,Sold,2.1,0,,0,None
+92,2024-12-04,14:28:26.640442700,MakeTransaction,Molly Auer,ITAdministrator,4,Patient,Prescription,"Prescription Is Ready","Prescription Sold",4,8,day quill,325,40,3,Sold,2.8000000000000003,4204770008990499,05/2028,347,None
+93,2024-12-04,15:48:07.028603400,PurchaseDrugShipment,Molly Auer,ITAdministrator,0,None,None,"","",0,0,Ibuprofen,200,500,8,None,24.0,0,,0,None
+94,2024-12-04,15:50:31.639611400,PurchaseDrugShipment,Molly Auer,ITAdministrator,0,None,None,"","",0,0,Ibuprofen,200,500,9,None,24.0,0,,0,None

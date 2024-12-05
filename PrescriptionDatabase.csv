@@ -1,0 +1,13 @@
+Prescription ID,Patient ID,Batch ID,Drug Name,Strength,Prescribed Quantity,Max Dosage per Day,Expiration Date,Allergies and Notes,Price per Capsule,Dosage,Directions,Refill Period (days),Refill Count,Approved by Doctor?,Status
+1,13,1,Ibuprofen,400,30,3,2025-12-02,"Aspirin, Warfarin",0.06,2 capsules every 6 hours,Take by mouth with water,30,3,TRUE,Sold
+2,13,3,Day Quill,325,20,8,2025-12-02,"Opioids, Antihistamines",0.07,2 capsules every 8 hours,Take with water by mouth,30,3,TRUE,Sold
+3,13,4,Night quill,325,60,8,2025-12-02,"Opioids, Antihistamines",0.07,2 by mouth every 6 hours as symptoms persist,Take with water,0,0,TRUE,Sold
+4,21,5,Ibuprofen,600,50,2,2025-12-01,"Aspirin, Warfarin",0.065,2 every 6 hours,Take with water by mouth,30,1,TRUE,Sold
+5,21,3,Day Quill,325,50,8,2025-12-01,"Opioids, Antihistamines",0.07,2 by mouth every 8 hours,Take with water,0,0,TRUE,Sold
+6,21,4,night quill,325,30,8,2025-12-01,"Opioids, Antihistamines",0.07,2 by mouth every 8 hours,Take with water,0,0,TRUE,Cancelled
+7,18,1,Ibuprofen,400,60,3,2025-12-01,"Aspirin, Warfarin",0.06,2 by mouth every 6 hours as symptoms persist,Take with water,0,0,TRUE,Sold
+8,4,3,day quill,325,40,8,2025-12-01,"Opioids, Antihistamines",0.07,2 by mouth every 8 hours while symptoms last,Take with water,0,0,TRUE,Sold
+9,4,4,night quill,325,10,8,2025-12-01,"Opioids, Antihistamines",0.07,1 every night as symptoms persist,Take with water,1,1,TRUE,ReadyFilled
+10,22,1,Ibuprofen,400,20,3,2025-12-01,"Aspirin, Warfarin",0.06,2 per mouth every 6 hours,Take with water,30,2,TRUE,Sold
+11,23,6,amoxicillin,500,30,4,2025-12-03,Methotrexate,0.07,1 every morning,take with water,30,10,TRUE,Sold
+12,18,4,Night Quill,325,30,8,2025-12-01,"Opioids, Antihistamines",0.07,Take 2 by mouth every 8 hours as symptoms persist,"Take with water",60,1,true,Sold

@@ -1,0 +1,10 @@
+Batch ID,Drug Name,Strength (mg/capsule),Total Quantity,Max Dosage per Day,Expiration Date,Allergies and Notes,Price per Capsule
+1,Ibuprofen,200,430,10,12/1/2025,"Aspirin, Warfarin",0.06
+2,Day quill,500,400,5,12/1/2025,"Opioids, Antihistamines",0.075
+3,Day quill,325,890,8,12/1/2025,"Opioids, Antihistamines",0.07
+4,Night quill,325,500,8,12/1/2025,"Opioids, Antihistamines",0.07
+5,Ibuprofen,600,750,2,12/1/2025,"Aspirin, Warfarin",0.065
+6,Amoxicillin,500,970,4,12/7/2024,Methotrexate,0.07
+7,Penicillin,200,0,2,11/14/2024,None,0.1
+8,Amlodepine,300,100,2,12/7/2024,None,0.1
+9,Ibuprofen,200,500,6,12/4/2025,"Aspirin, Warfarin",0.058

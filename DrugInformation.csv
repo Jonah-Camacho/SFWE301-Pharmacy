@@ -1,0 +1,19 @@
+DrugName,Strength (mg/capsule),MaxDosagePerDay (# of capsules),AllergiesAndNotes,PricePerCapsule ($/capsule)
+Ibuprofen,200,6,"Aspirin, Warfarin",0.048
+Ibuprofen,400,3,"Aspirin, Warfarin",0.05
+Ibuprofen,600,2,"Aspirin, Warfarin",0.055
+Day Quill,325,8,"Opioids, Antihistamines",0.06
+Day Quill,500,5,"Opioids, Antihistamines",0.065
+Night Quill,325,8,"Opioids, Antihistamines",0.06
+Night Quill,500,5,"Opioids, Antihistamines",0.065
+Advil,200,6,"Aspirin, Warfarin",0.05
+Advil,400,3,"Aspirin, Warfarin",0.055
+Amoxicillin,500,4,Methotrexate,0.06
+Atorvastatin,20,4,"Grapefruit, Cyclosporine",0.08
+Metformin,500,4,"Alcohol, Ranolazine",0.055
+Diazepam,10,4,"Opioids, Alcohol",0.08
+Paracetamol,500,8,"alcohol, Carbamazepine",0.045
+Lisinopril,10,2,"Potassium supplements, NSAIDs",0.05
+Alprazolam,0.5,4,"Alcohol, Ketoconazole",0.1
+Levothyroxine,50,1,"Calcium supplements, Antacids",0.08
+Furosemide,40,2,"Aminoglycosides, Lithium",0.08
