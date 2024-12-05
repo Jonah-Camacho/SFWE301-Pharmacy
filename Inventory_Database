@@ -1,102 +1,126 @@
 # Inventory Database File
-# Version 2.0
-# Description: Database system with menu that gives Search, Modify Stock, and Low Stock Notification (with individual notification clearing).
+# Version 3.0
+# Description: Full database, features: Catalog, Search, low stock and expiration notifications, clearing low stock notifications, adding new drugs, changing drug states.
 
 
 
 import java.io.*;
 import java.util.*;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
-public class InventoryDatabase {
-	// Sets a final String to the path of the database
+
+public class ExcelReader { 
     private static final String FILE_PATH = "Inventory.csv";
-    // Scanner
     private static Scanner scanner = new Scanner(System.in);
     // Low stock threshold
-    private static final int STOCK_THRESHOLD = 120;
-    // Set to store excluded drug IDs from notifications
-    private static Set<String> excludedFromNotifications = new HashSet<>();
+    private static final int STOCK_LIMIT = 120;
+    // Expiration date thresholds
+    private static final int EMERGENCY_EXPIRATION_NOTIFICATION = 30;
+    private static final int EXPIRATION_NOTIFICATION = 60;
+    // Stores drugs removed from notification system
+    private static Set<String> stockExclusions = new HashSet<>();
+    // Date formatting
+    private static final DateTimeFormatter INPUT_DATE_FORMAT = DateTimeFormatter.ofPattern("M/d/yyyy");
+    // Display formatting for the date
+    private static final DateTimeFormatter OUTPUT_DATE_FORMAT = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy");
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static void main(String[] args) {
-	// Start of Pharmacy Inventory System
-        System.out.println("=== Pharmacy Inventory System ===");
+        System.out.println("---- Pharmacy Inventory System ----");
         boolean exit = false;
-        // Start of while loop, with exit
+
         while (!exit) {
-	    // displays menu options
             displayMenu();
             String choice = scanner.nextLine().trim();
-	    // options for the Inventory control system
+
             switch (choice) {
                 case "1":
-                    viewCatalog();
+                    Catalog();
                     break;
                 case "2":
                     searchDatabase();
                     break;
                 case "3":
-                    showNotifications();
+                    Alerts();
                     break;
                 case "4":
+                    alterStatus();
+                    break;
+                case "5":
+                    addDrug();
+                    break;
+                case "6":
                     exit = true;
-                    System.out.println("Exiting the system. Goodbye!");
+                    System.out.println("Exiting the system.");
                     break;
                 default:
-                    System.out.println("Invalid option. Please select 1, 2, 3, or 4.");
+                    System.out.println("Invalid option. Select 1, 2, 3, 4, 5, or 6.");
             }
         }
 
         scanner.close();
     }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Displays the main menu
     private static void displayMenu() {
-        System.out.println("\nPlease select an option:");
-        System.out.println("1. View Drug Catalog");
-        System.out.println("2. Search Database");
+    	System.out.println("\n---- Menu ----");
+        System.out.println("Please select an option:");
+        System.out.println("1. View inventory database");
+        System.out.println("2. Search and Modify Stock");
         System.out.println("3. Notifications");
-        System.out.println("4. Exit");
+        System.out.println("4. Change Status");
+        System.out.println("5. Add Medication");
+        System.out.println("6. Exit");
         System.out.print("Enter your choice: ");
     }
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Prints out the entire course catalog
-    private static void viewCatalog() {
-        System.out.println("\n=== Drug Catalog ===");
+    // Views the entire drug catalog
+    private static void Catalog() {
+        System.out.println("\n---- Drug Catalog ----");
         try {
-            readCSV(FILE_PATH);
+            readDatabase(FILE_PATH);
         } catch (IOException e) {
             System.err.println("Error reading the catalog: " + e.getMessage());
         }
     }
 
-    // Asks if wanting to search by name or ID
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    // Search the database by ID or name
     private static void searchDatabase() {
         System.out.println("\nSearch by:");
         System.out.println("1. Drug ID");
-        System.out.println("2. Drug Name");
+        System.out.println("2. Generic Name");
         System.out.print("Enter your choice: ");
         String searchChoice = scanner.nextLine().trim();
 
-        List<String[]> results = new ArrayList<>();
+        List<String[]> outcome = new ArrayList<>();
 
         switch (searchChoice) {
             case "1":
                 System.out.print("Enter Drug ID: ");
                 String id = scanner.nextLine().trim();
                 try {
-                    results = searchCSVByField(FILE_PATH, 0, id); // Assuming ID is the first column
+                    outcome = searchDatabaseColumns(FILE_PATH, 0, id); // First Column is ID
                 } catch (IOException e) {
                     System.err.println("Error searching by ID: " + e.getMessage());
                     return;
                 }
                 break;
             case "2":
-                System.out.print("Enter Drug Name: ");
+                System.out.print("Enter Generic Name: ");
                 String name = scanner.nextLine().trim();
                 try {
-                    results = searchCSVByField(FILE_PATH, 1, name); // Assuming Name is the second column
+                    outcome = searchDatabaseColumns(FILE_PATH, 1, name); // Second column is name
                 } catch (IOException e) {
-                    System.err.println("Error searching by Name: " + e.getMessage());
+                    System.err.println("Error searching by Generic Name: " + e.getMessage());
                     return;
                 }
                 break;
@@ -105,19 +129,19 @@ public class InventoryDatabase {
                 return;
         }
 
-        if (results.isEmpty()) {
+        if (outcome.isEmpty()) {
             System.out.println("No matching records found.");
             return;
         }
 
-        System.out.println("\n=== Search Results ===");
-        printResults(results);
+        System.out.println("\n---- Search Results ----");
+        printOutcome(outcome);
 
-        // Lets user choose if there is multiple results
-        if (results.size() > 1) {
+        // allows to choose which to change if there are two with the same
+        if (outcome.size() > 1) {
             System.out.print("\nEnter the ID of the Drug you want to modify: ");
             String targetID = scanner.nextLine().trim();
-            Optional<String[]> selectedRecord = results.stream()
+            Optional<String[]> selectedRecord = outcome.stream()
                     .filter(record -> record[0].equalsIgnoreCase(targetID))
                     .findFirst();
 
@@ -127,93 +151,326 @@ public class InventoryDatabase {
                 System.out.println("Invalid ID selected.");
             }
         } else {
-            // Modifies if there is only one
-            String targetID = results.get(0)[0];
+            // Only one result, proceed to modify
+            String targetID = outcome.get(0)[0];
             modifyStock(targetID);
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Shows the low stock notifications
-    private static void showNotifications() {
-        System.out.println("\n=== Low Stock Notifications ===");
-        List<String[]> lowStockMedications = new ArrayList<>();
+    // Show notifications for expiring medications and low stock
+    private static void Alerts() {
+        System.out.println("\n---- Notifications ----");
+
+        List<String[]> lowStockList = new ArrayList<>();
+        List<String[]> expiringSoonMedications = new ArrayList<>();
+        List<String[]> expiringLaterMedications = new ArrayList<>();
 
         try {
-            lowStockMedications = getLowStockMedications(FILE_PATH, STOCK_THRESHOLD);
+            lowStockList = getlowStockList(FILE_PATH, STOCK_LIMIT);
+            expiringSoonMedications = getExpiringStock(FILE_PATH, EMERGENCY_EXPIRATION_NOTIFICATION);
+            expiringLaterMedications = getExpiringStock(FILE_PATH, EXPIRATION_NOTIFICATION);
+            // Remove medications already in expiringSoonMedications from expiringLaterMedications
+            Set<String> soonExpiringIDs = new HashSet<>();
+            for (String[] record : expiringSoonMedications) {
+                soonExpiringIDs.add(record[0]);
+            }
+            expiringLaterMedications.removeIf(record -> soonExpiringIDs.contains(record[0]));
         } catch (IOException e) {
             System.err.println("Error reading the inventory: " + e.getMessage());
             return;
         }
 
-        if (lowStockMedications.isEmpty()) {
-            System.out.println("All medications are sufficiently stocked.");
-            return;
+        // Sorts the expiration lists in ascending order
+        expiringSoonMedications.sort(Comparator.comparing(record -> {
+            try {
+                return LocalDate.parse(record[6], INPUT_DATE_FORMAT); // Expiration Date is fields[6]
+            } catch (DateTimeParseException e) {
+                // If parsing fails, place it at the end
+                return LocalDate.MAX;
+            }
+        }));
+
+        expiringLaterMedications.sort(Comparator.comparing(record -> {
+            try {
+                return LocalDate.parse(record[6], INPUT_DATE_FORMAT); // Assumes Expiration Date is fields[6]
+            } catch (DateTimeParseException e) {
+                // If parsing fails, place it at the end
+                return LocalDate.MAX;
+            }
+        }));
+
+        // Display Expiration Notifications first (30 days)
+        System.out.println("\n---- Medications Expiring in 30 Days or Less ----");
+        if (expiringSoonMedications.isEmpty()) {
+            System.out.println("No medications are expiring within the next " + EMERGENCY_EXPIRATION_NOTIFICATION + " days.");
+        } else {
+            System.out.println("Medications expiring within the next " + EMERGENCY_EXPIRATION_NOTIFICATION + " days:");
+            printOutcome(expiringSoonMedications);
+        }
+        
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // Display Expiration Notifications next (31-60 days)
+        System.out.println("\n---- Medications Expiring in 60 Days or Less ----");
+        if (expiringLaterMedications.isEmpty()) {
+            System.out.println("No medications are expiring within the next " + EXPIRATION_NOTIFICATION + " days.");
+        } else {
+            System.out.println("Medications expiring within the next " + EXPIRATION_NOTIFICATION + " days:");
+            printOutcome(expiringLaterMedications);
         }
 
-        System.out.println("Medications with stock quantity of " + STOCK_THRESHOLD + " or less:");
-        printResults(lowStockMedications);
-
-        // Removes a drug from the notifications list
-        manageNotifications(lowStockMedications);
+        // Display Low Stock Notifications last
+        System.out.println("\n---- Low Stock Notifications ----");
+        if (lowStockList.isEmpty()) {
+            System.out.println("No medications are currently low in stock.");
+        } else {
+            System.out.println("Medications with stock quantity of " + STOCK_LIMIT + " or less:");
+            printOutcome(lowStockList);
+            // Provide option to remove drugs from low stock notifications
+            manageLowStockNotifications(lowStockList);
+        }
     }
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Removing a drug from the notifications
-    private static void manageNotifications(List<String[]> lowStockMedications) {
+    // Manage exclusion of drugs from low stock notifications
+    private static void manageLowStockNotifications(List<String[]> lowStockList) {
         while (true) {
-            System.out.print("\nDo you want to remove any drug from the notifications list? (Y/N): ");
+            System.out.print("\nRemove a drug form low stock notifications? (Y/N): ");
             String response = scanner.nextLine().trim().toUpperCase();
 
             if (response.equals("Y")) {
-                System.out.print("Enter the ID of the Drug to remove from notifications: ");
+                System.out.print("Enter drug ID for removal from notifications: ");
                 String removeID = scanner.nextLine().trim();
 
-                // Checks if the ID is part of the low stock notifications
-                boolean exists = lowStockMedications.stream()
+                // Checks if ID exists in current low-stock list
+                boolean exists = lowStockList.stream()
                         .anyMatch(record -> record[0].equalsIgnoreCase(removeID));
 
                 if (exists) {
-                    if (excludedFromNotifications.contains(removeID.toUpperCase())) {
-                        System.out.println("Drug ID " + removeID + " is already excluded from notifications.");
+                    if (stockExclusions.contains(removeID.toUpperCase())) {
+                        System.out.println("Drug ID " + removeID + " is already excluded");
                     } else {
-                        excludedFromNotifications.add(removeID.toUpperCase());
-                        System.out.println("Drug ID " + removeID + " has been removed from notifications.");
+                        stockExclusions.add(removeID.toUpperCase());
+                        System.out.println("Drug ID " + removeID + " is removed");
                     }
                 } else {
-                    System.out.println("Drug ID " + removeID + " is not in the current notifications list.");
+                    System.out.println("Drug ID " + removeID + " is not on low stock notifications list");
                 }
             } else if (response.equals("N")) {
                 break;
             } else {
-                System.out.println("Invalid input. Please enter 'Y' or 'N'.");
+                System.out.println("Invalid input. Enter 'Y' or 'N'.");
             }
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Function to modify stock quantity
+    // Modify the stock quantity for a given Drug ID
     private static void modifyStock(String targetID) {
         String newStock;
         while (true) {
-            System.out.print("Enter the new Stock Quantity: ");
+            System.out.print("Enter new stock quantity here: ");
             newStock = scanner.nextLine().trim();
             if (newStock.matches("\\d+")) { // Ensures input is a positive integer
                 break;
             } else {
-                System.out.println("Invalid input. Please enter a numeric value.");
+                System.out.println("Invalid input. Must be a postive numeric value.");
             }
         }
 
         try {
-            updateCSV(FILE_PATH, targetID, newStock);
-            System.out.println("Stock quantity updated successfully.");
-            System.out.println("\n=== Updated Data ===");
-            readCSV(FILE_PATH);
+            updateDatabase(FILE_PATH, targetID, 3, newStock); // Update Stock Quantity (column index 3)
+            System.out.println("Successfully updated stock quantity.");
+            System.out.println("\n---- Database has been updated ----");
+            readDatabase(FILE_PATH);
         } catch (IOException e) {
             System.err.println("Error updating stock quantity: " + e.getMessage());
         }
     }
+    
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Reads and displays the contents of the CSV File
-    private static void readCSV(String filePath) throws IOException {
+    // Add a new medication to the database
+    private static void addDrug() {
+        System.out.println("\n---- Add New Medication ----");
+
+        // Generate a new unique ID
+        int newID = generateNewID();
+
+        // asks for new medications details
+        System.out.print("Enter Generic Name: ");
+        String genericName = scanner.nextLine().trim();
+
+        System.out.print("Enter Brand Name: ");
+        String brandName = scanner.nextLine().trim();
+
+        String stockQuantity;
+        while (true) {
+            System.out.print("Enter Stock Quantity: ");
+            stockQuantity = scanner.nextLine().trim();
+            if (stockQuantity.matches("\\d+")) { // positive int.
+                break;
+            } else {
+                System.out.println("Invalid input. Enter a positive integer for Stock Quantity.");
+            }
+        }
+
+        String unitPrice;
+        while (true) {
+            System.out.print("Enter Unit Price ($): ");
+            unitPrice = scanner.nextLine().trim();
+            if (unitPrice.matches("\\d+(\\.\\d{1,2})?")) { // Positive decimal, up to 2 decimal places
+                break;
+            } else {
+                System.out.println("Invalid input. Enter valud numeric for Unit Price (e.g., 25.50).");
+            }
+        }
+
+        System.out.print("Enter Supplier: ");
+        String supplier = scanner.nextLine().trim();
+
+        String expirationDate;
+        while (true) {
+            System.out.print("Enter Expiration Date (MM/dd/yyyy): ");
+            expirationDate = scanner.nextLine().trim();
+            try {
+                LocalDate.parse(expirationDate, INPUT_DATE_FORMAT);
+                break;
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date format. Enter date in M/d/yyyy format (e.g., 7/18/2026).");
+            }
+        }
+
+        String orderStatus;
+        while (true) {
+            System.out.print("Enter Order Status (PENDING or COMPLETED): ");
+            orderStatus = scanner.nextLine().trim().toUpperCase();
+            if (orderStatus.equals("PENDING") || orderStatus.equals("COMPLETED")) {
+                break;
+            } else {
+                System.out.println("Invalid input. Enter 'PENDING' or 'COMPLETED'.");
+            }
+        }
+
+        // Create the new medication record
+        String[] newRecord = {String.valueOf(newID), genericName, brandName, stockQuantity, unitPrice, supplier, expirationDate, orderStatus};
+
+        // Append the new record to the database
+        try (FileWriter fw = new FileWriter(FILE_PATH, true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < newRecord.length; i++) {
+                // Handles commas
+                String field = newRecord[i];
+                if (field.contains(",")) {
+                    field = "\"" + field.replace("\"", "\"\"") + "\"";
+                }
+                sb.append(field);
+                if (i < newRecord.length - 1) {
+                    sb.append(",");
+                }
+            }
+            out.println(sb.toString());
+            System.out.println("\nMedication added successfully with ID: " + newID);
+
+        } catch (IOException e) {
+            System.err.println("Error adding new medication: " + e.getMessage());
+        }
+    }
+    
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Change the Order Status of a medication from PENDING to COMPLETED
+    private static void alterStatus() {
+        System.out.println("\n---- Change Order Status ----");
+        System.out.print("ID of drug for order status change: ");
+        String targetID = scanner.nextLine().trim();
+
+        // Search for the medication by ID
+        List<String[]> outcome;
+        try {
+            outcome = searchDatabaseColumns(FILE_PATH, 0, targetID); // ID is the first column
+        } catch (IOException e) {
+            System.err.println("Error searching by ID: " + e.getMessage());
+            return;
+        }
+
+        if (outcome.isEmpty()) {
+            System.out.println("No medication found with ID: " + targetID);
+            return;
+        }
+
+        String currentStatus = outcome.get(0)[7].toUpperCase();
+        if (currentStatus.equals("COMPLETED")) {
+            System.out.println("Medication with ID " + targetID + " is already COMPLETED.");
+            return;
+        } else if (!currentStatus.equals("PENDING")) {
+            System.out.println("Medication with ID " + targetID + " has an invalid Order Status: " + currentStatus);
+            return;
+        }
+
+        // Confirm status change
+        System.out.print("Are you sure you want to change the status from PENDING to COMPLETED? (Y/N): ");
+        String confirmation = scanner.nextLine().trim().toUpperCase();
+        if (!confirmation.equals("Y")) {
+            System.out.println("Status change canceled.");
+            return;
+        }
+
+        // Updates order status in database
+        try {
+            updateDatabase(FILE_PATH, targetID, 7, "COMPLETED"); // Order Status is the 8th column (index 7)
+            System.out.println("Order Status updated to COMPLETED for Drug ID: " + targetID);
+            System.out.println("\n=== Updated Data ===");
+            readDatabase(FILE_PATH);
+        } catch (IOException e) {
+            System.err.println("Error updating Order Status: " + e.getMessage());
+        }
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Generate a new unique ID by finding the maximum existing ID and adding 1
+    private static int generateNewID() {
+        int maxID = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+            String line;
+            boolean header = true;
+            while ((line = reader.readLine()) != null) {
+                if (header) {
+                    header = false;
+                    continue; // Skip header
+                }
+                String[] fields = searchLine(line);
+                if (fields.length >= 1) {
+                    try {
+                        int currentID = Integer.parseInt(fields[0]);
+                        if (currentID > maxID) {
+                            maxID = currentID;
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid ID format: " + fields[0]);
+                    }
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Inventory file not found. A new file will be created.");
+        } catch (IOException e) {
+            System.err.println("Error reading the inventory file: " + e.getMessage());
+        }
+        return maxID + 1;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    // Reads & displays database
+    private static void readDatabase(String filePath) throws IOException {
         File file = new File(filePath);
         if (!file.exists()) {
             System.out.println("The inventory file does not exist.");
@@ -222,52 +479,59 @@ public class InventoryDatabase {
 
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String line;
-        boolean isHeader = true;
+        boolean header = true;
 
         while ((line = reader.readLine()) != null) {
-            String[] fields = line.split(",", -1); // -1 to include trailing empty strings
-            if (isHeader) {
-                // Format header for formatting (readability)
-                System.out.printf("%-10s %-30s %-20s %-20s %-15s %-15s %-30s%n",
-                        fields[0], fields[1], fields[2], fields[3], fields[4], fields[5], fields[6]);
-                isHeader = false;
+            String[] fields = searchLine(line);
+            if (header) {
+                // Format header for better readability
+                System.out.printf("%-5s %-20s %-20s %-15s %-15s %-30s %-15s %-10s%n",
+                        "ID", "Generic Name", "Brand Name", "Stock Qty", "Unit Price ($)", "Supplier", "Expiration Date", "Order Status");
+                header = false;
             } else {
-                if (fields.length >= 7) {
-                    System.out.printf("%-10s %-30s %-20s %-20s %-15s %-15s %-30s%n",
-                            fields[0], fields[1], fields[2], fields[3], fields[4], fields[5], fields[6]);
+                if (fields.length >= 8) {
+                    // Format the expiration date
+                    String formattedDate = formatDates(fields[6]);
+
+                    System.out.printf("%-5s %-20s %-20s %-15s %-15s %-30s %-15s %-10s%n",
+                            fields[0], fields[1], fields[2], fields[3], fields[4], fields[5], formattedDate, fields[7]);
                 } else {
-                    System.out.println("Incomplete record: " + String.join(",", fields));
+                    System.out.println("Incomplete record: " + line);
                 }
             }
         }
 
         reader.close();
     }
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Function that searches the CSV file columns
-    private static List<String[]> searchCSVByField(String filePath, int columnIndex, String searchTerm) throws IOException {
-        List<String[]> matchedRecords = new ArrayList<>();
+    // Search database columns
+    private static List<String[]> searchDatabaseColumns(String filePath, int columnIndex, String searchTerm) throws IOException {
+        List<String[]> matches = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         String line;
-        boolean isHeader = true;
+        boolean header = true;
 
         while ((line = reader.readLine()) != null) {
-            String[] fields = line.split(",", -1); // -1 to include trailing empty strings
-            if (isHeader) {
-                isHeader = false;
+            String[] fields = searchLine(line);
+            if (header) {
+                header = false;
                 continue; // Skip header
             }
             if (fields.length > columnIndex && fields[columnIndex].equalsIgnoreCase(searchTerm)) {
-                matchedRecords.add(fields);
+                matches.add(fields);
             }
         }
 
         reader.close();
-        return matchedRecords;
+        return matches;
     }
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Function to update the CSV File
-    private static void updateCSV(String filePath, String targetID, String newStock) throws IOException {
+    // update database given ID
+    private static void updateDatabase(String filePath, String targetID, int columnIndex, String newValue) throws IOException {
         File file = new File(filePath);
         File tempFile = new File("temp.csv");
 
@@ -276,23 +540,36 @@ public class InventoryDatabase {
 
         String line;
         boolean updated = false;
-        boolean isHeader = true;
+        boolean header = true;
 
         try {
             while ((line = reader.readLine()) != null) {
-                String[] fields = line.split(",", -1); // -1 to include trailing empty strings
-                if (isHeader) {
-                    writer.write(line + "\n"); // Write header as is
-                    isHeader = false;
+                String[] fields = searchLine(line);
+                if (header) {
+                    writer.write(line + "\n");
+                    header = false;
                     continue;
                 }
 
-                if (fields.length >= 7 && fields[0].equalsIgnoreCase(targetID)) {
-                    fields[4] = newStock; // Assuming Stock Quantity is the 5th column (index 4)
+                if (fields.length >= 8 && fields[0].equalsIgnoreCase(targetID)) {
+                    fields[columnIndex] = newValue;
                     updated = true;
-                    System.out.println("Updated record: " + String.join(",", fields));
+                    // Rebuilds line w/ formatting
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < fields.length; i++) {
+                        String field = fields[i];
+                        if (field.contains(",")) {
+                            field = "\"" + field.replace("\"", "\"\"") + "\"";
+                        }
+                        sb.append(field);
+                        if (i < fields.length - 1) {
+                            sb.append(",");
+                        }
+                    }
+                    writer.write(sb.toString() + "\n");
+                } else {
+                    writer.write(line + "\n");
                 }
-                writer.write(String.join(",", fields) + "\n");
             }
         } finally {
             reader.close();
@@ -313,48 +590,41 @@ public class InventoryDatabase {
             System.out.println("No matching ID found. No updates made.");
         }
     }
+    
+   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Print search results in a formatted way
-    private static void printResults(List<String[]> records) {
-        if (records.isEmpty()) {
-            System.out.println("No records to display.");
-            return;
-        }
-
-        // Print header
-        String[] header = {"ID", "Drug Name", "Generic Names", "Brand Name", "Stock Quantity", "Unit Price ($)", "Supplier"};
-        System.out.printf("%-10s %-30s %-20s %-20s %-15s %-15s %-30s%n",
-                header[0], header[1], header[2], header[3], header[4], header[5], header[6]);
-
-        // Print each record
-        for (String[] record : records) {
-            if (record.length >= 7) {
-                System.out.printf("%-10s %-30s %-20s %-20s %-15s %-15s %-30s%n",
-                        record[0], record[1], record[2], record[3], record[4], record[5], record[6]);
-            } else {
-                System.out.println("Incomplete record: " + String.join(",", record));
-            }
+    // Format thhe experations date going to be displayed
+    private static String formatDates(String dateStr) {
+        try {
+            LocalDate date = LocalDate.parse(dateStr, INPUT_DATE_FORMAT);
+            return date.format(OUTPUT_DATE_FORMAT); // Converts to "EEEE, MMMM d, yyyy"
+        } catch (DateTimeParseException e) {
+            // Logs error, returns orig. string
+            System.out.println("Error formatting date: " + dateStr + ". Using original format.");
+            return dateStr;
         }
     }
+    
+   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 
-    // Get medications with stock quantity of STOCK_THRESHOLD or less, excluding those in the exclusion list
-    private static List<String[]> getLowStockMedications(String filePath, int threshold) throws IOException {
+    // Gets the medications meeting the stock threshold condition
+    private static List<String[]> getlowStockList(String filePath, int threshold) throws IOException {
         List<String[]> lowStockRecords = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         String line;
-        boolean isHeader = true;
+        boolean header = true;
 
         while ((line = reader.readLine()) != null) {
-            String[] fields = line.split(",", -1); 
-            if (isHeader) {
-                isHeader = false;
-                continue; // Skip header
+            String[] fields = searchLine(line);
+            if (header) {
+                header = false;
+                continue; 
             }
-            if (fields.length >= 7) {
-                String stockStr = fields[4];
+            if (fields.length >= 8) {
+                String stockStr = fields[3];
                 String id = fields[0].toUpperCase();
-                // Exclude if ID is in the exclusion list
-                if (excludedFromNotifications.contains(id)) {
+                // checks to exlude the ID's that are part of exclusions
+                if (stockExclusions.contains(id)) {
                     continue;
                 }
                 try {
@@ -371,4 +641,104 @@ public class InventoryDatabase {
         reader.close();
         return lowStockRecords;
     }
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ // search database line which could include commas, etc.
+    private static String[] searchLine(String line) {
+        List<String> toks = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        boolean Quote = false;
+
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (c == '\"') {
+                Quote = !Quote; 
+                // double quotes
+                if (Quote && i < line.length() - 1 && line.charAt(i + 1) == '\"') {
+                    sb.append('\"');
+                    i++; // Skips next quote
+                }
+            } else if (c == ',' && !Quote) {
+                toks.add(sb.toString());
+                sb.setLength(0); // Resets buffer
+            } else {
+                sb.append(c);
+            }
+        }
+        toks.add(sb.toString());
+        return toks.toArray(new String[0]);
+    }
+    
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    // Gets the medications that are expiring
+    private static List<String[]> getExpiringStock(String filePath, int days) throws IOException {
+        List<String[]> expirations = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        LocalDate thresholdDate = today.plusDays(days);
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String line;
+        
+        boolean header = true;
+        
+
+        while ((line = reader.readLine()) != null) {
+            String[] fields = searchLine(line);
+            if (header) {
+                header = false;
+                continue; 
+            }
+            if (fields.length >= 8) {
+                String expirationStr = fields[6];
+                String id = fields[0];
+                if (expirationStr.isEmpty()) {
+                    System.out.println("Missing expiration date for ID " + id + ".");
+                    continue;
+                }
+                try {
+                    LocalDate expirationDate = LocalDate.parse(expirationStr, INPUT_DATE_FORMAT);
+                    if (!expirationDate.isBefore(today) && !expirationDate.isAfter(thresholdDate)) {
+                        expirations.add(fields);
+                    }
+                } catch (DateTimeParseException e) {
+                    System.out.println("Invalid expiration date format for ID " + id + ": " + expirationStr);
+                }
+            }
+        }
+
+        reader.close();
+        return expirations;
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    // Print search outcome in a formatted way
+    private static void printOutcome(List<String[]> records) {
+        if (records.isEmpty()) {
+            System.out.println("No records to display.");
+            return;
+        }
+
+        // Print header
+        String[] header = {"ID", "Generic Name", "Brand Name", "Stock Qty", "Unit Price ($)", "Supplier", "Expiration Date", "Order Status"};
+        System.out.printf("%-5s %-20s %-20s %-15s %-15s %-30s %-15s %-10s%n",
+                header[0], header[1], header[2], header[3], header[4], header[5], header[6], header[7]);
+
+        // Print each record
+        for (String[] record : records) {
+            if (record.length >= 8) {
+                // Format the expiration date
+                String formattedDate = formatDates(record[6]);
+
+                System.out.printf("%-5s %-20s %-20s %-15s %-15s %-30s %-15s %-10s%n",
+                        record[0], record[1], record[2], record[3], record[4], record[5], formattedDate, record[7]);
+            } else {
+                System.out.println("Incomplete record: " + String.join(",", record));
+            }
+        }
+    }
+
+   
+   
 }
