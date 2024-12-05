@@ -1,11 +1,17 @@
-Batch ID,Drug Name,Strength (mg/capsule),Total Quantity,Max Dosage per Day,Expiration Date,Allergies and Notes,Price per Capsule
-1,Ibuprofen,200,430,10,2025-12-01,"Aspirin, Warfarin",0.06
-2,Day quill,500,400,5,2025-12-01,"Opioids, Antihistamines",0.075
-3,Day quill,325,890,8,2025-12-01,"Opioids, Antihistamines",0.07
-4,Night quill,325,500,8,2025-12-01,"Opioids, Antihistamines",0.07
-5,Ibuprofen,600,720,2,2025-12-01,"Aspirin, Warfarin",0.065
-6,Amoxicillin,500,970,4,2024-12-07,Methotrexate,0.07
-7,Penicillin,200,0,2,2024-11-14,None,0.1
-8,Amlodepine,300,100,2,2024-12-07,None,0.1
-9,Ibuprofen,200,500,6,2025-12-04,"Aspirin, Warfarin",0.058
-10,Day Quill,500,1000,5,2025-12-04,"Opioids, Antihistamines",0.075
+ID,Generic Name,Brand Name,Stock Quantity,Unit Price ($),Supplier,Expiration Date,Order Status
+1,Lisinopril,Prinivil,137,65.18,WilliamsLLC,1/5/2025,COMPLETED
+2,Metformin,Glucophage,246,53.67,GonzalesandSons,8/18/2025,COMPLETED
+3,Atorvastatin,Lipitor,291,42.61,TurnerLtd,11/18/2025,COMPLETED
+4,Metformin,Glucophage,101,75,GloverandChapman,7/8/2025,COMPLETED
+5,Metformin,Glucophage,282,25.24,WilliamsLtd,12/30/2024,COMPLETED
+6,Lisinopril,Prinivil,318,90.36,ShieldsandChurch,11/8/2026,COMPLETED
+7,Lisinopril,Prinivil,451,34.04,ConnerandChang,3/8/2025,COMPLETED
+8,Amlodipine,Norvasc,124,19.84,Castillo-Russell,6/8/2025,COMPLETED
+9,Amlodipine,Norvasc,449,17.45,RiveraandSharp,9/18/2025,COMPLETED
+10,Amlodipine,Norvasc,460,98.1,Reyes-Harper,12/18/2026,COMPLETED
+11,Lisinopril,Prinivil,220,64.58,MooreGroup,11/11/2025,COMPLETED
+12,Amlodipine,Norvasc,436,14.57,NortonandFranklin,10/10/2025,COMPLETED
+13,Lisinopril,Prinivil,10,47.89,LewisandPrice,8/10/2025,COMPLETED
+14,Atorvastatin,Lipitor,395,2.46,Smith-Reynolds,6/4/2025,COMPLETED
+15,Albuteral,Albuteral,300,17.89,Pfizer,6/8/2025,PENDING
+16,Modafinil,Privigil,500,13.89,Pfizer,11/12/2026,COMPLETED
