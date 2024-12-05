@@ -49,7 +49,15 @@ public class DrugInformation {
 				String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				if (values[0].toLowerCase().equals(drugName.toLowerCase())) {
 					strength = Integer.parseInt(values[1]);
-					drugStrengthOptions.add(strength);
+					boolean alreadyExists = false;
+					for (int i = 0; i < drugStrengthOptions.size(); ++i) {
+						if (strength == drugStrengthOptions.get(i)) {
+							alreadyExists = true;
+						}
+					}
+					if (!alreadyExists) {
+						drugStrengthOptions.add(strength);
+					}
 				}
 			}
 			return drugStrengthOptions;

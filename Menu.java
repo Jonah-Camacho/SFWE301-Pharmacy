@@ -144,7 +144,7 @@ public class Menu {
 					makeTransaction(scnr, myUserDatabase, myPrescriptionDatabase, myInventory, myActivityLog, currentName, currentRole);
 					break;
 				case 14:
-					viewInventory();
+					viewInventory(myActivityLog, currentName, currentRole);
 					break;
 				case 15:
 					removeExpiredInventory(scnr, myInventory, myPrescriptionDatabase, myActivityLog, currentName, currentRole);
@@ -153,10 +153,10 @@ public class Menu {
 					purchaseDrugShipment(scnr, myInventory, myActivityLog, currentName, currentRole, myDrugInformation);
 					break;
 				case 17:
-					viewPrescriptionDatabase();
+					viewPrescriptionDatabase(myActivityLog, currentName, currentRole);
 					break;
 				case 18:
-					viewUserDatabase();
+					viewUserDatabase(myActivityLog, currentName, currentRole);
 					break;
 				case 19:
 					viewActivityLog();
@@ -210,7 +210,7 @@ public class Menu {
 					makeTransaction(scnr, myUserDatabase, myPrescriptionDatabase, myInventory, myActivityLog, currentName, currentRole);
 					break;
 				case 11:
-					viewInventory();
+					viewInventory(myActivityLog, currentName, currentRole);
 					break;
 				case 12:
 					removeExpiredInventory(scnr, myInventory, myPrescriptionDatabase, myActivityLog, currentName, currentRole);
@@ -219,10 +219,10 @@ public class Menu {
 					purchaseDrugShipment(scnr, myInventory, myActivityLog, currentName, currentRole, myDrugInformation);
 					break;
 				case 14:
-					viewPrescriptionDatabase();
+					viewPrescriptionDatabase(myActivityLog, currentName, currentRole);
 					break;
 				case 15:
-					viewUserDatabase();
+					viewUserDatabase(myActivityLog, currentName, currentRole);
 					break;
 				case 16:
 					viewActivityLog();
@@ -264,7 +264,7 @@ public class Menu {
 					makeTransaction(scnr, myUserDatabase, myPrescriptionDatabase, myInventory, myActivityLog, currentName, currentRole);
 					break;
 				case 7:
-					viewPrescriptionDatabase();
+					viewPrescriptionDatabase(myActivityLog, currentName, currentRole);
 					break;
 				case 8:
 					break;
@@ -1727,7 +1727,7 @@ public class Menu {
 		}	
 	}
 	
-	public static void viewInventory() {
+	public static void viewInventory(ActivityLog myActivityLog, String currentName, User.Role currentRole) {
 		String filePath = "Inventory.csv";
 
         File file = new File(filePath);
@@ -1736,6 +1736,7 @@ public class Menu {
             try {
                 Desktop.getDesktop().open(file);
                 System.out.println(filePath + " is opening.");
+				myActivityLog.AddActivity(ActivityLog.Activity.ViewInventory, currentName, currentRole, 0, User.Role.None, ActivityLog.AccountUpdateField.None, "", "", 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.Name);
             } catch (IOException e) {
                 System.out.println("Error opening file: " + e.getMessage());
             }
@@ -1850,7 +1851,7 @@ public class Menu {
 		
 	}
 	
-	public static void viewPrescriptionDatabase() {
+	public static void viewPrescriptionDatabase(ActivityLog myActivityLog, String currentName, User.Role currentRole) {
 		String filePath = "PrescriptionDatabase.csv";
 
         File file = new File(filePath);
@@ -1859,6 +1860,7 @@ public class Menu {
             try {
                 Desktop.getDesktop().open(file);
                 System.out.println(filePath + " is opening.");
+				myActivityLog.AddActivity(ActivityLog.Activity.ViewPrescriptionDatabase, currentName, currentRole, 0, User.Role.None, ActivityLog.AccountUpdateField.None, "", "", 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.Name);
             } catch (IOException e) {
                 System.out.println("Error opening file: " + e.getMessage());
             }
@@ -1867,7 +1869,7 @@ public class Menu {
         }
 	}
 	
-	public static void viewUserDatabase() {
+	public static void viewUserDatabase(ActivityLog myActivityLog, String currentName, User.Role currentRole) {
 		String filePath = "UserDatabase.csv";
 
         File file = new File(filePath);
@@ -1876,6 +1878,7 @@ public class Menu {
             try {
                 Desktop.getDesktop().open(file);
                 System.out.println(filePath + " is opening.");
+				myActivityLog.AddActivity(ActivityLog.Activity.ViewUserDatabase, currentName, currentRole, 0, User.Role.None, ActivityLog.AccountUpdateField.None, "", "", 0, 0, "", 0, 0, 0, Prescription.Status.None, 0, 0, "", 0, ActivityLog.PharmacyInfoUpdateField.Name);
             } catch (IOException e) {
                 System.out.println("Error opening file: " + e.getMessage());
             }

@@ -93,3 +93,18 @@ Activity ID,Date,Time,Activity,Pharmacy Personnel Name,Pharmacy Personnel Role,C
 92,2024-12-04,14:28:26.640442700,MakeTransaction,Molly Auer,ITAdministrator,4,Patient,Prescription,"Prescription Is Ready","Prescription Sold",4,8,day quill,325,40,3,Sold,2.8000000000000003,4204770008990499,05/2028,347,None
 93,2024-12-04,15:48:07.028603400,PurchaseDrugShipment,Molly Auer,ITAdministrator,0,None,None,"","",0,0,Ibuprofen,200,500,8,None,24.0,0,,0,None
 94,2024-12-04,15:50:31.639611400,PurchaseDrugShipment,Molly Auer,ITAdministrator,0,None,None,"","",0,0,Ibuprofen,200,500,9,None,24.0,0,,0,None
+95,2024-12-04,22:40:01.407203200,AccountCreation,Molly Auer,ITAdministrator,27,Patient,None,"","",27,0,,0,0,0,None,0.0,0,,0,None
+96,2024-12-04,22:41:08.274884400,AccountCreation,Molly Auer,ITAdministrator,28,PharmacyTech,None,"","",0,0,,0,0,0,None,0.0,0,,0,None
+97,2024-12-04,22:42:03.826552600,AccountCreation,Molly Auer,ITAdministrator,29,PharmacyManager,None,"","",0,0,,0,0,0,None,0.0,0,,0,None
+98,2024-12-04,22:42:40.607346800,AccountUpdate,Molly Auer,ITAdministrator,27,Patient,DateOfBirth,"08/26/1945","08/17/1952",0,0,,0,0,0,None,0.0,0,,0,None
+99,2024-12-04,22:43:03.929427800,AccountUpdate,Molly Auer,ITAdministrator,0,Patient,Username,"wendyloohoo","wendyloohoo4",0,0,,0,0,0,None,0.0,0,,0,None
+100,2024-12-04,22:43:19.938820700,AccountUpdate,Molly Auer,ITAdministrator,28,PharmacyTech,ActiveStatus,"Active","Archived",0,0,,0,0,0,None,0.0,0,,0,None
+101,2024-12-04,22:43:35.190830900,AccountUpdate,Molly Auer,ITAdministrator,28,PharmacyTech,ActiveStatus,"Archived","Active",0,0,,0,0,0,None,0.0,0,,0,None
+102,2024-12-04,22:44:36.123215300,RequestPrescription,Molly Auer,ITAdministrator,27,Patient,Prescription,"","",27,13,Ibuprofen,600,30,5,InProgress,1.9500000000000002,0,,0,None
+103,2024-12-04,22:44:41.296533600,FillPrescription,Molly Auer,ITAdministrator,27,Patient,Prescription,"Prescription In Progress","Prescription Filled",27,13,Ibuprofen,600,30,5,ReadyFilled,0.0,0,,0,None
+104,2024-12-04,22:44:54.948514100,MakeTransaction,Molly Auer,ITAdministrator,27,Patient,Prescription,"Prescription Is Ready","Prescription Sold",27,13,Ibuprofen,600,30,5,Sold,1.9500000000000002,0,,0,None
+105,2024-12-04,22:44:59.255397200,ViewInventory,Molly Auer,ITAdministrator,0,None,None,"","",0,0,,0,0,0,None,0.0,0,,0,Name
+106,2024-12-04,22:45:40.503059100,PurchaseDrugShipment,Molly Auer,ITAdministrator,0,None,None,"","",0,0,Day Quill,500,1000,10,None,65.0,0,,0,None
+107,2024-12-04,22:45:45.775361600,ViewPrescriptionDatabase,Molly Auer,ITAdministrator,0,None,None,"","",0,0,,0,0,0,None,0.0,0,,0,Name
+108,2024-12-04,22:46:11.628673600,ViewUserDatabase,Molly Auer,ITAdministrator,0,None,None,"","",0,0,,0,0,0,None,0.0,0,,0,Name
+109,2024-12-04,22:47:55.581840900,UpdatePharmacyInfo,Molly Auer,ITAdministrator,0,None,None,"08:00","07:00",0,0,,0,0,0,None,0.0,0,,0,Hours

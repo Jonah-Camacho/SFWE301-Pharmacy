@@ -15,7 +15,7 @@ public class ActivityLog {
 	String filePath = "ActivityLog.csv";
 	String[] headers = {"Activity ID", "Date", "Time", "Activity", "Pharmacy Personnel Name", "Pharmacy Personnel Role", "Created/Updated Account ID", "Created/Updated Account Role", "Account Updated Field", "Before Change", "After Change", "Patient ID", "Prescription ID", "Drug Name", "Drug Strength", "Drug Quantity", "Batch ID", "Updated Prescription Status", "Total Price", "Card Number", "Card Expiration", "Card Security Code", "Pharmacy Info Update Field"};
 	
-	enum Activity {AccountCreation, AccountUpdate, RequestPrescription, FillPrescription, CancelPrescription, MakeTransaction, ViewInventory, RemoveExpiredInventory, PurchaseDrugShipment, ViewPrescriptionDatabase, ViewUserDatabase, ViewActivityLog, RequestFinancialReport, RequestInventoryReport, UpdatePharmacyInfo};
+	enum Activity {AccountCreation, AccountUpdate, RequestPrescription, FillPrescription, CancelPrescription, MakeTransaction, ViewInventory, RemoveExpiredInventory, PurchaseDrugShipment, ViewPrescriptionDatabase, ViewUserDatabase, RequestFinancialReport, RequestInventoryReport, UpdatePharmacyInfo};
 	enum AccountUpdateField {Name, DateOfBirth, Gender, PhoneNumber, Address, DoctorsName, DoctorsPhoneNumber, InsuranceProvider, InsurancePolicyNumber, Allergies, Notes, Role, Username, Password, LockedStatus, ActiveStatus, Prescription, None};
 	enum PharmacyInfoUpdateField {Name, Address, Hours, PhoneNumber, None};	
 	

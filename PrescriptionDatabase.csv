@@ -10,4 +10,5 @@ Prescription ID,Patient ID,Batch ID,Drug Name,Strength,Prescribed Quantity,Max D
 9,4,4,night quill,325,10,8,2025-12-01,"Opioids, Antihistamines",0.07,1 every night as symptoms persist,Take with water,1,1,TRUE,ReadyFilled
 10,22,1,Ibuprofen,400,20,3,2025-12-01,"Aspirin, Warfarin",0.06,2 per mouth every 6 hours,Take with water,30,2,TRUE,Sold
 11,23,6,amoxicillin,500,30,4,2025-12-03,Methotrexate,0.07,1 every morning,take with water,30,10,TRUE,Sold
-12,18,4,Night Quill,325,30,8,2025-12-01,"Opioids, Antihistamines",0.07,Take 2 by mouth every 8 hours as symptoms persist,"Take with water",60,1,true,Sold
+12,18,4,Night Quill,325,30,8,2025-12-01,"Opioids, Antihistamines",0.07,Take 2 by mouth every 8 hours as symptoms persist,Take with water,60,1,TRUE,Sold
+13,27,5,Ibuprofen,600,30,2,2025-12-01,"Aspirin, Warfarin",0.065,2 capsules every 6 hours,"Take by mouth with water as symptoms persist",30,2,true,Sold

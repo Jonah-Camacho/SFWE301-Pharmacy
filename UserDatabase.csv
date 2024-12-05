@@ -23,3 +23,6 @@ ID Number,Full Name,Date of Birth,Gender,Phone Number,Address,Active?,Role,Docto
 24,Mary Jane,04/13/1991,Female,5204326895,"346 W Speedway Blvd, Tucson, AZ 85746",true,PharmacyManager, , , , , , ,maryjane,LastDanceW/ME!,false
 25,Jimmy John,07/11/2000,Male,5204324896,"698 N Oracle Rd, Tucson, AZ 85746",true,Patient,Dr. Perry Miller,5206435849,United HealthCare,897654321,"Penicillin, Acetaminophen, Pollen","Patient needs hearing assitance at register", , , ,
 26,Freddy Mercury,09/05/1946,Male,5204648976,"123 W Lucky Ln, Tucson, AZ 85749",true,PharmacyTech, , , , , , ,freddymercury,KingOfQueens!$,false
+27,Ronald Rogers,08/17/1952,Male,5557896987,"213 N Oracle Rd, Tucson, AZ 85796",true,Patient,Dr. Fred Stanley,5554678987,United Health Care,12345678987,"Penicillin, Amlodepine","", , , ,"13,"
+28,Wendy LooHoo,07/11/2006,Female,5554687987,"444 W Speedway Blvd, Tucson, AZ 85746",true,PharmacyTech, , , , , , ,wendyloohoo4,IloveDr.Seuss!###,false
+29,Perry Platapus,06/07/1994,Other,5554368978,"564 S Bend Rd, Tucson, AZ 85746",true,PharmacyManager, , , , , , ,pplatapus,ReadyToSwimm$$,false
