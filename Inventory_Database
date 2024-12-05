@@ -18,13 +18,15 @@ public class ExcelReader {
     private static Set<String> excludedFromNotifications = new HashSet<>();
 
     public static void main(String[] args) {
+	// Start of Pharmacy Inventory System
         System.out.println("=== Pharmacy Inventory System ===");
         boolean exit = false;
-        // start of the while loop
+        // Start of while loop, with exit
         while (!exit) {
+	    // displays menu options
             displayMenu();
             String choice = scanner.nextLine().trim();
-
+	    // options for the Inventory control system
             switch (choice) {
                 case "1":
                     viewCatalog();
@@ -47,7 +49,7 @@ public class ExcelReader {
         scanner.close();
     }
 
-    // Display the main menu
+    // Displays the main menu
     private static void displayMenu() {
         System.out.println("\nPlease select an option:");
         System.out.println("1. View Drug Catalog");
@@ -57,7 +59,7 @@ public class ExcelReader {
         System.out.print("Enter your choice: ");
     }
 
-    // Function that prints out the entire course catalog
+    // Prints out the entire course catalog
     private static void viewCatalog() {
         System.out.println("\n=== Drug Catalog ===");
         try {
@@ -151,11 +153,11 @@ public class ExcelReader {
         System.out.println("Medications with stock quantity of " + STOCK_THRESHOLD + " or less:");
         printResults(lowStockMedications);
 
-        // Function that removes a drug from the notifications list
+        // Removes a drug from the notifications list
         manageNotifications(lowStockMedications);
     }
 
-    // The function that deals with removing the drug from the notifications
+    // Removing a drug from the notifications
     private static void manageNotifications(List<String[]> lowStockMedications) {
         while (true) {
             System.out.print("\nDo you want to remove any drug from the notifications list? (Y/N): ");
@@ -343,7 +345,7 @@ public class ExcelReader {
         boolean isHeader = true;
 
         while ((line = reader.readLine()) != null) {
-            String[] fields = line.split(",", -1); // -1 to include trailing empty strings
+            String[] fields = line.split(",", -1); 
             if (isHeader) {
                 isHeader = false;
                 continue; // Skip header
