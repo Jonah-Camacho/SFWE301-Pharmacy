@@ -7,7 +7,7 @@
 import java.io.*;
 import java.util.*;
 
-public class ExcelReader {
+public class InventoryDatabase {
 	// Sets a final String to the path of the database
     private static final String FILE_PATH = "Inventory.csv";
     // Scanner
